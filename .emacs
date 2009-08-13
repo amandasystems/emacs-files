@@ -278,7 +278,8 @@
 (defun net-stop ()
   "Disconnect from internet-facing services."
   (interactive)
-  (jabber-disconnect))
+  (jabber-disconnect)
+  (erc-cmd-GQUIT))
 
 (defun stan ()
   (interactive)
