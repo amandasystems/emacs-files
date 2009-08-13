@@ -160,17 +160,6 @@
 
 (setq inferior-lisp-program "sbcl") 
 
- ;;Erc alerts:
- (require 'erc-match)
- (setq erc-current-nick-highlight-type 'nick)
- (setq erc-keywords '("\\bisilme*\\b"))
-
- (setq erc-track-exclude-types '("PART" "QUIT" "NICK" "MODE"))
- (setq erc-track-use-faces t)
- (setq erc-track-faces-priority-list
-           '(erc-current-nick-face erc-keyword-face))
- (setq erc-track-priority-faces-only 'all)
-
 (defun erc-to-hgr-region (start end)
   "Format irc logs in region to hgr standard" 
   (interactive "r")
@@ -190,12 +179,6 @@
        "Oktober" "November" "December"])
 (setq cal-html-directory "~/pandora/public_html/cal")
 (setq tex-dvi-print-command "dvips -f * | lp -d laserjet -o media=a4 -o fitplot -")
-
-
-;(load-library "mailcrypt")
-;(mc-setversion "gpg")
-;(require 'mc-gpg-file-mode)
-;(setq mc-gpg-user-id "albin@luftslott.org")
 
 (add-hook 'diary-display-hook 'fancy-diary-display)
 
@@ -285,20 +268,7 @@
 
 (add-hook 'jabber-post-connect-hooks 'jabber-keepalive-start)
 
-;;(setq jabber-muc-autojoin '(ost@conference.jabber.org))
-
 (require 'delicious)
-
-
-
-;; (setq planner-project "WikiPlanner")
-;; (setq muse-project-alist
-;;       '(("WikiPlanner"
-;;          ("~/plans" ;; Or wherever you want your planner files to be
-;;           :default "index"
-;;           :major-mode planner-mode
-;;           :visit-link planner-visit-link))))
-;; (require 'planner)
 
 (setq auto-mode-alist
    (cons '("\\.mdwn" . markdown-mode) auto-mode-alist))
