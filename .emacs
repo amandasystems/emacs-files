@@ -1,21 +1,14 @@
 (require 'w3m-load)
+(autoload 'doc-view "doc-view")
 
 (add-to-list 'load-path "~/.emacs.d/")
-;;(add-to-list 'load-path "~/.emacs.d/jabber-old/")
 (add-to-list 'load-path "~/projects/repos/emacsweblogs/lisp/")
 (add-to-list 'load-path "~/projects/repos/identica-mode/")
 (add-to-list 'load-path "~/projects/repos/lagn/")
 (add-to-list 'load-path "~/projects/repos/git-emacs/")
 (add-to-list 'load-path "~/projects/repos/erc/")
 
-(require 'doc-view)
-
 (require 'secrets)
-
-
-;;(require 'weblogger)
-;; Enable server mode (for emacsclient):
-;;(server-mode 1)
 
 ;; Save screen real estate, kill some decorations:
 (if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
@@ -28,7 +21,6 @@
 (autoload 'wl "wl" "Wanderlust" t)
 (autoload 'wl-other-frame "wl" "Wanderlust on new frame." t)
 (autoload 'wl-draft "wl-draft" "Write draft with Wanderlust." t)
-
 
 ;; Put those pesky auto-save and back-up files in ONE, SEPARATE directory: 
 (defvar autosave-dir "~/.emacs_autosaves/")
@@ -52,10 +44,8 @@
 (defvar backup-dir "~/.emacs_backups/")
 (setq backup-directory-alist (list (cons "." backup-dir)))
 
-
 ;; Indent with spaces in stead.
 (setq-default indent-tabs-mode nil) 
-
 
 ;; Copy/paste to xbuffer (for X interaction Zen):
 (setq x-select-enable-clipboard t)
@@ -100,50 +90,26 @@
 ;; Render HTML emails with w3m:
 (setq mm-text-html-renderer 'w3m)
 
-(defvar znc-username "Tuss")
- 
- (add-hook 'erc-join-hook 'bitlbee-identify)
- (defun bitlbee-identify ()
-   "If we're on the bitlbee server, send the identify command to the 
- &bitlbee channel."
-   (when (and (string= "pandora" erc-session-server)
-              (string= "&bitlbee" (buffer-name)))
-     (erc-message "PRIVMSG" (format "%s identify %s" 
-                                    (erc-default-target) 
-                                    bitlbee-password))))
-
-(defun irc-tinfoilnet ()
-  (interactive)
-  (erc-ssl :server "irc.eldslott.org" :port 6697 :nick "Tuss"))
+;; Code to connect and identify with my ZNC bouncer
+;; Todo: need serious amounts of refactoring.
 
 (defun irc-bnc ()
+  "Connect to ZNC bouncer via ERC, specified by variable znc-accounts"
   (interactive)
-  (erc :server "localhost"
-       :port 6667 
-       :nick znc-username
-       :password (format "%s:%s" znc-username znc-password)))
-
-(defun irc-fr-bnc ()
-  (interactive)
-  (erc :server "localhost"
-       :port 6667 
-       :nick znc-username
-       :password (format "albins:%s" znc-password)))
-
-(defun irc-bitlbee ()
-  (interactive)
-  (let ((erc-server-connect-function 'open-network-stream))
-    (erc :server "pandora" :port 6667 :nick "LqR")))
-(defun irc-freenode ()
-  (interactive)
-  (let ((erc-server-connect-function 'open-network-stream))
-    (erc :server "irc.freenode.net" :port 6667 :nick "LqR")))
-
-(defun irc-pirtpartiet ()
-  (interactive)
-  (let ((erc-server-connect-function 'erc-open-ssl-stream))
-    (erc :server "irc.piratpartiet.se" :port 6697 :nick "Tuss")))
-
+  (dolist (account znc-accounts)
+    (let ((account-name (car account))
+          (account-plist (cadr account)))
+      (cond ((plist-get account-plist 'ssl)
+             (fset 'erc-fun 'erc-ssl))
+            (t 
+             (fset 'erc-fun 'erc)))
+      (erc-fun :server (plist-get account-plist 'hostname)
+               :port (plist-get account-plist 'port)
+               :nick (plist-get account-plist 'username)
+               :password (format "%s:%s" 
+                                 (plist-get account-plist 'username) 
+                                 (plist-get account-plist 'password))))))
+      
 ;; Browse with emacs-w3m:
 (setq browse-url-browser-function 'w3m-browse-url
       browse-url-new-window-flag t)
@@ -302,11 +268,17 @@
 
 (add-hook 'jabber-chat-mode-hook 'guillemets-mode)
 
-(defun start-net ()
+(defun net-start ()
+  "Connect to internet-facing services i.e. IRC and Jabber"
   (interactive)
   (irc-bnc)
-  (irc-fr-bnc)
   (jabber-connect-all))
+
+;; How do we stop ERC?
+(defun net-stop ()
+  "Disconnect from internet-facing services."
+  (interactive)
+  (jabber-disconnect))
 
 (defun stan ()
   (interactive)
