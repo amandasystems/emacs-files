@@ -7,6 +7,7 @@
 (add-to-list 'load-path "~/projects/repos/lagn/")
 (add-to-list 'load-path "~/projects/repos/git-emacs/")
 (add-to-list 'load-path "~/projects/repos/erc/")
+(add-to-list 'Info-default-directory-list "~/.info/")
 
 (require 'secrets)
 
@@ -279,7 +280,7 @@
   "Disconnect from internet-facing services."
   (interactive)
   (jabber-disconnect)
-  (erc-cmd-GQUIT))
+  (erc-cmd-GQUIT "quitting from IRC"))
 
 (defun stan ()
   (interactive)
