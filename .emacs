@@ -147,10 +147,6 @@
 (setq cal-html-directory "~/pandora/public_html/cal")
 (setq tex-dvi-print-command "dvips -f * | lp -d laserjet -o media=a4 -o fitplot -")
 
-(add-hook 'diary-display-hook 'fancy-diary-display)
-
-(add-hook 'cal-tex-hook 'my-calendar-a4)
-
 (defun my-calendar-a4 ()
   "Replace all occurences of 18cm with 17cm."
   (goto-char (point-min))
@@ -161,8 +157,7 @@
 
 (setq cal-tex-preamble-extra "\\usepackage[utf8]{inputenc}\n")
 
-(add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
-(add-hook 'haskell-mode-hook 'turn-on-haskell-indent)
+
 (custom-set-faces
   ;; custom-set-faces was added by Custom.
   ;; If you edit it by hand, you could mess it up, so be careful.
@@ -178,19 +173,6 @@
 
 (autoload 'scheme-get-current-symbol-info "scheme-complete" nil t)
 (autoload 'scheme-complete-or-indent "scheme-complete" nil t)
-
-(add-hook 'inferior-scheme-mode-hook 
-          (lambda ()
-            (define-key
-              inferior-scheme-mode-map [tab]
-              'scheme-complete-or-indent)))
-
-(add-hook 'hen-mode-hook
- 	  (lambda ()
- 	    (make-local-variable 'eldoc-documentation-function)
- 	    (setq eldoc-documentation-function 'scheme-get-current-symbol-info)
- 	    (eldoc-mode)))
-
 
 (setq auto-mode-alist (cons '("\\.scm$" . hen-mode) auto-mode-alist))
 
@@ -223,7 +205,7 @@
 (eval-after-load 'jabber
   '(jabber-keepalive-start))
 
-(add-hook 'jabber-post-connect-hooks 'jabber-keepalive-start)
+
 
 (require 'delicious)
 
@@ -290,7 +272,6 @@ minibuffer to ease cutting and pasting."
               (kill-ring-save (point-min) (point-max))
               (buffer-string)))))
     (message tinyurl)))
-
 
 (require 'keybindings)
 (require 'hooks)
