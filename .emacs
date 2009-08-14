@@ -161,15 +161,6 @@
 
 (setq cal-tex-preamble-extra "\\usepackage[utf8]{inputenc}\n")
 
-;; wanderlust
-(require 'wl)
-
-;; (autoload 'wl "wl" "Wanderlust" t)
-;; (autoload 'wl-other-frame "wl" "Wanderlust on new frame." t)
-;; (autoload 'wl-draft "wl-draft" "Write draft with Wanderlust." t)
-
-
-
 (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
 (add-hook 'haskell-mode-hook 'turn-on-haskell-indent)
 (custom-set-faces
@@ -216,8 +207,7 @@
       'wl-draft-kill
       'mail-send-hook))
 
-(setq user-mail-address "albin@luftslott.org")
-;;(set wl-from "albin@luftslott.org")
+(setq user-mail-address "albin@eval.nu")
 (setq user-full-name "Albin Stjerna")
 
 (autoload 'wikipedia-mode "wikipedia-mode.el"
@@ -240,10 +230,8 @@
 (setq auto-mode-alist
    (cons '("\\.mdwn" . markdown-mode) auto-mode-alist))
 
-
 (require 'tramp)
 (tramp-parse-shosts "~/.ssh/known_hosts")
-(add-to-list 'tramp-default-method-alist '("pandora" "" "ssh"))
 
 (setq wikipedia-default-language-domain "en")
 
@@ -252,10 +240,6 @@
 (add-to-list 'load-path "/usr/local/share/distel/elisp")
 (require 'distel)
   (distel-setup)
-
-
-;;(irc-bnc)
-;;(jabber-connect-all)
 
 (autoload 'babel "babel"
   "Use a web translation service to translate the message MSG." t)
@@ -266,8 +250,6 @@
 (autoload 'babel-buffer "babel"
   "Use a web translation service to translate the current buffer." t)
 (require 'smart-quotes)
-
-(add-hook 'jabber-chat-mode-hook 'guillemets-mode)
 
 (defun net-start ()
   "Connect to internet-facing services i.e. IRC and Jabber"
@@ -285,16 +267,6 @@
 (defun stan ()
   (interactive)
   (print (shell-command-to-string "/home/albin/.bin/slclip --from 'byns gård' --to slussen")))
-
-(add-hook 'weblogger-entry-mode-hook 'guillemets-mode)
-
-(add-hook 'w3m-form-input-textarea-mode-hook 'guillemets-mode)
-
-(add-hook 'weblogger-start-edit-entry-hook 
-          (lambda()  
-            (flyspell-mode 1) 
-            (ispell-change-dictionary 'svenska)
-            (flyspell-buffer)))
 
 ;;; Identi.ca mode
 (require 'identica-mode)
@@ -321,6 +293,5 @@ minibuffer to ease cutting and pasting."
 
 
 (require 'keybindings)
-
-
+(require 'hooks)
 (require 'git-emacs)
