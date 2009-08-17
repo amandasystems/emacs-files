@@ -101,15 +101,22 @@
     (let ((account-name (car account))
           (account-plist (cadr account)))
       (cond ((plist-get account-plist 'ssl)
-             (fset 'erc-fun 'erc-ssl))
+             (erc-ssl
+              :server (plist-get account-plist 'hostname)
+              :port (plist-get account-plist 'port)
+              :nick (plist-get account-plist 'username)
+              :password (format "%s:%s" 
+                                (plist-get account-plist 'username) 
+                                (plist-get account-plist 'password))))
             (t 
-             (fset 'erc-fun 'erc)))
-      (erc-fun :server (plist-get account-plist 'hostname)
-               :port (plist-get account-plist 'port)
-               :nick (plist-get account-plist 'username)
-               :password (format "%s:%s" 
-                                 (plist-get account-plist 'username) 
-                                 (plist-get account-plist 'password))))))
+             (erc
+              :server (plist-get account-plist 'hostname)
+              :port (plist-get account-plist 'port)
+              :nick (plist-get account-plist 'username)
+              :password (format "%s:%s" 
+                                (plist-get account-plist 'username) 
+                                (plist-get account-plist 'password))))))))
+      
       
 ;; Browse with emacs-w3m:
 (setq browse-url-browser-function 'w3m-browse-url
