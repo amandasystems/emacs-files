@@ -142,7 +142,7 @@
        "Onsdag" "Torsdag" "Fredag" "Lördag"]
       calendar-month-name-array
       ["Januari" "Februari" "Mars" "April"
-       "Maj" "Juni" "Juli" "Agusti" "September"
+       "Maj" "Juni" "Juli" "Augusti" "September"
        "Oktober" "November" "December"])
 (setq cal-html-directory "~/pandora/public_html/cal")
 (setq tex-dvi-print-command "dvips -f * | lp -d laserjet -o media=a4 -o fitplot -")
