@@ -283,3 +283,11 @@ minibuffer to ease cutting and pasting."
 (require 'keybindings)
 (require 'hooks)
 (require 'git-emacs)
+
+(require 'database)
+(defun my-dired-edb-interact ()
+  (interactive)
+  (let ((filename (dired-get-filename)))
+    (if (string-match "[.]edb$" filename)
+        (edb-interact filename nil)
+      (db-find-file filename))))
