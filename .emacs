@@ -250,8 +250,10 @@
 (defun net-stop ()
   "Disconnect from internet-facing services."
   (interactive)
-  (jabber-disconnect)
-  (erc-cmd-GQUIT "quitting from IRC"))
+  (when (functionp 'jabber-disconnect)
+    (jabber-disconnect))
+  (when (functionp 'erc-cmd-GQUIT)
+    (erc-cmd-GQUIT "quitting from IRC")))
 
 (defun stan ()
   (interactive)
@@ -284,10 +286,25 @@ minibuffer to ease cutting and pasting."
 (require 'hooks)
 (require 'git-emacs)
 
-(require 'database)
-(defun my-dired-edb-interact ()
-  (interactive)
-  (let ((filename (dired-get-filename)))
-    (if (string-match "[.]edb$" filename)
-        (edb-interact filename nil)
-      (db-find-file filename))))
+;; (require 'database)
+;; (defun my-dired-edb-interact ()
+;;   (interactive)
+;;   (let ((filename (dired-get-filename)))
+;;     (if (string-match "[.]edb$" filename)
+;;         (edb-interact filename nil)
+;;       (db-find-file filename))))
+
+
+(setq find-file-hooks (cons 'edb-after-find-file find-file-hooks))
+(defun edb-after-find-file ()
+  "If this is a database file in EDB internal file layout, run EDB.
+     To be placed in `find-file-hooks'."
+  ;; When this is called, we are at the beginning of the buffer.
+  (if (looking-at ";; Database file written by EDB")
+      (progn
+        (require 'database)
+        (db-this-buffer)
+        ;; db-this-buffer kills the current buffer; and an error results
+        ;; when Emacs tries to switch back to it.  find-file-noselect
+        ;; uses the buf variable to hold the new buffer.
+        (setq buf (buffer-name (current-buffer))))))

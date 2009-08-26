@@ -31,4 +31,6 @@
             (flyspell-buffer)))
 
 
+;;(add-hook 'kill-emacs-hook 'net-stop)
+
 (provide 'hooks)
