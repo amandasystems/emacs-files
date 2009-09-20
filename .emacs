@@ -116,8 +116,9 @@
               :password (format "%s:%s" 
                                 (plist-get account-plist 'username) 
                                 (plist-get account-plist 'password))))))))
-      
-      
+     
+
+
 ;; Browse with emacs-w3m:
 (setq browse-url-browser-function 'w3m-browse-url
       browse-url-new-window-flag t)
@@ -224,7 +225,7 @@
 
 (setq wikipedia-default-language-domain "en")
 
-(bbdb-insinuate-w3)
+;;(bbdb-insinuate-w3)
 
 (add-to-list 'load-path "/usr/local/share/distel/elisp")
 (require 'distel)
@@ -246,14 +247,16 @@
   (irc-bnc)
   (jabber-connect-all))
 
-;; How do we stop ERC?
+
 (defun net-stop ()
-  "Disconnect from internet-facing services."
+  "Disconnect from internet-facing services and kill
+   all ERC buffers still lying around."
   (interactive)
   (when (functionp 'jabber-disconnect)
     (jabber-disconnect))
   (when (functionp 'erc-cmd-GQUIT)
-    (erc-cmd-GQUIT "quitting from IRC")))
+    (erc-cmd-GQUIT "quitting from IRC"))
+  (kill-all-erc-buffers))
 
 (defun stan ()
   (interactive)
@@ -308,3 +311,50 @@ minibuffer to ease cutting and pasting."
         ;; when Emacs tries to switch back to it.  find-file-noselect
         ;; uses the buf variable to hold the new buffer.
         (setq buf (buffer-name (current-buffer))))))
+
+;;;;;;;;;;
+;; BBDB ;;
+;;;;;;;;;;
+
+(setq bbdb-file "~/.emacs.d/bbdb")           ;; keep ~/ clean; set before loading
+(require 'bbdb) 
+(bbdb-initialize)
+(setq 
+ bbdb-offer-save 1                        ;; 1 means save-without-asking
+ bbdb-use-pop-up t                        ;; allow popups for addresses
+ bbdb-electric-p t                        ;; be disposable with SPC
+ bbdb-popup-target-lines  1               ;; very small
+ 
+ bbdb-dwim-net-address-allow-redundancy t ;; always use full name
+ bbdb-quiet-about-name-mismatches 2       ;; show name-mismatches 2 secs
+ 
+ bbdb-always-add-address t                ;; add new addresses to existing...
+    ;; ...contacts automatically
+ bbdb-canonicalize-redundant-nets-p t     ;; x@foo.bar.cx => x@bar.cx
+
+ bbdb-completion-type nil                 ;; complete on anything
+
+ bbdb-complete-name-allow-cycling t       ;; cycle through matches
+                                             ;; this only works partially
+
+ bbbd-message-caching-enabled t           ;; be fast
+ bbdb-use-alternate-names t               ;; use AKA
+
+
+ bbdb-elided-display t                    ;; single-line addresses
+
+ ;; auto-create addresses from mail
+ bbdb/mail-auto-create-p 'bbdb-ignore-some-messages-hook)
+
+
+(defun kill-all-erc-buffers()
+      "Kill all erc buffers."
+      (interactive)
+      (save-excursion
+        (let((count 0))
+          (dolist(buffer (buffer-list))
+            (set-buffer buffer)
+            (when (equal major-mode 'erc-mode)
+              (setq count (1+ count))
+              (kill-buffer buffer)))
+          (message "Killed %i ERC buffer(s)." count ))))
