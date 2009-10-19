@@ -11,6 +11,8 @@
 
 (require 'secrets)
 
+(add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+
 ;; Save screen real estate, kill some decorations:
 (if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
 (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
@@ -77,10 +79,15 @@
  '(scheme-program-name "csi")
  '(term-input-autoexpand (quote input))
  '(tramp-default-user "albin")
+ '(w3m-broken-proxy-cache nil)
+ '(w3m-coding-system (quote utf-8))
  '(w3m-confirm-leaving-secure-page nil)
  '(w3m-default-display-inline-images t)
+ '(w3m-file-coding-system (quote utf-8))
+ '(w3m-file-name-coding-system (quote utf-8))
  '(w3m-key-binding (quote info))
- '(w3m-resize-images nil)
+ '(w3m-resize-images t)
+ '(w3m-terminal-coding-system (quote utf-8))
  '(w3m-use-cookies t)
  '(w3m-use-filter nil)
  '(w3m-use-title-buffer-name t)
@@ -166,13 +173,13 @@
 (setq cal-tex-preamble-extra "\\usepackage[utf8]{inputenc}\n")
 
 
-(custom-set-faces
-  ;; custom-set-faces was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :background "black" :foreground "white" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 120 :width normal :foundry "unknown" :family "Terminus"))))
- '(w3m-form-face ((((class color) (background light)) (:foreground "darkblue" :underline t))) t))
+;; (custom-set-faces
+;;   ;; custom-set-faces was added by Custom.
+;;   ;; If you edit it by hand, you could mess it up, so be careful.
+;;   ;; Your init file should contain only one such instance.
+;;   ;; If there is more than one, they won't work right.
+;;  '(default ((t (:inherit nil :stipple nil  :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 120 :width normal :foundry "unknown" :family "Terminus"))))
+;;  '(w3m-form-face ((((class color) (background light)) (:foreground "darkblue" :underline t)))))
 
 (autoload 'scheme-complete "scheme-complete" nil t)
 
@@ -358,3 +365,18 @@ minibuffer to ease cutting and pasting."
               (setq count (1+ count))
               (kill-buffer buffer)))
           (message "Killed %i ERC buffer(s)." count ))))
+
+;; (require 'color-theme)
+;; (eval-after-load "color-theme"
+;;   '(progn
+;;      (color-theme-charcoal-black)))
+(set-default-font "DejaVu Serif-12")
+
+(ido-mode t)
+(setq ido-enable-flex-matching t) 
+(custom-set-faces
+  ;; custom-set-faces was added by Custom.
+  ;; If you edit it by hand, you could mess it up, so be careful.
+  ;; Your init file should contain only one such instance.
+  ;; If there is more than one, they won't work right.
+ )

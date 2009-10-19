@@ -19,6 +19,9 @@
 
 (add-hook 'jabber-post-connect-hooks 'jabber-keepalive-start)
 
+
+(add-hook 'emacs-lisp-mode-hook 'paredit-mode)
+
 ;; Neat quotes:
 (add-hook 'jabber-chat-mode-hook 'guillemets-mode)
 (add-hook 'weblogger-entry-mode-hook 'guillemets-mode)
