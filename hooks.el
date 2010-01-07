@@ -19,6 +19,7 @@
 
 (add-hook 'jabber-post-connect-hooks 'jabber-keepalive-start)
 
+(add-hook 'jabber-post-connect-hooks 'jabber-autoaway-start)
 
 (add-hook 'emacs-lisp-mode-hook 'paredit-mode)
 

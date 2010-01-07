@@ -11,6 +11,8 @@
 
 (require 'secrets)
 
+(eval-after-load 'jabber '(require 'jabber-libnotify))
+
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
 
 ;; Save screen real estate, kill some decorations:
@@ -72,10 +74,13 @@
  '(jabber-history-enabled t)
  '(jabber-roster-buffer "*jabber*")
  '(jabber-roster-line-format "%c %-25n %u %-8s  %S")
+ '(jabber-show-resources nil)
  '(jabber-use-global-history nil)
  '(jabber-vcard-avatars-retrieve t)
  '(muse-project-alist (quote (("WikiPlanner" ("~/plans" :default "index" :major-mode planner-mode :visit-link planner-visit-link)))))
  '(newsticker-html-renderer (quote w3m-region))
+ '(org-export-author-info nil)
+ '(org-export-creator-info nil)
  '(scheme-program-name "csi")
  '(term-input-autoexpand (quote input))
  '(tramp-default-user "albin")
@@ -370,7 +375,7 @@ minibuffer to ease cutting and pasting."
 ;; (eval-after-load "color-theme"
 ;;   '(progn
 ;;      (color-theme-charcoal-black)))
-(set-default-font "DejaVu Serif-12")
+;;(set-default-font "DejaVu Serif-12")
 
 (ido-mode t)
 (setq ido-enable-flex-matching t) 
@@ -380,3 +385,41 @@ minibuffer to ease cutting and pasting."
   ;; Your init file should contain only one such instance.
   ;; If there is more than one, they won't work right.
  )
+
+(defun pretty-print-xml-region (begin end)
+  "Pretty format XML markup in region. You need to have nxml-mode
+http://www.emacswiki.org/cgi-bin/wiki/NxmlMode installed to do
+this.  The function inserts linebreaks to separate tags that have
+nothing but whitespace between them.  It then indents the markup
+by using nxml's indentation rules."
+  (interactive "r")
+  (save-excursion
+      (nxml-mode)
+      (goto-char begin)
+      (while (search-forward-regexp "\>[ \\t]*\<" nil t) 
+        (backward-char) (insert "\n"))
+      (indent-region begin end))
+    (message "Ah, much better!"))
+
+
+(defadvice kill-ring-save (before slick-copy activate compile) "When called
+  interactively with no active region, copy a single line instead."
+  (interactive (if mark-active (list (region-beginning) (region-end)) (message
+  "Copied line") (list (line-beginning-position) (line-beginning-position
+  2)))))
+
+(defadvice kill-region (before slick-cut activate compile)
+  "When called interactively with no active region, kill a single line instead."
+  (interactive
+    (if mark-active (list (region-beginning) (region-end))
+      (list (line-beginning-position)
+        (line-beginning-position 2)))))
+;;; This was installed by package-install.el.
+;;; This provides support for the package system and
+;;; interfacing with ELPA, the package archive.
+;;; Move this code earlier if you want to reference
+;;; packages in your .emacs.
+(when
+    (load
+     (expand-file-name "~/.emacs.d/elpa/package.el"))
+  (package-initialize))
