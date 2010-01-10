@@ -37,4 +37,46 @@
 
 ;;(add-hook 'kill-emacs-hook 'net-stop)
 
+;; Hooks for Erc:
+
+;; Auto-save logs on every inserted line:
+;;erc-save-buffer-in-logs to
+(add-hook 'erc-insert-post-hook 'erc-save-buffer-in-logs)
+
+(add-hook 'erc-mode-hook 'guillemets-mode)
+
+;; Auto-change Erc filling to fit window:
+(add-hook 'window-configuration-change-hook 
+ 	  '(lambda ()
+ 	     (setq erc-fill-column (abs (- (window-width) 1)))))
+
+;; (defun my-notify-erc (match-type nickuserhost message)
+;;   "Notify when a message is received."
+;;   (notify (format "%s in %s"
+;;                   ;; Username of sender
+;;                   (car (split-string nickuserhost "!"))
+;;                   ;; Channel
+;;                   (or (erc-default-target) "#unknown"))
+;;           ;; Remove duplicate spaces
+;;           (replace-regexp-in-string " +" " " message)
+;;           :icon "emacs"
+;;           :timeout -1))
+;; (add-hook 'erc-text-matched-hook 'my-notify-erc)
+
+(require 'erc-match)
+
+
+;; Notify my when someone mentions my nick.
+(defun erc-global-notify (matched-type nick msg)
+  (interactive)
+  (when (eq matched-type 'current-nick)
+    (shell-command
+     (concat "notify-send --icon /usr/share/xfm/pixmaps/emacs.xpm -t 4000 -c \"im.received\" \""
+             (car (split-string nick "!"))
+             " mentioned your nick\" \""
+             msg
+             "\""))))
+
+(add-hook 'erc-text-matched-hook 'erc-global-notify)
+
 (provide 'hooks)

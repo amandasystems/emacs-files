@@ -129,6 +129,69 @@
                                 (plist-get account-plist 'username) 
                                 (plist-get account-plist 'password))))))))
      
+;; ERC code:
+
+(setq erc-auto-query 'window-noselect)
+
+;;Pretty timestamps (defunct?)
+(setq erc-insert-timestamp-function 'erc-insert-timestamp-left
+      erc-timestamp-format "(%H:%M:%S) "
+      erc-timestamp-only-if-changed-flag nil
+      erc-hide-timestamps nil)
+
+
+
+;; Clean up
+(setq erc-kill-server-buffer-on-quit t
+      erc-kill-buffer-on-part t
+      erc-kill-queries-on-quit t)
+
+
+;; Logging:
+(setq erc-log-channels-directory "~/.erc/logs/"
+      erc-save-buffer-on-part t
+      erc-log-insert-log-on-open nil)
+
+;; Channel-specific prompt:
+(setq erc-prompt (lambda ()
+     (if (and (boundp 'erc-default-recipients) (erc-default-target))
+         (erc-propertize (concat (erc-default-target) ">") 'read-only t 'rear-nonsticky t 'front-nonsticky t)
+       (erc-propertize (concat "ERC>") 'read-only t 'rear-nonsticky t 'front-nonsticky t))))
+
+(setq erc-server-reconnect-timeout 4
+      erc-server-reconnect-attempts 3)
+
+
+;; Unbind RET!
+;;(define-key erc-mode-map (kbd "<return>") 'newline)
+;;(define-key erc-mode-map "\C-m" 'erc-send-current-line)
+;;(define-key erc-mode-map (kbd "C-<return>")
+;;  'erc-send-current-line)
+
+;; (require 'notify)
+;; (require 'dbus)
+
+(setq erc-current-nick-highlight-type 'nick
+      erc-track-exclude-types '("PART" "QUIT" "NICK" "MODE")
+      erc-track-use-faces t
+      erc-track-faces-priority-list '(erc-current-nick-face erc-keyword-face)
+      erc-track-priority-faces-only 'all)
+
+
+(defface erc-header-line-disconnected
+  '((t (:foreground "black" :background "indianred")))
+  "Face to use when ERC has been disconnected.")
+ 
+(defun erc-update-header-line-show-disconnected ()
+  "Use a different face in the header-line when disconnected."
+  (erc-with-server-buffer
+    (cond ((erc-server-process-alive) 'erc-header-line)
+          (t 'erc-header-line-disconnected))))
+          (setq erc-header-line-face-method 'erc-update-header-line-show-disconnected)
+ 
+(setq erc-header-line-face-method 'erc-update-header-line-show-disconnected)
+
+;; END of ERC code.
 
 
 ;; Browse with emacs-w3m:
