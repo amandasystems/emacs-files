@@ -21,7 +21,7 @@
 
 (add-hook 'jabber-post-connect-hooks 'jabber-autoaway-start)
 
-(add-hook 'emacs-lisp-mode-hook 'paredit-mode)
+;;(add-hook 'emacs-lisp-mode-hook 'paredit-mode) ;; later, when I've LEARNT paredit!
 
 ;; Neat quotes:
 (add-hook 'jabber-chat-mode-hook 'guillemets-mode)
@@ -73,9 +73,9 @@
     (shell-command
      (concat "notify-send --icon /usr/share/xfm/pixmaps/emacs.xpm -t 4000 -c \"im.received\" \""
              (car (split-string nick "!"))
-             " mentioned your nick\" \""
+             " mentioned your nick\" \'"
              msg
-             "\""))))
+             "\'"))))
 
 (add-hook 'erc-text-matched-hook 'erc-global-notify)
 

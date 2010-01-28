@@ -21,3 +21,8 @@
 
 ;; Browse url by C-c u f
 (global-set-key "\C-cuf" 'browse-url-at-point)
+
+(global-set-key (kbd "C-c S") 
+  (lambda()(interactive)
+    (ispell-change-dictionary "svenska")
+    (flyspell-buffer))) 

@@ -7,6 +7,7 @@
 (add-to-list 'load-path "~/projects/repos/lagn/")
 (add-to-list 'load-path "~/projects/repos/git-emacs/")
 (add-to-list 'load-path "~/projects/repos/erc/")
+(add-to-list 'load-path "~/projects/repos/elim/elisp/")
 (add-to-list 'Info-default-directory-list "~/.info/")
 
 (require 'secrets)
@@ -148,9 +149,9 @@
 
 
 ;; Logging:
-(setq erc-log-channels-directory "~/.erc/logs/"
-      erc-save-buffer-on-part t
-      erc-log-insert-log-on-open nil)
+;; (setq erc-log-channels-directory "~/.erc/logs/"
+;;       erc-save-buffer-on-part t
+;;       erc-log-insert-log-on-open nil)
 
 ;; Channel-specific prompt:
 (setq erc-prompt (lambda ()
@@ -172,7 +173,7 @@
 ;; (require 'dbus)
 
 (setq erc-current-nick-highlight-type 'nick
-      erc-track-exclude-types '("PART" "QUIT" "NICK" "MODE")
+      erc-track-exclude-types '("PART" "QUIT" "NICK" "MODE" "324" "329" "332" "333" "353" "477")
       erc-track-use-faces t
       erc-track-faces-priority-list '(erc-current-nick-face erc-keyword-face)
       erc-track-priority-faces-only 'all)
@@ -191,9 +192,10 @@
  
 (setq erc-header-line-face-method 'erc-update-header-line-show-disconnected)
 
+;; don't show any of this
+(setq erc-hide-list '("JOIN" "PART" "QUIT" "NICK"))
+
 ;; END of ERC code.
-
-
 ;; Browse with emacs-w3m:
 (setq browse-url-browser-function 'w3m-browse-url
       browse-url-new-window-flag t)
@@ -251,15 +253,15 @@
 
 (autoload 'scheme-complete "scheme-complete" nil t)
 
-(eval-after-load 'hen
-  '(progn (define-key hen-mode-map "\t" 'scheme-complete-or-indent)))
+;; (eval-after-load 'hen
+;;   '(progn (define-key hen-mode-map "\t" 'scheme-complete-or-indent)))
 
 (autoload 'scheme-get-current-symbol-info "scheme-complete" nil t)
 (autoload 'scheme-complete-or-indent "scheme-complete" nil t)
 
-(setq auto-mode-alist (cons '("\\.scm$" . hen-mode) auto-mode-alist))
+;;(setq auto-mode-alist (cons '("\\.scm$" . hen-mode) auto-mode-alist))
 
-(require 'hen)
+;;(require 'hen)
 
 (autoload 'wl-user-agent-compose "wl-draft" nil t)
 (if (boundp 'mail-user-agent)
@@ -279,7 +281,7 @@
   "Major mode for editing documents in Wikipedia markup." t)
 
 ;; Wordpress hacks follows:
-(require 'weblogger)
+;;(require 'weblogger)
 
 
 (require 'jabber)
@@ -419,7 +421,12 @@ minibuffer to ease cutting and pasting."
  bbdb-elided-display t                    ;; single-line addresses
 
  ;; auto-create addresses from mail
- bbdb/mail-auto-create-p 'bbdb-ignore-some-messages-hook)
+ bbdb/mail-auto-create-p 'bbdb-ignore-some-messages-hook
+ bbdb-ignore-some-messages-alist ;; don't ask about fake addresses
+ ;; NOTE: there can be only one entry per header (such as To, From)
+ ;; http://flex.ee.uec.ac.jp/texi/bbdb/bbdb_11.html
+
+ '(( "From" . "no.?reply\\|DAEMON\\|daemon\\|facebookmail\\|twitter")))
 
 
 (defun kill-all-erc-buffers()
