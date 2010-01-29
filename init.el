@@ -10,19 +10,7 @@
 
 (require 'secrets)
 
-(add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
-
-;; Save screen real estate, kill some decorations:
-;; (if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
-;; (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
-;; (if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
-
 (setq printer-name "laserjet")
-
-;; wanderlust
-(autoload 'wl "wl" "Wanderlust" t)
-(autoload 'wl-other-frame "wl" "Wanderlust on new frame." t)
-(autoload 'wl-draft "wl-draft" "Write draft with Wanderlust." t)
 
 ;; Put those pesky auto-save and back-up files in ONE, SEPARATE directory: 
 (defvar autosave-dir "~/.emacs_autosaves/")
@@ -80,11 +68,7 @@
  '(w3m-use-cookies t)
  '(w3m-use-filter nil)
  '(w3m-use-title-buffer-name t)
- '(w3m-use-toolbar nil)
- '(wl-spam-auto-check-folder-regexp-list (quote (".*"))))
-
-;; Render HTML emails with w3m:
-(setq mm-text-html-renderer 'w3m)
+ '(w3m-use-toolbar nil))
 
 ;; Browse with emacs-w3m:
 (setq browse-url-browser-function 'w3m-browse-url
@@ -99,9 +83,7 @@
 (autoload 'no-word "no-word" "word to txt")
 (add-to-list 'auto-mode-alist '("\\.doc\\'" . no-word))
 
-
 (setq inferior-lisp-program "sbcl") 
-
 
 (setq european-calendar-style t)
 (setq calendar-week-start-day 1
@@ -125,15 +107,6 @@
 
 (setq cal-tex-preamble-extra "\\usepackage[utf8]{inputenc}\n")
 
-
-;; (custom-set-faces
-;;   ;; custom-set-faces was added by Custom.
-;;   ;; If you edit it by hand, you could mess it up, so be careful.
-;;   ;; Your init file should contain only one such instance.
-;;   ;; If there is more than one, they won't work right.
-;;  '(default ((t (:inherit nil :stipple nil  :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 120 :width normal :foundry "unknown" :family "Terminus"))))
-;;  '(w3m-form-face ((((class color) (background light)) (:foreground "darkblue" :underline t)))))
-
 (autoload 'scheme-complete "scheme-complete" nil t)
 
 ;; (eval-after-load 'hen
@@ -146,24 +119,6 @@
 
 ;;(require 'hen)
 
-(autoload 'wl-user-agent-compose "wl-draft" nil t)
-(if (boundp 'mail-user-agent)
-    (setq mail-user-agent 'wl-user-agent))
-(if (fboundp 'define-mail-user-agent)
-    (define-mail-user-agent
-      'wl-user-agent
-      'wl-user-agent-compose
-      'wl-draft-send
-      'wl-draft-kill
-      'mail-send-hook))
-
-(setq user-mail-address "albin@eval.nu")
-(setq user-full-name "Albin Stjerna")
-
-(autoload 'wikipedia-mode "wikipedia-mode.el"
-  "Major mode for editing documents in Wikipedia markup." t)
-
-
 (require 'delicious)
 
 (setq auto-mode-alist
@@ -175,18 +130,18 @@
 (setq wikipedia-default-language-domain "en")
 
 
-(add-to-list 'load-path "/usr/local/share/distel/elisp")
-(require 'distel)
-  (distel-setup)
+;; (add-to-list 'load-path "/usr/local/share/distel/elisp")
+;; (require 'distel)
+;;   (distel-setup)
 
-(autoload 'babel "babel"
-  "Use a web translation service to translate the message MSG." t)
-(autoload 'babel-region "babel"
-  "Use a web translation service to translate the current region." t)
-(autoload 'babel-as-string "babel"
-  "Use a web translation service to translate MSG, returning a string." t)
-(autoload 'babel-buffer "babel"
-  "Use a web translation service to translate the current buffer." t)
+;; (autoload 'babel "babel"
+;;   "Use a web translation service to translate the message MSG." t)
+;; (autoload 'babel-region "babel"
+;;   "Use a web translation service to translate the current region." t)
+;; (autoload 'babel-as-string "babel"
+;;   "Use a web translation service to translate MSG, returning a string." t)
+;; (autoload 'babel-buffer "babel"
+;;   "Use a web translation service to translate the current buffer." t)
 
 (require 'smart-quotes)
 
@@ -199,48 +154,7 @@
 (require 'hooks)
 (require 'git-emacs)
 
-;;;;;;;;;;
-;; BBDB ;;
-;;;;;;;;;;
-
-(setq bbdb-file "~/.emacs.d/bbdb")           ;; keep ~/ clean; set before loading
-(require 'bbdb) 
-(bbdb-initialize)
-(setq 
- bbdb-offer-save 1                        ;; 1 means save-without-asking
- bbdb-use-pop-up t                        ;; allow popups for addresses
- bbdb-electric-p t                        ;; be disposable with SPC
- bbdb-popup-target-lines  1               ;; very small
- 
- bbdb-dwim-net-address-allow-redundancy t ;; always use full name
- bbdb-quiet-about-name-mismatches 2       ;; show name-mismatches 2 secs
- 
- bbdb-always-add-address t                ;; add new addresses to existing...
-    ;; ...contacts automatically
- bbdb-canonicalize-redundant-nets-p t     ;; x@foo.bar.cx => x@bar.cx
-
- bbdb-completion-type nil                 ;; complete on anything
-
- bbdb-complete-name-allow-cycling t       ;; cycle through matches
-                                             ;; this only works partially
-
- bbbd-message-caching-enabled t           ;; be fast
- bbdb-use-alternate-names t               ;; use AKA
-
-
- bbdb-elided-display t                    ;; single-line addresses
-
- ;; auto-create addresses from mail
- bbdb/mail-auto-create-p 'bbdb-ignore-some-messages-hook
- bbdb-ignore-some-messages-alist ;; don't ask about fake addresses
- ;; NOTE: there can be only one entry per header (such as To, From)
- ;; http://flex.ee.uec.ac.jp/texi/bbdb/bbdb_11.html
-
- '(( "From" . "no.?reply\\|DAEMON\\|daemon\\|facebookmail\\|twitter")))
-
-
 (setq ido-enable-flex-matching t) 
-
 
 (defun pretty-print-xml-region (begin end)
   "Pretty format XML markup in region. You need to have nxml-mode

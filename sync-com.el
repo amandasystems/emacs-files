@@ -4,7 +4,6 @@
 ;; secrets.el MUST BE LOADED                           ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-
 (require 'secrets)
 
 ;;;;;;;;;;;;
@@ -25,13 +24,12 @@
       jabber-debug-keep-process-buffers t
       jabber-history-enable-rotation t
       jabber-history-enabled t
-;;      jabber-roster-buffer '*jabber*
+      jabber-roster-buffer "*jabber*" 
       jabber-roster-line-format "%c %-25n %u %-8s  %S"
       jabber-show-resources nil
       jabber-use-global-history nil
       jabber-vcard-avatars-retrieve t
       jabber-chat-fill-long-lines nil)
-
 
 ;;;;;;;;;;;;;;;;;;;
 ;; End of Jabber ;;
