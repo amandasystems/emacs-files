@@ -4,12 +4,16 @@
 ;; secrets.el MUST BE LOADED                           ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+
+(require 'secrets)
+
 ;;;;;;;;;;;;
 ;; Jabber ;;
 ;;;;;;;;;;;;
 
+(require 'jabber)
+
 ;;(add-to-list 'load-path "~/projects/repos/emacs-jabber/")
-(add-to-list 'load-path "~/projects/repos/erc/")
 (eval-after-load 'jabber '(require 'jabber-libnotify))
 
 (eval-after-load 'jabber
@@ -21,14 +25,13 @@
       jabber-debug-keep-process-buffers t
       jabber-history-enable-rotation t
       jabber-history-enabled t
-      jabber-roster-buffer *jabber*
+;;      jabber-roster-buffer '*jabber*
       jabber-roster-line-format "%c %-25n %u %-8s  %S"
       jabber-show-resources nil
       jabber-use-global-history nil
       jabber-vcard-avatars-retrieve t
       jabber-chat-fill-long-lines nil)
 
-(require 'jabber)
 
 ;;;;;;;;;;;;;;;;;;;
 ;; End of Jabber ;;
@@ -37,6 +40,20 @@
 ;;;;;;;;;;;;;;;;;;;;
 ;; Begin ERC code ;;
 ;;;;;;;;;;;;;;;;;;;;
+
+(add-to-list 'load-path "~/projects/repos/erc/")
+(require 'erc)
+(require 'erc-stamp)
+(require 'erc-bbdb)
+(require 'erc-button)
+(require 'erc-fill)
+(require 'erc-match)
+(require 'erc-netsplit)
+(require 'erc-networks)
+(require 'erc-ring)
+(require 'erc-stamp)
+(require 'erc-track)
+                    
 
 ;; Code to connect and identify with my ZNC bouncer
 (defun irc-bnc ()
@@ -90,20 +107,22 @@
       erc-track-priority-faces-only 'all
       erc-hide-list '("JOIN" "PART" "QUIT" "NICK")
       erc-modules '(autojoin bbdb button completion fill irccontrols list match
-                             menu move-to-prompt netsplit networks noncommands readonly ring stamp track))
+                              move-to-prompt netsplit networks noncommands readonly ring stamp track))
 
-(defface erc-header-line-disconnected
-  '((t (:foreground "black" :background "indianred")))
-  "Face to use when ERC has been disconnected.")
+     
+
+;; (defface erc-header-line-disconnected
+;;   '((t (:foreground "black" :background "indianred")))
+;;   "Face to use when ERC has been disconnected.")
  
-(defun erc-update-header-line-show-disconnected ()
-  "Use a different face in the header-line when disconnected."
-  (erc-with-server-buffer
-    (cond ((erc-server-process-alive) 'erc-header-line)
-          (t 'erc-header-line-disconnected))))
-          (setq erc-header-line-face-method 'erc-update-header-line-show-disconnected)
+;; (defun erc-update-header-line-show-disconnected ()
+;;   "Use a different face in the header-line when disconnected."
+;;   (erc-with-server-buffer
+;;     (cond ((erc-server-process-alive) 'erc-header-line)
+;;           (t 'erc-header-line-disconnected))))
+;;           (setq erc-header-line-face-method 'erc-update-header-line-show-disconnected)
  
-(setq erc-header-line-face-method 'erc-update-header-line-show-disconnected)
+;; (setq erc-header-line-face-method 'erc-update-header-line-show-disconnected)
 
 
 (defun kill-all-erc-buffers()

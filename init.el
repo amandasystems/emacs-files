@@ -1,25 +1,21 @@
 (require 'w3m-load)
-(autoload 'doc-view "doc-view")
+;;(autoload 'doc-view "doc-view")
 
 ;;(add-to-list 'load-path "~/.emacs.d/")
 (add-to-list 'load-path "~/projects/repos/identica-mode/")
 (add-to-list 'load-path "~/projects/repos/lagn/")
 (add-to-list 'load-path "~/projects/repos/git-emacs/")
-(add-to-list 'load-path "~/projects/repos/erc/")
 (add-to-list 'load-path "~/projects/repos/elim/elisp/")
-;;(add-to-list 'load-path "~/projects/repos/emacs-jabber/")
 (add-to-list 'Info-default-directory-list "~/.info/")
 
 (require 'secrets)
 
-(eval-after-load 'jabber '(require 'jabber-libnotify))
-
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
 
 ;; Save screen real estate, kill some decorations:
-(if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
-(if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
-(if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
+;; (if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
+;; (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
+;; (if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
 
 (setq printer-name "laserjet")
 
@@ -63,22 +59,9 @@
   ;; Your init file should contain only one such instance.
   ;; If there is more than one, they won't work right.
  '(cal-tex-24 t)
- '(erc-modules (quote (autojoin bbdb button completion fill irccontrols list match menu move-to-prompt netsplit networks noncommands readonly ring stamp track)))
  '(fill-column 80)
  '(flyspell-default-dictionary "sv")
  '(inhibit-startup-screen t)
- '(jabber-auto-reconnect t)
- '(jabber-chat-buffer-format "%n")
- '(jabber-chat-time-format "%H:%M:%S")
- '(jabber-debug-keep-process-buffers t)
- '(jabber-history-enable-rotation t)
- '(jabber-history-enabled t)
- '(jabber-roster-buffer "*jabber*")
- '(jabber-roster-line-format "%c %-25n %u %-8s  %S")
- '(jabber-show-resources nil)
- '(jabber-use-global-history nil)
- '(jabber-vcard-avatars-retrieve t)
- '(muse-project-alist (quote (("WikiPlanner" ("~/plans" :default "index" :major-mode planner-mode :visit-link planner-visit-link)))))
  '(newsticker-html-renderer (quote w3m-region))
  '(org-export-author-info nil)
  '(org-export-creator-info nil)
@@ -98,104 +81,11 @@
  '(w3m-use-filter nil)
  '(w3m-use-title-buffer-name t)
  '(w3m-use-toolbar nil)
- '(weblogger-server-url "http://luftslott.org/xmlrpc.php")
  '(wl-spam-auto-check-folder-regexp-list (quote (".*"))))
 
 ;; Render HTML emails with w3m:
 (setq mm-text-html-renderer 'w3m)
 
-;; Code to connect and identify with my ZNC bouncer
-;; Todo: need serious amounts of refactoring.
-
-(defun irc-bnc ()
-  "Connect to ZNC bouncer via ERC, specified by variable znc-accounts"
-  (interactive)
-  (dolist (account znc-accounts)
-    (let ((account-name (car account))
-          (account-plist (cadr account)))
-      (cond ((plist-get account-plist 'ssl)
-             (erc-ssl
-              :server (plist-get account-plist 'hostname)
-              :port (plist-get account-plist 'port)
-              :nick (plist-get account-plist 'username)
-              :password (format "%s:%s" 
-                                (plist-get account-plist 'username) 
-                                (plist-get account-plist 'password))))
-            (t 
-             (erc
-              :server (plist-get account-plist 'hostname)
-              :port (plist-get account-plist 'port)
-              :nick (plist-get account-plist 'username)
-              :password (format "%s:%s" 
-                                (plist-get account-plist 'username) 
-                                (plist-get account-plist 'password))))))))
-     
-;; ERC code:
-
-(setq erc-auto-query 'window-noselect)
-
-;;Pretty timestamps (defunct?)
-(setq erc-insert-timestamp-function 'erc-insert-timestamp-left
-      erc-timestamp-format "(%H:%M:%S) "
-      erc-timestamp-only-if-changed-flag nil
-      erc-hide-timestamps nil)
-
-
-
-;; Clean up
-(setq erc-kill-server-buffer-on-quit t
-      erc-kill-buffer-on-part t
-      erc-kill-queries-on-quit t)
-
-
-;; Logging:
-;; (setq erc-log-channels-directory "~/.erc/logs/"
-;;       erc-save-buffer-on-part t
-;;       erc-log-insert-log-on-open nil)
-
-;; Channel-specific prompt:
-(setq erc-prompt (lambda ()
-     (if (and (boundp 'erc-default-recipients) (erc-default-target))
-         (erc-propertize (concat (erc-default-target) ">") 'read-only t 'rear-nonsticky t 'front-nonsticky t)
-       (erc-propertize (concat "ERC>") 'read-only t 'rear-nonsticky t 'front-nonsticky t))))
-
-(setq erc-server-reconnect-timeout 4
-      erc-server-reconnect-attempts 3)
-
-
-;; Unbind RET!
-;;(define-key erc-mode-map (kbd "<return>") 'newline)
-;;(define-key erc-mode-map "\C-m" 'erc-send-current-line)
-;;(define-key erc-mode-map (kbd "C-<return>")
-;;  'erc-send-current-line)
-
-;; (require 'notify)
-;; (require 'dbus)
-
-(setq erc-current-nick-highlight-type 'nick
-      erc-track-exclude-types '("PART" "QUIT" "NICK" "MODE" "324" "329" "332" "333" "353" "477")
-      erc-track-use-faces t
-      erc-track-faces-priority-list '(erc-current-nick-face erc-keyword-face)
-      erc-track-priority-faces-only 'all)
-
-
-(defface erc-header-line-disconnected
-  '((t (:foreground "black" :background "indianred")))
-  "Face to use when ERC has been disconnected.")
- 
-(defun erc-update-header-line-show-disconnected ()
-  "Use a different face in the header-line when disconnected."
-  (erc-with-server-buffer
-    (cond ((erc-server-process-alive) 'erc-header-line)
-          (t 'erc-header-line-disconnected))))
-          (setq erc-header-line-face-method 'erc-update-header-line-show-disconnected)
- 
-(setq erc-header-line-face-method 'erc-update-header-line-show-disconnected)
-
-;; don't show any of this
-(setq erc-hide-list '("JOIN" "PART" "QUIT" "NICK"))
-
-;; END of ERC code.
 ;; Browse with emacs-w3m:
 (setq browse-url-browser-function 'w3m-browse-url
       browse-url-new-window-flag t)
@@ -212,13 +102,6 @@
 
 (setq inferior-lisp-program "sbcl") 
 
-(defun erc-to-hgr-region (start end)
-  "Format irc logs in region to hgr standard" 
-  (interactive "r")
-  (save-excursion
-    (goto-char (min start end))
-    (while (re-search-forward "^<\\([^>]+\\)> " (max start end) t)
-      (replace-match ";\\1:" nil nil))))
 
 (setq european-calendar-style t)
 (setq calendar-week-start-day 1
@@ -280,17 +163,6 @@
 (autoload 'wikipedia-mode "wikipedia-mode.el"
   "Major mode for editing documents in Wikipedia markup." t)
 
-;; Wordpress hacks follows:
-;;(require 'weblogger)
-
-
-(require 'jabber)
-(setq jabber-chat-fill-long-lines nil)
-
-(eval-after-load 'jabber
-  '(jabber-keepalive-start))
-
-
 
 (require 'delicious)
 
@@ -302,7 +174,6 @@
 
 (setq wikipedia-default-language-domain "en")
 
-;;(bbdb-insinuate-w3)
 
 (add-to-list 'load-path "/usr/local/share/distel/elisp")
 (require 'distel)
@@ -319,76 +190,14 @@
 
 (require 'smart-quotes)
 
-(defun net-start ()
-  "Connect to internet-facing services i.e. IRC and Jabber"
-  (interactive)
-  (irc-bnc)
-  (jabber-connect-all))
-
-
-(defun net-stop ()
-  "Disconnect from internet-facing services and kill
-   all ERC buffers still lying around."
-  (interactive)
-  (when (functionp 'jabber-disconnect)
-    (jabber-disconnect))
-  (when (functionp 'erc-cmd-GQUIT)
-    (erc-cmd-GQUIT "quitting from IRC"))
-  (kill-all-erc-buffers))
-
-(defun stan ()
-  (interactive)
-  (print (shell-command-to-string "/home/albin/.bin/slclip --from 'byns gård' --to slussen")))
-
 ;;; Identi.ca mode
 (require 'identica-mode)
 (setq identica-username "tuss")
-
-
-;;;;;;;;;;;;;
-;; Tinyurl ;;
-;;;;;;;;;;;;;
-(require 'mm-url)
-(defun get-tinyurl ()
-"Grabs the url at point and echos the equivalent tinyurl in the
-minibuffer to ease cutting and pasting."
-  (interactive)
-  (let* ((long-url (thing-at-point 'url))
-         (tinyurl
-          (save-excursion
-            (with-temp-buffer
-              (mm-url-insert
-               (concat "http://tinyurl.com/api-create.php?url=" long-url))
-              (kill-ring-save (point-min) (point-max))
-              (buffer-string)))))
-    (message tinyurl)))
+;; End Identi.ca mode
 
 (require 'keybindings)
 (require 'hooks)
 (require 'git-emacs)
-
-;; (require 'database)
-;; (defun my-dired-edb-interact ()
-;;   (interactive)
-;;   (let ((filename (dired-get-filename)))
-;;     (if (string-match "[.]edb$" filename)
-;;         (edb-interact filename nil)
-;;       (db-find-file filename))))
-
-
-(setq find-file-hooks (cons 'edb-after-find-file find-file-hooks))
-(defun edb-after-find-file ()
-  "If this is a database file in EDB internal file layout, run EDB.
-     To be placed in `find-file-hooks'."
-  ;; When this is called, we are at the beginning of the buffer.
-  (if (looking-at ";; Database file written by EDB")
-      (progn
-        (require 'database)
-        (db-this-buffer)
-        ;; db-this-buffer kills the current buffer; and an error results
-        ;; when Emacs tries to switch back to it.  find-file-noselect
-        ;; uses the buf variable to hold the new buffer.
-        (setq buf (buffer-name (current-buffer))))))
 
 ;;;;;;;;;;
 ;; BBDB ;;
@@ -430,32 +239,8 @@ minibuffer to ease cutting and pasting."
  '(( "From" . "no.?reply\\|DAEMON\\|daemon\\|facebookmail\\|twitter")))
 
 
-(defun kill-all-erc-buffers()
-      "Kill all erc buffers."
-      (interactive)
-      (save-excursion
-        (let((count 0))
-          (dolist(buffer (buffer-list))
-            (set-buffer buffer)
-            (when (equal major-mode 'erc-mode)
-              (setq count (1+ count))
-              (kill-buffer buffer)))
-          (message "Killed %i ERC buffer(s)." count ))))
-
-;; (require 'color-theme)
-;; (eval-after-load "color-theme"
-;;   '(progn
-;;      (color-theme-charcoal-black)))
-;;(set-default-font "DejaVu Serif-12")
-
-;;(ido-mode t)
 (setq ido-enable-flex-matching t) 
-(custom-set-faces
-  ;; custom-set-faces was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
- )
+
 
 (defun pretty-print-xml-region (begin end)
   "Pretty format XML markup in region. You need to have nxml-mode
@@ -485,12 +270,4 @@ by using nxml's indentation rules."
     (if mark-active (list (region-beginning) (region-end))
       (list (line-beginning-position)
         (line-beginning-position 2)))))
-;;; This was installed by package-install.el.
-;;; This provides support for the package system and
-;;; interfacing with ELPA, the package archive.
-;;; Move this code earlier if you want to reference
-;;; packages in your .emacs.
-;; (when
-;;     (load
-;;      (expand-file-name "~/.emacs.d/elpa/package.el"))
-;;   (package-initialize))
+
