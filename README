@@ -1,1 +1,5 @@
-This is my emacs configuration files. The .emacs is (as usual) in my $HOME, and most other files are in ~/.emacs.d/. I keep passwords and such in ~/.emacs.d/secrets.el, which for obvious reasons isn't distributed. I will split my .emacs into more files in the future.v
+This directory is placed placed at .emacs.d/$MY_USER_NAME, where my .emacs.d
+contains the emacs-starter-kit. Currently, I'm overhauling my config to utilize
+the starter-kit, and I'm sure there's a lot of overlapping.
+
+Later, I will try to further modulize the configuration files.
