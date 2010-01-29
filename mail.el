@@ -8,7 +8,8 @@
 (autoload 'wl-draft "wl-draft" "Write draft with Wanderlust." t)
 
 (setq mm-text-html-renderer 'w3m ;; Render html mail with w3m
-      wl-spam-auto-check-folder-regexp-list '(".*"))
+      ;;wl-spam-auto-check-folder-regexp-list '(".*")
+      )
 (autoload 'wl-user-agent-compose "wl-draft" nil t)
 (if (boundp 'mail-user-agent)
     (setq mail-user-agent 'wl-user-agent))
