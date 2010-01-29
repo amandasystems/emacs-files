@@ -1,13 +1,13 @@
 (require 'w3m-load)
 (autoload 'doc-view "doc-view")
 
-(add-to-list 'load-path "~/.emacs.d/")
-(add-to-list 'load-path "~/projects/repos/emacsweblogs/lisp/")
+;;(add-to-list 'load-path "~/.emacs.d/")
 (add-to-list 'load-path "~/projects/repos/identica-mode/")
 (add-to-list 'load-path "~/projects/repos/lagn/")
 (add-to-list 'load-path "~/projects/repos/git-emacs/")
 (add-to-list 'load-path "~/projects/repos/erc/")
 (add-to-list 'load-path "~/projects/repos/elim/elisp/")
+;;(add-to-list 'load-path "~/projects/repos/emacs-jabber/")
 (add-to-list 'Info-default-directory-list "~/.info/")
 
 (require 'secrets)
@@ -316,6 +316,7 @@
   "Use a web translation service to translate MSG, returning a string." t)
 (autoload 'babel-buffer "babel"
   "Use a web translation service to translate the current buffer." t)
+
 (require 'smart-quotes)
 
 (defun net-start ()
@@ -447,7 +448,7 @@ minibuffer to ease cutting and pasting."
 ;;      (color-theme-charcoal-black)))
 ;;(set-default-font "DejaVu Serif-12")
 
-(ido-mode t)
+;;(ido-mode t)
 (setq ido-enable-flex-matching t) 
 (custom-set-faces
   ;; custom-set-faces was added by Custom.
@@ -489,7 +490,7 @@ by using nxml's indentation rules."
 ;;; interfacing with ELPA, the package archive.
 ;;; Move this code earlier if you want to reference
 ;;; packages in your .emacs.
-(when
-    (load
-     (expand-file-name "~/.emacs.d/elpa/package.el"))
-  (package-initialize))
+;; (when
+;;     (load
+;;      (expand-file-name "~/.emacs.d/elpa/package.el"))
+;;   (package-initialize))
