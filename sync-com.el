@@ -31,6 +31,13 @@
       jabber-vcard-avatars-retrieve t
       jabber-chat-fill-long-lines nil)
 
+
+(add-hook 'jabber-post-connect-hooks 'jabber-keepalive-start)
+(add-hook 'jabber-post-connect-hooks 'jabber-autoaway-start)
+
+;; Neat quotes:
+(add-hook 'jabber-chat-mode-hook 'guillemets-mode)
+
 ;;;;;;;;;;;;;;;;;;;
 ;; End of Jabber ;;
 ;;;;;;;;;;;;;;;;;;;
@@ -51,7 +58,6 @@
 (require 'erc-ring)
 (require 'erc-stamp)
 (require 'erc-track)
-                    
 
 ;; Code to connect and identify with my ZNC bouncer
 (defun irc-bnc ()
@@ -134,6 +140,26 @@
               (setq count (1+ count))
               (kill-buffer buffer)))
           (message "Killed %i ERC buffer(s)." count ))))
+
+(add-hook 'erc-mode-hook 'guillemets-mode)
+
+;; Auto-change Erc filling to fit window:
+(add-hook 'window-configuration-change-hook 
+ 	  '(lambda ()
+ 	     (setq erc-fill-column (abs (- (window-width) 1)))))
+
+;; Notify my when someone mentions my nick.
+(defun erc-global-notify (matched-type nick msg)
+  (interactive)
+  (when (eq matched-type 'current-nick)
+    (shell-command
+     (concat "notify-send --icon /usr/share/xfm/pixmaps/emacs.xpm -t 4000 -c \"im.received\" \""
+             (car (split-string nick "!"))
+             " mentioned your nick\" \'"
+             msg
+             "\'"))))
+
+(add-hook 'erc-text-matched-hook 'erc-global-notify)
 
 ;;;;;;;;;;;;;;;;;;;;;
 ;; END of ERC code ;;

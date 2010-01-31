@@ -85,7 +85,7 @@
 
 (setq inferior-lisp-program "sbcl") 
 
-(setq european-calendar-style t)
+(setq calendar-date-style 'europeian)
 (setq calendar-week-start-day 1
       calendar-day-name-array
       ["Söndag" "Måndag" "Tisdag" 
@@ -151,7 +151,7 @@
 ;; End Identi.ca mode
 
 (require 'keybindings)
-(require 'hooks)
+;;(require 'hooks)
 (require 'git-emacs)
 
 (setq ido-enable-flex-matching t) 
@@ -185,3 +185,27 @@ by using nxml's indentation rules."
       (list (line-beginning-position)
         (line-beginning-position 2)))))
 
+(add-hook 'diary-display-hook 'fancy-diary-display)
+
+(add-hook 'cal-tex-hook 'my-calendar-a4)
+
+;; (add-hook 'inferior-scheme-mode-hook 
+;;           (lambda ()
+;;             (define-key
+;;               inferior-scheme-mode-map [tab]
+;;               'scheme-complete-or-indent)))
+
+(add-hook 'hen-mode-hook
+ 	  (lambda ()
+ 	    (make-local-variable 'eldoc-documentation-function)
+ 	    (setq eldoc-documentation-function 'scheme-get-current-symbol-info)
+ 	    (eldoc-mode)))
+
+(add-hook 'weblogger-entry-mode-hook 'guillemets-mode)
+(add-hook 'w3m-form-input-textarea-mode-hook 'guillemets-mode)
+
+(add-hook 'weblogger-start-edit-entry-hook 
+          (lambda()  
+            (flyspell-mode 1) 
+            (ispell-change-dictionary 'svenska)
+            (flyspell-buffer)))
