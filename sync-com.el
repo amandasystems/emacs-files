@@ -155,9 +155,9 @@
     (shell-command
      (concat "notify-send --icon /usr/share/xfm/pixmaps/emacs.xpm -t 4000 -c \"im.received\" \""
              (car (split-string nick "!"))
-             " mentioned your nick\" \'"
+             " mentioned your nick\" '"
              msg
-             "\'"))))
+             ""))))
 
 (add-hook 'erc-text-matched-hook 'erc-global-notify)
 

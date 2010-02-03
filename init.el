@@ -31,14 +31,14 @@
 ;; Put backup files (ie foo~) in one place too. (The backup-directory-alist
 ;; list contains regexp=>directory mappings; filenames matching a regexp are
 ;; backed up in the corresponding directory. Emacs will mkdir it if necessary.)
-(defvar backup-dir "~/.emacs_backups/")
-(setq backup-directory-alist (list (cons "." backup-dir)))
+;;(defvar backup-dir "~/.emacs_backups/")
+;;(setq backup-directory-alist (list (cons "." backup-dir)))
 
 ;; Indent with spaces in stead.
-(setq-default indent-tabs-mode nil) 
+;;(setq-default indent-tabs-mode nil) 
 
 ;; Copy/paste to xbuffer (for X interaction Zen):
-(setq x-select-enable-clipboard t)
+;;(setq x-select-enable-clipboard t)
 
 (setq-default ispell-program-name "aspell")
 (custom-set-variables
@@ -76,7 +76,6 @@
 
 (defun hgr-post ()
   (interactive)
-  ;;(browse-url (shell-command-to-string "date +'http://handgranat.org/Redigera/Tussilago/%Y-%m-%d-%H.%M'")))
   (browse-url "http://handgranat.org/posta/Tussilago/"))
 
 ;; WORD:
@@ -94,7 +93,7 @@
       ["Januari" "Februari" "Mars" "April"
        "Maj" "Juni" "Juli" "Augusti" "September"
        "Oktober" "November" "December"])
-(setq cal-html-directory "~/pandora/public_html/cal")
+;;(setq cal-html-directory "~/pandora/public_html/cal")
 (setq tex-dvi-print-command "dvips -f * | lp -d laserjet -o media=a4 -o fitplot -")
 
 (defun my-calendar-a4 ()
@@ -107,13 +106,13 @@
 
 (setq cal-tex-preamble-extra "\\usepackage[utf8]{inputenc}\n")
 
-(autoload 'scheme-complete "scheme-complete" nil t)
+;;(autoload 'scheme-complete "scheme-complete" nil t)
 
 ;; (eval-after-load 'hen
 ;;   '(progn (define-key hen-mode-map "\t" 'scheme-complete-or-indent)))
 
-(autoload 'scheme-get-current-symbol-info "scheme-complete" nil t)
-(autoload 'scheme-complete-or-indent "scheme-complete" nil t)
+;;(autoload 'scheme-get-current-symbol-info "scheme-complete" nil t)
+;;(autoload 'scheme-complete-or-indent "scheme-complete" nil t)
 
 ;;(setq auto-mode-alist (cons '("\\.scm$" . hen-mode) auto-mode-alist))
 
@@ -127,7 +126,7 @@
 (require 'tramp)
 (tramp-parse-shosts "~/.ssh/known_hosts")
 
-(setq wikipedia-default-language-domain "en")
+;;(setq wikipedia-default-language-domain "en")
 
 
 ;; (add-to-list 'load-path "/usr/local/share/distel/elisp")
@@ -154,7 +153,7 @@
 ;;(require 'hooks)
 (require 'git-emacs)
 
-(setq ido-enable-flex-matching t) 
+;;(setq ido-enable-flex-matching t) 
 
 (defun pretty-print-xml-region (begin end)
   "Pretty format XML markup in region. You need to have nxml-mode
@@ -195,17 +194,29 @@ by using nxml's indentation rules."
 ;;               inferior-scheme-mode-map [tab]
 ;;               'scheme-complete-or-indent)))
 
-(add-hook 'hen-mode-hook
- 	  (lambda ()
- 	    (make-local-variable 'eldoc-documentation-function)
- 	    (setq eldoc-documentation-function 'scheme-get-current-symbol-info)
- 	    (eldoc-mode)))
+;; (add-hook 'hen-mode-hook
+;;  	  (lambda ()
+;;  	    (make-local-variable 'eldoc-documentation-function)
+;;  	    (setq eldoc-documentation-function 'scheme-get-current-symbol-info)
+;; 	    (eldoc-mode)))
 
-(add-hook 'weblogger-entry-mode-hook 'guillemets-mode)
+;; (add-hook 'weblogger-entry-mode-hook 'guillemets-mode)
 (add-hook 'w3m-form-input-textarea-mode-hook 'guillemets-mode)
 
-(add-hook 'weblogger-start-edit-entry-hook 
-          (lambda()  
-            (flyspell-mode 1) 
-            (ispell-change-dictionary 'svenska)
-            (flyspell-buffer)))
+;; (add-hook 'weblogger-start-edit-entry-hook 
+;;           (lambda()  
+;;             (flyspell-mode 1) 
+;;             (ispell-change-dictionary 'svenska)
+;;            (flyspell-buffer)))
+
+
+;; utf8 / input-method
+(setq locale-coding-system 'utf-8)
+(set-terminal-coding-system 'utf-8)
+(set-keyboard-coding-system 'utf-8)
+(set-selection-coding-system 'utf-8)
+(prefer-coding-system 'utf-8)
+(set-language-environment "UTF-8")
+(setq default-input-method 'swedish-postfix)
+(set-input-method 'swedish-postfix)
+
