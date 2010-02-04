@@ -62,14 +62,20 @@
   (browse-url "http://handgranat.org/posta/Tussilago/"))
 
 ;; WORD:
-(autoload 'no-word "no-word" "word to txt")
-(add-to-list 'auto-mode-alist '("\\.doc\\'" . no-word))
+;; (autoload 'no-word "no-word" "word to txt")
+;; (add-to-list 'auto-mode-alist '("\\.doc\\'" . no-word))
 
-(setq inferior-lisp-program "sbcl") 
+;; (setq inferior-lisp-program "sbcl") 
+
+;;;;;;;;;;;;;;;;;;;;;;;
+;; Calendar settings ;;
+;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;(setq calendar-date-style 'europeian)
 (require 'calendar)
 (calendar-set-date-style 'european)
+
+;; Swedish calendar:
 (setq calendar-week-start-day 1
       calendar-day-name-array
       ["söndag" "måndag" "tisdag" 
@@ -78,7 +84,6 @@
       ["januari" "februari" "mars" "april"
        "maj" "juni" "juli" "augusti" "september"
        "oktober" "november" "december"])
-(setq tex-dvi-print-command "dvips -f * | lp -d laserjet -o media=a4 -o fitplot -")
 
 (defun my-calendar-a4 ()
   "Replace all occurences of 18cm with 17cm."
@@ -86,9 +91,15 @@
   (while (search-forward "18cm" nil t)
     (replace-match  "17cm")))
 
-(setq cal-tex-diary t)
+(setq cal-tex-diary t
+      cal-tex-preamble-extra "\\usepackage[utf8]{inputenc}\n")
 
-(setq cal-tex-preamble-extra "\\usepackage[utf8]{inputenc}\n")
+(add-hook 'diary-display-hook 'fancy-diary-display)
+(add-hook 'cal-tex-hook 'my-calendar-a4)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; End of calendar settings ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (require 'delicious)
 
@@ -102,11 +113,9 @@
 
 ;;; Identi.ca mode
 (require 'identica-mode)
-(setq identica-username "tuss")
 ;; End Identi.ca mode
 
 (require 'keybindings)
-;;(require 'hooks)
 (require 'git-emacs)
 
 (defun pretty-print-xml-region (begin end)
@@ -138,9 +147,6 @@ by using nxml's indentation rules."
       (list (line-beginning-position)
         (line-beginning-position 2)))))
 
-(add-hook 'diary-display-hook 'fancy-diary-display)
-
-(add-hook 'cal-tex-hook 'my-calendar-a4)
 
 (add-hook 'w3m-form-input-textarea-mode-hook 'guillemets-mode)
 
