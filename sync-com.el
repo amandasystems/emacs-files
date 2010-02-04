@@ -157,7 +157,7 @@
              (car (split-string nick "!"))
              " mentioned your nick\" '"
              msg
-             ""))))
+             "'"))))
 
 (add-hook 'erc-text-matched-hook 'erc-global-notify)
 

@@ -1,12 +1,8 @@
 (require 'w3m-load)
-;;(autoload 'doc-view "doc-view")
 
-;;(add-to-list 'load-path "~/.emacs.d/")
 (add-to-list 'load-path "~/projects/repos/identica-mode/")
-(add-to-list 'load-path "~/projects/repos/lagn/")
+;;(add-to-list 'load-path "~/projects/repos/lagn/") ;; Seems dead.
 (add-to-list 'load-path "~/projects/repos/git-emacs/")
-(add-to-list 'load-path "~/projects/repos/elim/elisp/")
-(add-to-list 'Info-default-directory-list "~/.info/")
 
 (require 'secrets)
 
@@ -26,19 +22,6 @@
       (concat "#" (file-name-nondirectory buffer-file-name) "#")
     (expand-file-name
      (concat "#%" (buffer-name) "#")))))
-
-
-;; Put backup files (ie foo~) in one place too. (The backup-directory-alist
-;; list contains regexp=>directory mappings; filenames matching a regexp are
-;; backed up in the corresponding directory. Emacs will mkdir it if necessary.)
-;;(defvar backup-dir "~/.emacs_backups/")
-;;(setq backup-directory-alist (list (cons "." backup-dir)))
-
-;; Indent with spaces in stead.
-;;(setq-default indent-tabs-mode nil) 
-
-;; Copy/paste to xbuffer (for X interaction Zen):
-;;(setq x-select-enable-clipboard t)
 
 (setq-default ispell-program-name "aspell")
 (custom-set-variables
@@ -84,16 +67,17 @@
 
 (setq inferior-lisp-program "sbcl") 
 
-(setq calendar-date-style 'europeian)
+;;(setq calendar-date-style 'europeian)
+(require 'calendar)
+(calendar-set-date-style 'european)
 (setq calendar-week-start-day 1
       calendar-day-name-array
-      ["Söndag" "Måndag" "Tisdag" 
-       "Onsdag" "Torsdag" "Fredag" "Lördag"]
+      ["söndag" "måndag" "tisdag" 
+       "onsdag" "torsdag" "fredag" "lördag"]
       calendar-month-name-array
-      ["Januari" "Februari" "Mars" "April"
-       "Maj" "Juni" "Juli" "Augusti" "September"
-       "Oktober" "November" "December"])
-;;(setq cal-html-directory "~/pandora/public_html/cal")
+      ["januari" "februari" "mars" "april"
+       "maj" "juni" "juli" "augusti" "september"
+       "oktober" "november" "december"])
 (setq tex-dvi-print-command "dvips -f * | lp -d laserjet -o media=a4 -o fitplot -")
 
 (defun my-calendar-a4 ()
@@ -106,18 +90,6 @@
 
 (setq cal-tex-preamble-extra "\\usepackage[utf8]{inputenc}\n")
 
-;;(autoload 'scheme-complete "scheme-complete" nil t)
-
-;; (eval-after-load 'hen
-;;   '(progn (define-key hen-mode-map "\t" 'scheme-complete-or-indent)))
-
-;;(autoload 'scheme-get-current-symbol-info "scheme-complete" nil t)
-;;(autoload 'scheme-complete-or-indent "scheme-complete" nil t)
-
-;;(setq auto-mode-alist (cons '("\\.scm$" . hen-mode) auto-mode-alist))
-
-;;(require 'hen)
-
 (require 'delicious)
 
 (setq auto-mode-alist
@@ -125,22 +97,6 @@
 
 (require 'tramp)
 (tramp-parse-shosts "~/.ssh/known_hosts")
-
-;;(setq wikipedia-default-language-domain "en")
-
-
-;; (add-to-list 'load-path "/usr/local/share/distel/elisp")
-;; (require 'distel)
-;;   (distel-setup)
-
-;; (autoload 'babel "babel"
-;;   "Use a web translation service to translate the message MSG." t)
-;; (autoload 'babel-region "babel"
-;;   "Use a web translation service to translate the current region." t)
-;; (autoload 'babel-as-string "babel"
-;;   "Use a web translation service to translate MSG, returning a string." t)
-;; (autoload 'babel-buffer "babel"
-;;   "Use a web translation service to translate the current buffer." t)
 
 (require 'smart-quotes)
 
@@ -152,8 +108,6 @@
 (require 'keybindings)
 ;;(require 'hooks)
 (require 'git-emacs)
-
-;;(setq ido-enable-flex-matching t) 
 
 (defun pretty-print-xml-region (begin end)
   "Pretty format XML markup in region. You need to have nxml-mode
@@ -188,27 +142,7 @@ by using nxml's indentation rules."
 
 (add-hook 'cal-tex-hook 'my-calendar-a4)
 
-;; (add-hook 'inferior-scheme-mode-hook 
-;;           (lambda ()
-;;             (define-key
-;;               inferior-scheme-mode-map [tab]
-;;               'scheme-complete-or-indent)))
-
-;; (add-hook 'hen-mode-hook
-;;  	  (lambda ()
-;;  	    (make-local-variable 'eldoc-documentation-function)
-;;  	    (setq eldoc-documentation-function 'scheme-get-current-symbol-info)
-;; 	    (eldoc-mode)))
-
-;; (add-hook 'weblogger-entry-mode-hook 'guillemets-mode)
 (add-hook 'w3m-form-input-textarea-mode-hook 'guillemets-mode)
-
-;; (add-hook 'weblogger-start-edit-entry-hook 
-;;           (lambda()  
-;;             (flyspell-mode 1) 
-;;             (ispell-change-dictionary 'svenska)
-;;            (flyspell-buffer)))
-
 
 ;; utf8 / input-method
 (setq locale-coding-system 'utf-8)
