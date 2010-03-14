@@ -1,8 +1,17 @@
 (require 'w3m-load)
 
-(add-to-list 'load-path "~/projects/repos/identica-mode/")
+;;(add-to-list 'load-path "~/projects/repos/identica-mode/")
 ;;(add-to-list 'load-path "~/projects/repos/lagn/") ;; Seems dead.
-(add-to-list 'load-path "~/projects/repos/git-emacs/")
+;;(add-to-list 'load-path "~/projects/repos/git-emacs/")
+
+(defvar repo-dir "/home/albin/projects/repos/emacs/")
+
+(add-to-list 'load-path (concat repo-dir "identica-mode"))
+(add-to-list 'load-path (concat repo-dir "delicious-el"))
+(add-to-list 'load-path (concat repo-dir "37emacs"))
+(add-to-list 'load-path (concat repo-dir "git-emacs"))
+;;(add-to-list 'load-path (concat repo-dir "weblogger-el"))
+
 
 (require 'secrets)
 
@@ -30,7 +39,7 @@
   ;; Your init file should contain only one such instance.
   ;; If there is more than one, they won't work right.
  '(cal-tex-24 t)
- '(fill-column 80)
+;; '(fill-column 65)
  '(flyspell-default-dictionary "sv")
  '(inhibit-startup-screen t)
  '(newsticker-html-renderer (quote w3m-region))
@@ -160,3 +169,67 @@ by using nxml's indentation rules."
 (setq default-input-method 'swedish-postfix)
 (set-input-method 'swedish-postfix)
 
+(defun ido-goto-symbol ()
+    "Will update the imenu index and then use ido to select a symbol to navigate to"
+    (interactive)
+    (imenu--make-index-alist)
+    (let ((name-and-pos '())
+          (symbol-names '()))
+      (flet ((addsymbols (symbol-list)
+                         (when (listp symbol-list)
+                           (dolist (symbol symbol-list)
+                             (let ((name nil) (position nil))
+                               (cond
+                                ((and (listp symbol) (imenu--subalist-p symbol))
+                                 (addsymbols symbol))
+   
+                                ((listp symbol)
+                                 (setq name (car symbol))
+                                 (setq position (cdr symbol)))
+   
+                                ((stringp symbol)
+                                 (setq name symbol)
+                                 (setq position (get-text-property 1 'org-imenu-marker symbol))))
+   
+                               (unless (or (null position) (null name))
+                                 (add-to-list 'symbol-names name)
+                                 (add-to-list 'name-and-pos (cons name position))))))))
+        (addsymbols imenu--index-alist))
+      (let* ((selected-symbol (ido-completing-read "Symbol? " symbol-names))
+             (position (cdr (assoc selected-symbol name-and-pos))))
+        (cond
+         ((overlayp position)
+          (goto-char (overlay-start position)))
+         (t
+          (goto-char position))))))
+
+(require 'ibuffer) 
+(setq ibuffer-saved-filter-groups
+  (quote (("default"      
+            ("Org" ;; all org-related buffers
+              (mode . org-mode))  
+            ("Mail"
+              (or  ;; mail-related buffers
+               (mode . message-mode)
+               (mode . mail-mode)
+               ;; etc.; all your mail related modes
+               ))
+            ("Jabber"
+             (mode . jabber-chat))
+            ;; ("MyProject1"
+            ;;   (filename . "src/myproject1/"))
+            ;; ("MyProject2"
+            ;;   (filename . "src/myproject2/"))
+            ("Programming" ;; prog stuff not already in MyProjectX
+              (or
+                (mode . c-mode)
+                (mode . perl-mode)
+                (mode . python-mode)
+                (mode . emacs-lisp-mode)
+                ;; etc
+                )) 
+            ("ERC"   (mode . erc-mode))))))
+
+(add-hook 'ibuffer-mode-hook
+  (lambda ()
+    (ibuffer-switch-to-saved-filter-groups "default")))

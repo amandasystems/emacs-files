@@ -13,9 +13,10 @@
 
 (global-set-key "\C-cp" 'delicious-post)
 
-(global-set-key "\C-c i p" 'identica-update-status-interactive)
-(global-set-key "\C-c i d" 'identica-direct-message-interactive)
+(global-set-key "\C-c ip" 'identica-update-status-interactive)
+(global-set-key "\C-c id" 'identica-direct-message-interactive)
 
+(global-set-key "\C-c gi" 'ido-goto-symbol)
 ;; Shorten url by C-c u s
 ;;(global-set-key "\C-cus" 'get-tinyurl)
 
@@ -26,3 +27,5 @@
   (lambda()(interactive)
     (ispell-change-dictionary "svenska")
     (flyspell-buffer))) 
+
+(global-set-key (kbd "C-x C-b") 'ibuffer)

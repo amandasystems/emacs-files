@@ -58,6 +58,8 @@
 (require 'erc-ring)
 (require 'erc-stamp)
 (require 'erc-track)
+(require 'erc-imenu)
+
 
 ;; Code to connect and identify with my ZNC bouncer
 (defun irc-bnc ()
@@ -128,7 +130,6 @@
  
 ;; (setq erc-header-line-face-method 'erc-update-header-line-show-disconnected)
 
-
 (defun kill-all-erc-buffers()
       "Kill all erc buffers."
       (interactive)
@@ -141,7 +142,22 @@
               (kill-buffer buffer)))
           (message "Killed %i ERC buffer(s)." count ))))
 
+(defun kill-all-jabber-buffers()
+      "Kill all jabber buffers."
+      (interactive)
+      (save-excursion
+        (let((count 0))
+          (dolist(buffer (buffer-list))
+            (set-buffer buffer)
+            (when  (or (equal major-mode 'jabber-chat-mode)
+                       (equal major-mode 'jabber-roster-mode))
+              (setq count (1+ count))
+              (kill-buffer buffer)))
+          (message "Killed %i Jabber buffer(s)." count ))))
+
+(add-hook 'jabber-post-disconnect-hook 'kill-all-jabber-buffers)
 (add-hook 'erc-mode-hook 'guillemets-mode)
+
 
 ;; Auto-change Erc filling to fit window:
 (add-hook 'window-configuration-change-hook 
@@ -187,6 +203,7 @@
   (when (functionp 'erc-cmd-GQUIT)
     (erc-cmd-GQUIT "quitting from IRC"))
   (kill-all-erc-buffers))
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; End functions (meta) ;;
