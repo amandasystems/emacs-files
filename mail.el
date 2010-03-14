@@ -1,9 +1,10 @@
-;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Mail client/reader settings (further config is in my yet unpublished ~/.wl) ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Mail client/reader settings ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; wanderlust
-(autoload 'wl "wl" "Wanderlust" t)
+(require 'wl)
+;;(autoload 'wl "wl" "Wanderlust" t)
 (autoload 'wl-other-frame "wl" "Wanderlust on new frame." t)
 (autoload 'wl-draft "wl-draft" "Write draft with Wanderlust." t)
 
@@ -21,9 +22,104 @@
       'wl-draft-kill
       'mail-send-hook))
 
-(setq user-mail-address "albin@eval.nu"
-      user-full-name "Albin Stjerna")
+(require 'secrets) ;; SMTP auth info etc.
+(require 'mime-w3m)
 
+(setq wl-folder-check-async t
+      elmo-imap4-default-stream-type 'ssl
+      elmo-imap4-use-modified-utf7 t
+      elmo-imap4-debug nil) 
+
+
+
+(setq wl-summary-weekday-name-lang "en")
+
+;; Prefetch everything:
+(setq wl-message-buffer-prefetch-threshold nil)	; fetch everything 1
+(setq wl-prefetch-confirm nil)			; fetch everything 2
+(setq wl-summary-incorporate-marks '("N" "U" "!" "A" "F"))
+(setq wl-prefetch-threshold nil)
+
+(setq mime-w3m-safe-url-regexp nil) ;; Don't bother.
+(setq mime-w3m-display-inline-images t)
+
+(add-hook 'wl-mail-setup-hook 'auto-fill-mode)
+(add-hook 'wl-mail-setup-hook 'guillemets-mode)
+
+(require 'bbdb-wl)
+(bbdb-wl-setup)
+
+;; i don't want to store addresses from my mailing folders
+(setq 
+  bbdb-wl-folder-regexp    ;; get addresses only from these folders
+  "^\.*Main.*Inbox$\\|^.*Sent\\|^.*Gmail.*")    ;; 
+
+
+(define-key wl-draft-mode-map (kbd "<tab>") 'bbdb-complete-name)
+
+(setq
+  wl-forward-subject-prefix "Fwd: " )
+
+;; from a WL-mailinglist post by David Bremner
+
+;; Invert behaviour of with and without argument replies.
+;; just the author
+(setq wl-draft-reply-without-argument-list
+  '(("Reply-To" ("Reply-To") nil nil)
+     ("Mail-Reply-To" ("Mail-Reply-To") nil nil)
+     ("From" ("From") nil nil)))
+
+
+;; bombard the world
+(setq wl-draft-reply-with-argument-list
+  '(("Followup-To" nil nil ("Followup-To"))
+     ("Mail-Followup-To" ("Mail-Followup-To") nil ("Newsgroups"))
+     ("Reply-To" ("Reply-To") ("To" "Cc" "From") ("Newsgroups"))
+     ("From" ("From") ("To" "Cc") ("Newsgroups"))))
+
+
+(defun djcb-wl-draft-subject-check ()
+  "check whether the message has a subject before sending"
+  (if (and (< (length (std11-field-body "Subject")) 1)
+        (null (y-or-n-p "No subject! Send current draft?")))
+      (error "Abort.")))
+
+(add-hook 'wl-mail-send-pre-hook 'djcb-wl-draft-subject-check)
+
+(setq
+ wl-stay-folder-window t                       ;; show the folder pane (left)
+ wl-folder-window-width 25                     ;; toggle on/off with 'i'
+ wl-fcc ".~/Main/Sent"
+ wl-fcc-force-as-read t               ;; mark sent messages as read
+ wl-biff-check-folder-list '(".~/Main/INBOX")
+ wl-message-ignored-field-list '("^.*:")
+ wl-message-visible-field-list
+ '("^\\(To\\|Cc\\):"
+   
+   "^Subject:"
+   "^\\(From\\|Reply-To\\):"
+   "^Organization:"
+   "^Message-Id:"
+   "^\\(Posted\\|Date\\):"
+   )
+ wl-message-sort-field-list
+ '("^From"
+
+   "^Organization:"
+   "^X-Attribution:"
+   "^Subject"
+   "^Date"
+   "^To"
+   "^Cc")
+)
+
+(add-hook 'wl-auto-check-folder-hook 'wl-folder-open-all-unread-folder)
+
+;; Mu-cite, for less ugly citations.
+(autoload 'mu-cite-original "mu-cite" nil t)
+(setq mu-cite-prefix-format '("> "))
+(setq mu-cite-top-format '(full-name " wrote:\n\n"))
+(add-hook 'mail-citation-hook (function mu-cite-original))
 
 ;;;;;;;;;;
 ;; BBDB ;;
