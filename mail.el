@@ -64,18 +64,18 @@
 
 ;; Invert behaviour of with and without argument replies.
 ;; just the author
-(setq wl-draft-reply-without-argument-list
-  '(("Reply-To" ("Reply-To") nil nil)
-     ("Mail-Reply-To" ("Mail-Reply-To") nil nil)
-     ("From" ("From") nil nil)))
+;; (setq wl-draft-reply-without-argument-list
+;;   '(("Reply-To" ("Reply-To") nil nil)
+;;      ("Mail-Reply-To" ("Mail-Reply-To") nil nil)
+;;      ("From" ("From") nil nil)))
 
 
-;; bombard the world
-(setq wl-draft-reply-with-argument-list
-  '(("Followup-To" nil nil ("Followup-To"))
-     ("Mail-Followup-To" ("Mail-Followup-To") nil ("Newsgroups"))
-     ("Reply-To" ("Reply-To") ("To" "Cc" "From") ("Newsgroups"))
-     ("From" ("From") ("To" "Cc") ("Newsgroups"))))
+;; ;; bombard the world
+;; (setq wl-draft-reply-with-argument-list
+;;   '(("Followup-To" nil nil ("Followup-To"))
+;;      ("Mail-Followup-To" ("Mail-Followup-To") nil ("Newsgroups"))
+;;      ("Reply-To" ("Reply-To") ("To" "Cc" "From") ("Newsgroups"))
+;;      ("From" ("From") ("To" "Cc") ("Newsgroups"))))
 
 
 (defun djcb-wl-draft-subject-check ()
@@ -91,6 +91,10 @@
  wl-folder-window-width 25                     ;; toggle on/off with 'i'
  wl-fcc ".~/Main/Sent"
  wl-fcc-force-as-read t               ;; mark sent messages as read
+ wl-draft-folder ".~/Main/Drafts"            ;; store drafts in 'postponed'
+ wl-trash-folder ".~/Main/Trash"             ;; put trash in 'trash'
+ wl-spam-folder ".~/Main/spam"              ;; ...spam as well
+
  wl-biff-check-folder-list '(".~/Main/INBOX")
  wl-message-ignored-field-list '("^.*:")
  wl-message-visible-field-list
@@ -159,3 +163,23 @@
  ;; http://flex.ee.uec.ac.jp/texi/bbdb/bbdb_11.html
 
  '(( "From" . "no.?reply\\|DAEMON\\|daemon\\|facebookmail\\|twitter")))
+
+;; Convert markdown syntax to multipart MIME HTML mail
+(defun mimedown ()
+  (interactive)
+  (save-excursion
+    (message-goto-body)
+    (let* ((sig-point (save-excursion (message-goto-signature) (forward-line -1) (point)))
+           (orig-txt (buffer-substring-no-properties (point) sig-point)))
+      (shell-command-on-region (point) sig-point "markdown" nil t)
+      (insert "<#multipart type=alternative>\n")
+      (insert orig-txt)
+      (insert "<#part type=text/html>\n< html>\n< head>\n< title> HTML version of email</title>\n</head>\n< body>")
+      (exchange-point-and-mark)
+      (insert "\n</body>\n</html>\n<#/multipart>\n"))))
+
+;; Add signatures:
+;; (add-hook 'mime-edit-translate-hook 'mime-edit-insert-signature)
+;; (setq signature-file-name "~/.signature")
+;; (setq signature-insert-at-eof t)
+;; (setq signature-delete-blank-lines-at-eof t)

@@ -12,6 +12,8 @@
 (add-to-list 'load-path (concat repo-dir "git-emacs"))
 ;;(add-to-list 'load-path (concat repo-dir "weblogger-el"))
 
+(require 'midnight)
+
 
 (require 'secrets)
 
@@ -101,7 +103,14 @@
     (replace-match  "17cm")))
 
 (setq cal-tex-diary t
-      cal-tex-preamble-extra "\\usepackage[utf8]{inputenc}\n")
+      cal-tex-preamble-extra "\\usepackage[utf8]{inputenc}\n"
+      calendar-intermonth-text ;; Display ISO week numbers in calendar
+        '(propertize
+          (format "%2d"
+                  (car
+                   (calendar-iso-from-absolute
+                    (calendar-absolute-from-gregorian (list month day year)))))
+          'font-lock-face 'font-lock-function-name-face))
 
 (add-hook 'diary-display-hook 'fancy-diary-display)
 (add-hook 'cal-tex-hook 'my-calendar-a4)
@@ -233,3 +242,16 @@ by using nxml's indentation rules."
 (add-hook 'ibuffer-mode-hook
   (lambda ()
     (ibuffer-switch-to-saved-filter-groups "default")))
+
+;; Org-mode:
+;; Add all files ending with ".org" in ~/org/ to agenda, do not sort them.
+(setq org-agenda-files (directory-files "~/org" t ".*\.org" t))
+
+
+;; Bind a yank-menu to C-cy:
+(global-set-key "\C-cy" '(lambda ()
+   (interactive)
+   (popup-menu 'yank-menu)))
+
+
+(server-start)
