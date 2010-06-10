@@ -165,21 +165,23 @@
  '(( "From" . "no.?reply\\|DAEMON\\|daemon\\|facebookmail\\|twitter")))
 
 ;; Convert markdown syntax to multipart MIME HTML mail
-(defun mimedown ()
-  (interactive)
-  (save-excursion
-    (message-goto-body)
-    (let* ((sig-point (save-excursion (message-goto-signature) (forward-line -1) (point)))
-           (orig-txt (buffer-substring-no-properties (point) sig-point)))
-      (shell-command-on-region (point) sig-point "markdown" nil t)
-      (insert "<#multipart type=alternative>\n")
-      (insert orig-txt)
-      (insert "<#part type=text/html>\n< html>\n< head>\n< title> HTML version of email</title>\n</head>\n< body>")
-      (exchange-point-and-mark)
-      (insert "\n</body>\n</html>\n<#/multipart>\n"))))
+;; (defun mimedown ()
+;;   (interactive)
+;;   (save-excursion
+;;     (message-goto-body)
+;;     (let* ((sig-point (save-excursion (message-goto-signature) (forward-line -1) (point)))
+;;            (orig-txt (buffer-substring-no-properties (point) sig-point)))
+;;       (shell-command-on-region (point) sig-point "markdown" nil t)
+;;       (insert "<#multipart type=alternative>\n")
+;;       (insert orig-txt)
+;;       (insert "<#part type=text/html>\n< html>\n< head>\n< title> HTML version of email</title>\n</head>\n< body>")
+;;       (exchange-point-and-mark)
+;;       (insert "\n</body>\n</html>\n<#/multipart>\n"))))
 
 ;; Add signatures:
 ;; (add-hook 'mime-edit-translate-hook 'mime-edit-insert-signature)
 ;; (setq signature-file-name "~/.signature")
 ;; (setq signature-insert-at-eof t)
 ;; (setq signature-delete-blank-lines-at-eof t)
+
+(add-hook 'mail-mode-hook 'mail-abbrevs-setup)

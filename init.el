@@ -12,6 +12,30 @@
 (add-to-list 'load-path (concat repo-dir "git-emacs"))
 ;;(add-to-list 'load-path (concat repo-dir "weblogger-el"))
 
+;; clojure-mode
+(add-to-list 'load-path  (concat repo-dir "clojure-mode"))
+(require 'clojure-mode)
+
+;; swank-clojure
+(add-to-list 'load-path (concat repo-dir "swank-clojure/src/emacs"))
+
+(setq swank-clojure-jar-path "~/.clojure/clojure.jar"
+      swank-clojure-extra-classpaths (list
+				      (concat repo-dir "swank-clojure/src/main/clojure")
+				      "~/.clojure/clojure-contrib.jar"))
+
+;;(require 'swank-clojure-autoload)
+
+;; slime
+(eval-after-load "slime" 
+  '(progn (slime-setup '(slime-repl))))
+
+(add-to-list 'load-path (concat repo-dir "slime"))
+(require 'slime)
+(slime-setup) 
+
+
+
 (require 'midnight)
 
 
@@ -255,3 +279,43 @@ by using nxml's indentation rules."
 
 
 (server-start)
+
+;; compensate for (add-hook 'text-mode-hook 'turn-on-flyspell)
+(remove-hook 'text-mode-hook 'turn-on-flyspell)
+
+;; Use smart quotes everywhere!
+(add-hook 'text-mode-hook (lambda () (guillemets-mode 1)))
+
+(setq org-startup-indented t)
+
+(add-hook 'org-mode-hook 'visual-line-mode)
+
+(setq journal-file "~/org/journal.org")
+
+(defun start-journal-entry ()
+  "Start a new journal entry."
+  (interactive)
+  (find-file journal-file)
+  ;;  (goto-char (point-min))
+  (goto-char (point-max))
+  (org-insert-heading)
+  (org-insert-time-stamp (current-time) t)
+;;  (open-line 2)
+  (insert " "))
+
+(global-set-key (kbd "C-c j") 'start-journal-entry)
+
+(defun xmms2-run-or-goto () ; FIXME -- make less ugly
+  "start a new session of nyxmms2"
+  ;; in future version use start-process and process-send-string
+  (interactive)
+  (unless (bufferp (get-buffer "*xmms2*"))
+    (pop-to-buffer "*xmms2*")
+    (eshell-mode)
+    (goto-char (point-max))
+    (insert "nyxmms2")
+    (eshell-send-input))
+  (pop-to-buffer "*xmms2*"))
+
+(global-set-key (kbd "C-c x") 'xmms2-run-or-goto)
+

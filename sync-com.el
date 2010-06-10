@@ -38,6 +38,10 @@
 ;; Neat quotes:
 (add-hook 'jabber-chat-mode-hook 'guillemets-mode)
 
+;; I can't spell:
+(add-hook 'jabber-chat-mode-hook 'flyspell-mode)
+
+
 ;;;;;;;;;;;;;;;;;;;
 ;; End of Jabber ;;
 ;;;;;;;;;;;;;;;;;;;
