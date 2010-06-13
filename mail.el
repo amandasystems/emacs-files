@@ -89,13 +89,13 @@
 (setq
  wl-stay-folder-window t                       ;; show the folder pane (left)
  wl-folder-window-width 25                     ;; toggle on/off with 'i'
- wl-fcc ".~/Main/Sent"
+ wl-fcc ".~/inmail/Main/Sent"
  wl-fcc-force-as-read t               ;; mark sent messages as read
- wl-draft-folder ".~/Main/Drafts"            ;; store drafts in 'postponed'
- wl-trash-folder ".~/Main/Trash"             ;; put trash in 'trash'
- wl-spam-folder ".~/Main/spam"              ;; ...spam as well
+ wl-draft-folder ".~/inmail/Main/Drafts"            ;; store drafts in 'postponed'
+ wl-trash-folder ".~/inmail/Main/Trash"             ;; put trash in 'trash'
+ wl-spam-folder ".~/inmail/Main/spam"              ;; ...spam as well
 
- wl-biff-check-folder-list '(".~/Main/INBOX")
+ wl-biff-check-folder-list '(".~/inmail/Main/INBOX")
  wl-message-ignored-field-list '("^.*:")
  wl-message-visible-field-list
  '("^\\(To\\|Cc\\):"
@@ -185,3 +185,29 @@
 ;; (setq signature-delete-blank-lines-at-eof t)
 
 (add-hook 'mail-mode-hook 'mail-abbrevs-setup)
+
+
+;; Notmuch code:
+(require 'notmuch)
+
+(setq mail-user-agent 'message-user-agent)
+
+;; add Cc and Bcc headers to the message buffer
+(setq message-default-mail-headers "Cc: \nBcc: \n")
+
+;; postponed message is put in the following draft file
+;;(setq message-auto-save-directory "~/inmail/Main/Drafts")
+
+(setq message-send-mail-function 'message-smtpmail-send-it)
+(setq send-mail-function 'smtpmail-send-it)
+
+(add-hook 'message-mode-hook 'auto-fill-mode)
+(add-hook 'message-mode-hook (lambda () (guillemets-mode 1)))
+(add-hook 'message-mode-hook 'flyspell-mode)
+
+
+(setq notmuch-folders '(("inbox" . "tag:inbox and not tag:feeds and not tag:list")
+                        ("unread" . "tag:unread and not tag:feeds")
+                        ("identica" . "tag:identica and tag:inbox")
+                        ("feeds" . "tag:feeds and tag:inbox and not tag:identica")))
+
