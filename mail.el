@@ -3,62 +3,60 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; wanderlust
-(require 'wl)
+;; (require 'wl)
 ;;(autoload 'wl "wl" "Wanderlust" t)
-(autoload 'wl-other-frame "wl" "Wanderlust on new frame." t)
-(autoload 'wl-draft "wl-draft" "Write draft with Wanderlust." t)
+;;(autoload 'wl-other-frame "wl" "Wanderlust on new frame." t)
+;;(autoload 'wl-draft "wl-draft" "Write draft with Wanderlust." t)
 
-(setq mm-text-html-renderer 'w3m ;; Render html mail with w3m
-      ;;wl-spam-auto-check-folder-regexp-list '(".*")
-      )
-(autoload 'wl-user-agent-compose "wl-draft" nil t)
-(if (boundp 'mail-user-agent)
-    (setq mail-user-agent 'wl-user-agent))
-(if (fboundp 'define-mail-user-agent)
-    (define-mail-user-agent
-      'wl-user-agent
-      'wl-user-agent-compose
-      'wl-draft-send
-      'wl-draft-kill
-      'mail-send-hook))
+(setq mm-text-html-renderer 'w3m) ;; Render html mail with w3m
+;;(autoload 'wl-user-agent-compose "wl-draft" nil t)
+;; (if (boundp 'mail-user-agent)
+;;     (setq mail-user-agent 'wl-user-agent))
+;; (if (fboundp 'define-mail-user-agent)
+;;     (define-mail-user-agent
+;;       'wl-user-agent
+;;       'wl-user-agent-compose
+;;       'wl-draft-send
+;;       'wl-draft-kill
+;;       'mail-send-hook))
 
 (require 'secrets) ;; SMTP auth info etc.
 (require 'mime-w3m)
 
-(setq wl-folder-check-async t
-      elmo-imap4-default-stream-type 'ssl
-      elmo-imap4-use-modified-utf7 t
-      elmo-imap4-debug nil) 
+;; (setq wl-folder-check-async t
+;;       elmo-imap4-default-stream-type 'ssl
+;;       elmo-imap4-use-modified-utf7 t
+;;       elmo-imap4-debug nil) 
 
 
 
-(setq wl-summary-weekday-name-lang "en")
+;; (setq wl-summary-weekday-name-lang "en")
 
 ;; Prefetch everything:
-(setq wl-message-buffer-prefetch-threshold nil)	; fetch everything 1
-(setq wl-prefetch-confirm nil)			; fetch everything 2
-(setq wl-summary-incorporate-marks '("N" "U" "!" "A" "F"))
-(setq wl-prefetch-threshold nil)
+;; (setq wl-message-buffer-prefetch-threshold nil)	; fetch everything 1
+;; (setq wl-prefetch-confirm nil)			; fetch everything 2
+;; (setq wl-summary-incorporate-marks '("N" "U" "!" "A" "F"))
+;; (setq wl-prefetch-threshold nil)
 
 (setq mime-w3m-safe-url-regexp nil) ;; Don't bother.
-(setq mime-w3m-display-inline-images t)
+(setq mime-w3m-display-inline-images t) ;; Yes, do render inline images
 
-(add-hook 'wl-mail-setup-hook 'auto-fill-mode)
-(add-hook 'wl-mail-setup-hook 'guillemets-mode)
+;; (add-hook 'wl-mail-setup-hook 'auto-fill-mode)
+;; (add-hook 'wl-mail-setup-hook 'guillemets-mode)
 
-(require 'bbdb-wl)
-(bbdb-wl-setup)
+;;(require 'bbdb-wl)
+;;(bbdb-wl-setup)
 
 ;; i don't want to store addresses from my mailing folders
-(setq 
-  bbdb-wl-folder-regexp    ;; get addresses only from these folders
-  "^\.*Main.*Inbox$\\|^.*Sent\\|^.*Gmail.*")    ;; 
+;; (setq 
+;;   bbdb-wl-folder-regexp    ;; get addresses only from these folders
+;;   "^\.*Main.*Inbox$\\|^.*Sent\\|^.*Gmail.*")    ;; 
 
 
-(define-key wl-draft-mode-map (kbd "<tab>") 'bbdb-complete-name)
+;; (define-key wl-draft-mode-map (kbd "<tab>") 'bbdb-complete-name)
 
-(setq
-  wl-forward-subject-prefix "Fwd: " )
+;; (setq
+;;   wl-forward-subject-prefix "Fwd: " )
 
 ;; from a WL-mailinglist post by David Bremner
 
@@ -78,46 +76,46 @@
 ;;      ("From" ("From") ("To" "Cc") ("Newsgroups"))))
 
 
-(defun djcb-wl-draft-subject-check ()
-  "check whether the message has a subject before sending"
-  (if (and (< (length (std11-field-body "Subject")) 1)
-        (null (y-or-n-p "No subject! Send current draft?")))
-      (error "Abort.")))
+;; (defun djcb-wl-draft-subject-check ()
+;;   "check whether the message has a subject before sending"
+;;   (if (and (< (length (std11-field-body "Subject")) 1)
+;;         (null (y-or-n-p "No subject! Send current draft?")))
+;;       (error "Abort.")))
 
-(add-hook 'wl-mail-send-pre-hook 'djcb-wl-draft-subject-check)
+;; (add-hook 'wl-mail-send-pre-hook 'djcb-wl-draft-subject-check)
 
-(setq
- wl-stay-folder-window t                       ;; show the folder pane (left)
- wl-folder-window-width 25                     ;; toggle on/off with 'i'
- wl-fcc ".~/inmail/Main/Sent"
- wl-fcc-force-as-read t               ;; mark sent messages as read
- wl-draft-folder ".~/inmail/Main/Drafts"            ;; store drafts in 'postponed'
- wl-trash-folder ".~/inmail/Main/Trash"             ;; put trash in 'trash'
- wl-spam-folder ".~/inmail/Main/spam"              ;; ...spam as well
+;; (setq
+;;  wl-stay-folder-window t                       ;; show the folder pane (left)
+;;  wl-folder-window-width 25                     ;; toggle on/off with 'i'
+;;  wl-fcc ".~/inmail/Main/Sent"
+;;  wl-fcc-force-as-read t               ;; mark sent messages as read
+;;  wl-draft-folder ".~/inmail/Main/Drafts"            ;; store drafts in 'postponed'
+;;  wl-trash-folder ".~/inmail/Main/Trash"             ;; put trash in 'trash'
+;;  wl-spam-folder ".~/inmail/Main/spam"              ;; ...spam as well
 
- wl-biff-check-folder-list '(".~/inmail/Main/INBOX")
- wl-message-ignored-field-list '("^.*:")
- wl-message-visible-field-list
- '("^\\(To\\|Cc\\):"
+;;  wl-biff-check-folder-list '(".~/inmail/Main/INBOX")
+;;  wl-message-ignored-field-list '("^.*:")
+;;  wl-message-visible-field-list
+;;  '("^\\(To\\|Cc\\):"
    
-   "^Subject:"
-   "^\\(From\\|Reply-To\\):"
-   "^Organization:"
-   "^Message-Id:"
-   "^\\(Posted\\|Date\\):"
-   )
- wl-message-sort-field-list
- '("^From"
+;;    "^Subject:"
+;;    "^\\(From\\|Reply-To\\):"
+;;    "^Organization:"
+;;    "^Message-Id:"
+;;    "^\\(Posted\\|Date\\):"
+;;    )
+;;  wl-message-sort-field-list
+;;  '("^From"
 
-   "^Organization:"
-   "^X-Attribution:"
-   "^Subject"
-   "^Date"
-   "^To"
-   "^Cc")
-)
+;;    "^Organization:"
+;;    "^X-Attribution:"
+;;    "^Subject"
+;;    "^Date"
+;;    "^To"
+;;    "^Cc")
+;; )
 
-(add-hook 'wl-auto-check-folder-hook 'wl-folder-open-all-unread-folder)
+;; (add-hook 'wl-auto-check-folder-hook 'wl-folder-open-all-unread-folder)
 
 ;; Mu-cite, for less ugly citations.
 (autoload 'mu-cite-original "mu-cite" nil t)
@@ -186,7 +184,6 @@
 
 (add-hook 'mail-mode-hook 'mail-abbrevs-setup)
 
-
 ;; Notmuch code:
 (require 'notmuch)
 
@@ -201,13 +198,21 @@
 (setq message-send-mail-function 'message-smtpmail-send-it)
 (setq send-mail-function 'smtpmail-send-it)
 
-(add-hook 'message-mode-hook 'auto-fill-mode)
+;;(add-hook 'message-mode-hook 'auto-fill-mode)
 (add-hook 'message-mode-hook (lambda () (guillemets-mode 1)))
 (add-hook 'message-mode-hook 'flyspell-mode)
 
+;;sign messages by default
+(add-hook 'message-setup-hook 'mml-secure-sign-pgpmime)
 
-(setq notmuch-folders '(("inbox" . "tag:inbox and not tag:feeds and not tag:list")
-                        ("unread" . "tag:unread and not tag:feeds")
+
+(setq notmuch-saved-searches '(("inbox" . "tag:inbox and not tag:list")
+                        ("unread" . "tag:unread and not tag:from-me")
+                        ("feeds" . "tag:feeds and tag:unread")
                         ("identica" . "tag:identica and tag:inbox")
-                        ("feeds" . "tag:feeds and tag:inbox and not tag:identica")))
+                        ("todo" . "tag:todo")
+                        ("feeds" . "tag:feeds and tag:inbox and not
+          tag:identica")))
+
+
 
