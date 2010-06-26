@@ -317,5 +317,5 @@ by using nxml's indentation rules."
     (eshell-send-input))
   (pop-to-buffer "*xmms2*"))
 
-(global-set-key (kbd "C-c x") 'xmms2-run-or-goto)
+(global-set-key (kbd "C-x x") 'xmms2-run-or-goto)
 

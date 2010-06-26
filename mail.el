@@ -70,14 +70,10 @@
 ;;sign messages by default
 (add-hook 'message-setup-hook 'mml-secure-sign-pgpmime)
 
-
-(setq notmuch-saved-searches '(("inbox" . "tag:inbox and not tag:list")
-                        ("unread" . "tag:unread and not tag:from-me")
-                        ("feeds" . "tag:feeds and tag:unread")
-                        ("identica" . "tag:identica and tag:inbox")
-                        ("todo" . "tag:todo")
-                        ("feeds" . "tag:feeds and tag:inbox and not
-          tag:identica")))
-
-
-
+(setq notmuch-saved-searches '(("personal" . "tag:personal and tag:inbox")
+                               ("feeds" . "tag:feeds and tag:inbox")
+                               ("facebook" . "tag:facebook and tag:inbox")
+                               ("identica" . "tag:identica and tag:inbox")
+                               ("local" . "tag:local and tag:inbox")
+                               ("list" . "tag:list and tag:inbox")
+                               ("todo" . "tag:todo")))
