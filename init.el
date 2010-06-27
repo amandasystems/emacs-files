@@ -292,6 +292,8 @@ by using nxml's indentation rules."
 
 (setq journal-file "~/org/journal.org")
 
+(require 'org)
+
 (defun start-journal-entry ()
   "Start a new journal entry."
   (interactive)
@@ -304,6 +306,8 @@ by using nxml's indentation rules."
   (insert " "))
 
 (global-set-key (kbd "C-c j") 'start-journal-entry)
+
+(require 'eshell)
 
 (defun xmms2-run-or-goto () ; FIXME -- make less ugly
   "start a new session of nyxmms2"
@@ -319,3 +323,4 @@ by using nxml's indentation rules."
 
 (global-set-key (kbd "C-x x") 'xmms2-run-or-goto)
 
+(add-hook 'text-mode-hook 'visual-line-mode)
