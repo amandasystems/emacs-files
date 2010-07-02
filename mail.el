@@ -63,7 +63,7 @@
 (setq message-send-mail-function 'message-smtpmail-send-it)
 (setq send-mail-function 'smtpmail-send-it)
 
-(add-hook 'message-mode-hook 'visual-line-mode)
+(add-hook 'message-mode-hook (lambda () (visual-line-mode 1)))
 (add-hook 'message-mode-hook (lambda () (guillemets-mode 1)))
 (add-hook 'message-mode-hook 'flyspell-mode)
 

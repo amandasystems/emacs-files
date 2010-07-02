@@ -13,10 +13,10 @@
 
 (global-set-key "\C-cp" 'delicious-post)
 
-(global-set-key "\C-c ip" 'identica-update-status-interactive)
-(global-set-key "\C-c id" 'identica-direct-message-interactive)
+(global-set-key "\C-cip" 'identica-update-status-interactive)
+(global-set-key "\C-cid" 'identica-direct-message-interactive)
 
-(global-set-key "\C-c gi" 'ido-goto-symbol)
+(global-set-key "\C-cgi" 'ido-goto-symbol)
 ;; Shorten url by C-c u s
 ;;(global-set-key "\C-cus" 'get-tinyurl)
 

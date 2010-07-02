@@ -73,7 +73,7 @@
     (let ((account-name (car account))
           (account-plist (cadr account)))
       (cond ((plist-get account-plist 'ssl)
-             (erc-ssl
+             (erc-tls ;; replace with erc-ssl
               :server (plist-get account-plist 'hostname)
               :port (plist-get account-plist 'port)
               :nick (plist-get account-plist 'username)
@@ -103,7 +103,8 @@
       erc-kill-queries-on-quit t)
 
 ;; Channel-specific prompt:
-(setq erc-prompt (lambda ()
+(setq erc-prompt (lambda
+                   ()
      (if (and (boundp 'erc-default-recipients) (erc-default-target))
          (erc-propertize (concat (erc-default-target) ">") 'read-only t 'rear-nonsticky t 'front-nonsticky t)
        (erc-propertize (concat "ERC>") 'read-only t 'rear-nonsticky t 'front-nonsticky t))))

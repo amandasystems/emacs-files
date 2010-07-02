@@ -288,7 +288,7 @@ by using nxml's indentation rules."
 
 (setq org-startup-indented t)
 
-(add-hook 'org-mode-hook 'visual-line-mode)
+(add-hook 'org-mode-hook (lambda () (visual-line-mode t)))
 
 (setq journal-file "~/org/journal.org")
 
@@ -323,4 +323,14 @@ by using nxml's indentation rules."
 
 (global-set-key (kbd "C-x x") 'xmms2-run-or-goto)
 
-(add-hook 'text-mode-hook 'visual-line-mode)
+(add-hook 'text-mode-hook (lambda () (visual-line-mode t)))
+
+(setq project-root "~/projects/")
+
+(defun new-project (name)
+  "Create a new project"
+  (interactive "sEnter project name: ")
+  (defvar project-root "~/projects/" "Root directory of projects")
+  (let ((project-path (concat project-root name)))
+    (make-directory project-path t)
+    (message "Project created: %s" project-path)))
