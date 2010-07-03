@@ -52,7 +52,9 @@
 ;; Notmuch code:
 (require 'notmuch)
 
-(setq mail-user-agent 'message-user-agent)
+(setq mail-user-agent 'message-user-agent
+      message-directory "~/inmail/Main/"
+      notmuch-fcc-dirs (quote (("Sent"))))
 
 ;; add Cc and Bcc headers to the message buffer
 (setq message-default-mail-headers "Cc: \nBcc: \n")
