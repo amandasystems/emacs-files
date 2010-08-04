@@ -10,6 +10,7 @@
 (add-to-list 'load-path (concat repo-dir "delicious-el"))
 (add-to-list 'load-path (concat repo-dir "37emacs"))
 (add-to-list 'load-path (concat repo-dir "git-emacs"))
+(add-to-list 'load-path (concat repo-dir "ii-mode"))
 ;;(add-to-list 'load-path (concat repo-dir "weblogger-el"))
 
 ;; clojure-mode
@@ -282,6 +283,7 @@ by using nxml's indentation rules."
 
 ;; compensate for (add-hook 'text-mode-hook 'turn-on-flyspell)
 (remove-hook 'text-mode-hook 'turn-on-flyspell)
+(remove-hook 'text-mode-hook 'turn-on-auto-fill)
 
 ;; Use smart quotes everywhere!
 (add-hook 'text-mode-hook (lambda () (guillemets-mode 1)))
@@ -335,3 +337,12 @@ by using nxml's indentation rules."
     (make-directory project-path t)
     (message "Project created: %s" project-path))
   (find-file (concat project-root "README.org")))
+
+(require 'emms-setup)
+(emms-standard)
+(emms-default-players)
+(push 'emms-player-mplayer emms-player-list)
+
+(setq emms-source-file-default-directory "/var/storage/downloads/")
+
+(setq org-agenda-include-diary t)

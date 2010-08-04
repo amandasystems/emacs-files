@@ -66,6 +66,7 @@
 (setq send-mail-function 'smtpmail-send-it)
 
 (add-hook 'message-mode-hook (lambda () (visual-line-mode 1)))
+(add-hook 'message-mode-hook 'turn-off-auto-fill)
 (add-hook 'message-mode-hook (lambda () (guillemets-mode 1)))
 (add-hook 'message-mode-hook 'flyspell-mode)
 

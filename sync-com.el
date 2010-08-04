@@ -213,3 +213,8 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; End functions (meta) ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+(require 'ii-mode)
+(setf ii-irc-directory "/home/albin/irc/")
+(add-to-list 'auto-mode-alist `(,(concat ii-irc-directory ".*/out\\'") . ii-mode))
