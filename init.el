@@ -6,6 +6,55 @@
 
 (defvar repo-dir "/home/albin/projects/repos/emacs/")
 
+(require 'el-get)
+
+(setq el-get-sources
+      '((:name identica-mode
+            :type git
+            :url "http://git.savannah.gnu.org/cgit/identica-mode.git"
+            :features identica-mode)
+        (:name ii-mode
+            :type git
+            :url "http://github.com/krl/ii-mode.git"
+            :features: ii-mode)
+        (:name git-emacs
+               :type git
+               :url "git://github.com/tsgates/git-emacs.git"
+               :features git-emacs
+               :build ("make"))
+        (:name delicious-el
+            :type git
+            :url "http://git.wjsullivan.net/delicious-el.git")
+        (:name tea-time
+            :type git
+            :url "git://github.com/krick/tea-time.git")
+        (:name 37emacs
+               :type git
+               :url "git://github.com/hober/37emacs.git"
+               :build ("make"))
+;; (:name bbdb
+;;             :type git
+;;             :url "git://github.com/barak/BBDB.git"
+;;             :load-path ("./lisp" "./bits")
+;;             :info "texinfo"
+;;             :build ("./configure" "make"))
+;;      (:name yasnippet
+;;             :type git-svn
+;;             :url "http://yasnippet.googlecode.com/svn/trunk/")
+;;
+        ;;
+        (:name chuck-mode
+               :type http
+               :url "http://bitbucket.org/kcfelix/chuck-mode/raw/d713e29c4c25/chuck-mode.el")
+        (:name xml-rpc          :type elpa)
+        (:name bbdb             :type apt-get)
+        (:name org-mode         :type apt-get)
+        (:name debian-el        :type apt-get)
+        (:name w3m-el-snapshot  :type apt-get)
+        (:name emacs-goodies-el :type apt-get)))
+
+(el-get)
+
 ;; (add-to-list 'load-path (concat repo-dir "identica-mode"))
 ;; (add-to-list 'load-path (concat repo-dir "delicious-el"))
 ;; (add-to-list 'load-path (concat repo-dir "37emacs"))
@@ -345,51 +394,4 @@ by using nxml's indentation rules."
 
 (setq org-agenda-include-diary t)
 
-(require 'el-get)
-
-(setq el-get-sources
-      '((:name identica-mode
-            :type git
-            :url "http://git.savannah.gnu.org/cgit/identica-mode.git"
-            :features identica-mode)
-        (:name ii-mode
-            :type git
-            :url "http://github.com/krl/ii-mode.git"
-            :features: ii-mode)
-        (:name git-emacs
-               :type git
-               :url "git://github.com/tsgates/git-emacs.git"
-               :features git-emacs
-               :build ("make"))
-        (:name delicious-el
-            :type git
-            :url "http://git.wjsullivan.net/delicious-el.git")
-        (:name 37emacs
-               :type git
-               :url "git://github.com/hober/37emacs.git"
-               :build ("make"))
-        
-;; (:name bbdb
-;;             :type git
-;;             :url "git://github.com/barak/BBDB.git"
-;;             :load-path ("./lisp" "./bits")
-;;             :info "texinfo"
-;;             :build ("./configure" "make"))
-;;      
-;;      
-;;      (:name vkill
-;;             :type http
-;;             :url "http://www.splode.com/~friedman/software/emacs-lisp/src/vkill.el"
-;;             :features vkill)
-;;      
-;;      (:name yasnippet
-;;             :type git-svn
-;;             :url "http://yasnippet.googlecode.com/svn/trunk/")
-;;
-;;      
-;;      (:name asciidoc         :type elpa)
-        (:name bbdb    :type apt-get)
-        (:name org-mode    :type apt-get)
-        (:name emacs-goodies-el :type apt-get)))
-
-(el-get)
+(require 'chuck-mode)
