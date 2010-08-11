@@ -315,9 +315,9 @@ by using nxml's indentation rules."
   (lambda ()
     (ibuffer-switch-to-saved-filter-groups "default")))
 
-;; Org-mode:
-;; Add all files ending with ".org" in ~/org/ to agenda, do not sort them.
-(setq org-agenda-files (directory-files "~/org" t ".*\.org" t))
+
+(setq org-agenda-files
+      '("/home/albin/org/todo.org" "/home/albin/org/utbildning.org" "/home/albin/org/projekt.org" ))
 
 
 ;; Bind a yank-menu to C-cy:
@@ -395,3 +395,67 @@ by using nxml's indentation rules."
 (setq org-agenda-include-diary t)
 
 (require 'chuck-mode)
+
+;; Numbered links for w3m:
+;; courtsey of http://emacs.wordpress.com/2008/04/12/numbered-links-in-emacs-w3m/,
+(require 'w3m-lnum)
+(defun jao-w3m-go-to-linknum ()
+  "Turn on link numbers and ask for one to go to."
+  (interactive)
+  (let ((active w3m-link-numbering-mode))
+    (when (not active) (w3m-link-numbering-mode))
+    (unwind-protect
+        (w3m-move-numbered-anchor (read-number "Anchor number: "))
+      (when (not active) (w3m-link-numbering-mode)))))
+
+(define-key w3m-mode-map "f" 'jao-w3m-go-to-linknum)
+;; End numbered links
+
+
+(define-key mode-specific-map [?a] 'org-agenda)
+
+(eval-after-load "org"
+  '(progn
+     (define-prefix-command 'org-todo-state-map)
+
+     (define-key org-mode-map "\C-cx" 'org-todo-state-map)
+
+     (define-key org-todo-state-map "x"
+       #'(lambda nil (interactive) (org-todo "CANCELLED")))
+     (define-key org-todo-state-map "d"
+       #'(lambda nil (interactive) (org-todo "DONE")))
+     (define-key org-todo-state-map "f"
+       #'(lambda nil (interactive) (org-todo "DEFERRED")))
+     (define-key org-todo-state-map "l"
+       #'(lambda nil (interactive) (org-todo "DELEGATED")))
+     (define-key org-todo-state-map "s"
+       #'(lambda nil (interactive) (org-todo "STARTED")))
+     (define-key org-todo-state-map "w"
+       #'(lambda nil (interactive) (org-todo "WAITING")))
+
+     (define-key org-agenda-mode-map "\C-n" 'next-line)
+     (define-key org-agenda-keymap "\C-n" 'next-line)
+     (define-key org-agenda-mode-map "\C-p" 'previous-line)
+     (define-key org-agenda-keymap "\C-p" 'previous-line)))
+
+(require 'remember)
+
+(add-hook 'remember-mode-hook 'org-remember-apply-template)
+
+(define-key global-map [(control meta ?r)] 'remember)
+
+(custom-set-variables
+ '(org-default-notes-file "~/org/notes.org")
+ '(org-agenda-ndays 7)
+ '(org-deadline-warning-days 14)
+ '(org-agenda-show-all-dates t)
+ '(org-agenda-skip-deadline-if-done t)
+ '(org-agenda-skip-scheduled-if-done t)
+ '(org-agenda-start-on-weekday nil)
+ '(org-reverse-note-order t)
+ '(org-remember-store-without-prompt t)
+ '(org-remember-templates
+   (quote ((116 "* TODO %?\n  %u" "~/org/todo.org" "Tasks")
+           (110 "* %u %?" "~/org/notes.org" "Notes"))))
+ '(remember-annotation-functions (quote (org-remember-annotation)))
+ '(remember-handler-functions (quote (org-remember-handler))))
