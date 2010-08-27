@@ -1,10 +1,7 @@
-(require 'w3m-load)
-
 ;;(add-to-list 'load-path "~/projects/repos/identica-mode/")
 ;;(add-to-list 'load-path "~/projects/repos/lagn/") ;; Seems dead.
 ;;(add-to-list 'load-path "~/projects/repos/git-emacs/")
-
-(defvar repo-dir "/home/albin/projects/repos/emacs/")
+;;(defvar repo-dir "/home/albin/projects/repos/emacs/")
 
 (require 'el-get)
 
@@ -55,12 +52,7 @@
 
 (el-get)
 
-;; (add-to-list 'load-path (concat repo-dir "identica-mode"))
-;; (add-to-list 'load-path (concat repo-dir "delicious-el"))
-;; (add-to-list 'load-path (concat repo-dir "37emacs"))
-;; (add-to-list 'load-path (concat repo-dir "git-emacs"))
-;; (add-to-list 'load-path (concat repo-dir "ii-mode"))
-;;(add-to-list 'load-path (concat repo-dir "weblogger-el"))
+(require 'w3m-load)
 
 ;; clojure-mode
 ;; (add-to-list 'load-path  (concat repo-dir "clojure-mode"))
@@ -77,12 +69,12 @@
 ;;(require 'swank-clojure-autoload)
 
 ;; slime
-(eval-after-load "slime" 
-  '(progn (slime-setup '(slime-repl))))
+;; (eval-after-load "slime" 
+;;   '(progn (slime-setup '(slime-repl))))
 
-(add-to-list 'load-path (concat repo-dir "slime"))
-(require 'slime)
-(slime-setup) 
+;; (add-to-list 'load-path (concat repo-dir "slime"))
+;; (require 'slime)
+;; (slime-setup) 
 
 
 
@@ -137,8 +129,13 @@
  '(w3m-use-toolbar nil))
 
 ;; Browse with emacs-w3m:
-(setq browse-url-browser-function 'w3m-browse-url
-      browse-url-new-window-flag t)
+;; (setq browse-url-browser-function 'w3m-browse-url
+;;       browse-url-new-window-flag t)
+
+;; Browse with Conkeror:
+(setq browse-url-browser-function 'browse-url-generic
+      browse-url-generic-program "/usr/bin/conkeror")
+
 
 (defun hgr-post ()
   (interactive)
@@ -157,6 +154,10 @@
 ;;(setq calendar-date-style 'europeian)
 (require 'calendar)
 (calendar-set-date-style 'european)
+
+
+;; Do not show any holidays:
+(setq calendar-holidays nil)
 
 ;; Swedish calendar:
 (setq calendar-week-start-day 1
@@ -315,7 +316,6 @@ by using nxml's indentation rules."
   (lambda ()
     (ibuffer-switch-to-saved-filter-groups "default")))
 
-
 (setq org-agenda-files
       '("/home/albin/org/todo.org" "/home/albin/org/utbildning.org" "/home/albin/org/projekt.org" ))
 
@@ -397,18 +397,21 @@ by using nxml's indentation rules."
 (require 'chuck-mode)
 
 ;; Numbered links for w3m:
-;; courtsey of http://emacs.wordpress.com/2008/04/12/numbered-links-in-emacs-w3m/,
+;; courtesy of http://emacs.wordpress.com/2008/04/12/numbered-links-in-emacs-w3m/,
 (require 'w3m-lnum)
-(defun jao-w3m-go-to-linknum ()
-  "Turn on link numbers and ask for one to go to."
-  (interactive)
-  (let ((active w3m-link-numbering-mode))
-    (when (not active) (w3m-link-numbering-mode))
-    (unwind-protect
-        (w3m-move-numbered-anchor (read-number "Anchor number: "))
-      (when (not active) (w3m-link-numbering-mode)))))
+(require 'w3m)
+;; (defun jao-w3m-go-to-linknum ()
+;;   "Turn on link numbers and ask for one to go to."
+;;   (interactive)
+;;   (let ((active w3m-link-numbering-mode))
+;;     (when (not active) (w3m-link-numbering-mode))
+;;     (unwind-protect
+;;         (w3m-move-numbered-anchor (read-number "Anchor number: "))
+;;       (when (not active) (w3m-link-numbering-mode)))))
 
-(define-key w3m-mode-map "f" 'jao-w3m-go-to-linknum)
+;;(define-key w3m-mode-map "f" 'jao-w3m-go-to-linknum)
+(add-hook 'w3m-mode-hook (lambda () (let ((active w3m-link-numbering-mode))
+                                 (when (not active) (w3m-link-numbering-mode)))))
 ;; End numbered links
 
 
@@ -431,12 +434,7 @@ by using nxml's indentation rules."
      (define-key org-todo-state-map "s"
        #'(lambda nil (interactive) (org-todo "STARTED")))
      (define-key org-todo-state-map "w"
-       #'(lambda nil (interactive) (org-todo "WAITING")))
-
-     (define-key org-agenda-mode-map "\C-n" 'next-line)
-     (define-key org-agenda-keymap "\C-n" 'next-line)
-     (define-key org-agenda-mode-map "\C-p" 'previous-line)
-     (define-key org-agenda-keymap "\C-p" 'previous-line)))
+       #'(lambda nil (interactive) (org-todo "WAITING")))))
 
 (require 'remember)
 

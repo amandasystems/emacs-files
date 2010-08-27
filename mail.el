@@ -4,8 +4,27 @@
 
 (setq mm-text-html-renderer 'w3m) ;; Render html mail with w3m
 
-(require 'secrets) ;; SMTP auth info etc.
 (require 'mime-w3m)
+
+(setq user-mail-address "albin@eval.nu"
+      user-full-name "Albin Stjerna")
+
+;; SMTP
+
+(setq smtpmail-starttls-credentials '(("smtp.gmail.com" 587 nil nil))
+      smtpmail-auth-credentials (expand-file-name "~/.authinfo")
+      smtpmail-smtp-server "smtp.gmail.com"
+      smtpmail-default-smtp-server "smtp.gmail.com"
+      smtpmail-smtp-service 587
+      smtpmail-debug-info nil ; change to nil once it works
+      smtpmail-debug-verb nil)
+
+(require 'smtpmail)
+(setq message-send-mail-function 'smtpmail-send-it)
+
+(require 'starttls)
+
+;; END SMTP
 
 (setq mime-w3m-safe-url-regexp nil) ;; Don't bother.
 (setq mime-w3m-display-inline-images t) ;; Yes, do render inline images
