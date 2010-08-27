@@ -457,3 +457,8 @@ by using nxml's indentation rules."
            (110 "* %u %?" "~/org/notes.org" "Notes"))))
  '(remember-annotation-functions (quote (org-remember-annotation)))
  '(remember-handler-functions (quote (org-remember-handler))))
+
+(type-break-mode)
+
+(set-default-font "DejaVu Sans Mono-12")
+

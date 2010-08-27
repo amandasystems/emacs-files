@@ -99,3 +99,36 @@
                                ("local" . "tag:local and tag:inbox")
                                ("list" . "tag:list and tag:inbox")
                                ("todo" . "tag:todo")))
+
+
+
+;;(execute-kbd-macro (symbol-function 'notmuch-todo)) ;; bind this to
+;;T i notmuch-search-mode-map
+
+(defun notmuch-search-todo ()
+  (interactive)
+  (notmuch-search-add-tag "todo")
+  (notmuch-search-archive-thread))
+
+(defun notmuch-search-untodo ()
+  (interactive)
+  (notmuch-search-remove-tag "todo")
+  (notmuch-search-archive-thread))
+
+(defun notmuch-show-todo ()
+  (interactive)
+  (notmuch-show-add-tag "todo")
+  (notmuch-show-archive-thread))
+
+(defun notmuch-show-untodo ()
+  (interactive)
+  (notmuch-show-remove-tag "todo")
+  (notmuch-show-archive-thread))
+
+
+(define-key notmuch-search-mode-map "T" 'notmuch-search-todo)
+(define-key notmuch-search-mode-map "U" 'notmuch-search-untodo)
+(define-key notmuch-show-mode-map "T" 'notmuch-show-todo)
+(define-key notmuch-show-mode-map "U" 'notmuch-show-untodo)
+
+
