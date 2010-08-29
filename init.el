@@ -445,7 +445,7 @@ by using nxml's indentation rules."
 (custom-set-variables
  '(org-default-notes-file "~/org/notes.org")
  '(org-agenda-ndays 7)
- '(org-deadline-warning-days 14)
+ '(org-deadline-warning-days 0)
  '(org-agenda-show-all-dates t)
  '(org-agenda-skip-deadline-if-done t)
  '(org-agenda-skip-scheduled-if-done t)
