@@ -14,6 +14,10 @@
             :type git
             :url "http://github.com/krl/ii-mode.git"
             :features: ii-mode)
+        (:name notmorg
+               :type git
+               :url "http://github.com/krl/notmorg.git"
+               :features notmorg)
         (:name git-emacs
                :type git
                :url "git://github.com/tsgates/git-emacs.git"
@@ -317,7 +321,7 @@ by using nxml's indentation rules."
     (ibuffer-switch-to-saved-filter-groups "default")))
 
 (setq org-agenda-files
-      '("/home/albin/org/todo.org" "/home/albin/org/utbildning.org" "/home/albin/org/projekt.org" ))
+      '("/home/albin/org/todo.org" "/home/albin/org/utbildning.org" "/home/albin/org/projekt.org" "/home/albin/org/notmorg.org" ))
 
 
 ;; Bind a yank-menu to C-cy:
@@ -462,3 +466,5 @@ by using nxml's indentation rules."
 
 (set-default-font "DejaVu Sans Mono-12")
 
+(add-hook 'org-finalize-agenda-hook (lambda ()
+                                      (notmorg-write-file "/home/albin/org/notmorg.org" '("todo" t) "sched")))
