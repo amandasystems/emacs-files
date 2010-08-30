@@ -23,30 +23,22 @@
                :url "git://github.com/tsgates/git-emacs.git"
                :features git-emacs
                :build ("make"))
-        (:name delicious-el
-            :type git
-            :url "http://git.wjsullivan.net/delicious-el.git")
         (:name tea-time
             :type git
             :url "git://github.com/krick/tea-time.git")
         (:name 37emacs
                :type git
                :url "git://github.com/hober/37emacs.git"
-               :build ("make"))
-;; (:name bbdb
-;;             :type git
-;;             :url "git://github.com/barak/BBDB.git"
-;;             :load-path ("./lisp" "./bits")
-;;             :info "texinfo"
-;;             :build ("./configure" "make"))
-;;      (:name yasnippet
-;;             :type git-svn
-;;             :url "http://yasnippet.googlecode.com/svn/trunk/")
-;;
-        ;;
-        (:name chuck-mode
-               :type http
-               :url "http://bitbucket.org/kcfelix/chuck-mode/raw/d713e29c4c25/chuck-mode.el")
+               :build ("make")
+               :features rest-api
+               :load  ("./rest-api.el"))
+        (:name delicious-el
+               :type git
+               :url "http://git.wjsullivan.net/delicious-el.git"
+               :features delicious)
+        ;; (:name chuck-mode
+        ;;        :type http
+        ;;        :url "http://bitbucket.org/kcfelix/chuck-mode/raw/d713e29c4c25/chuck-mode.el")
         (:name xml-rpc          :type elpa)
         (:name bbdb             :type apt-get)
         (:name org-mode         :type apt-get)
@@ -57,31 +49,6 @@
 (el-get)
 
 (require 'w3m-load)
-
-;; clojure-mode
-;; (add-to-list 'load-path  (concat repo-dir "clojure-mode"))
-;; (require 'clojure-mode)
-
-;; swank-clojure
-;; (add-to-list 'load-path (concat repo-dir "swank-clojure/src/emacs"))
-
-;; (setq swank-clojure-jar-path "~/.clojure/clojure.jar"
-;;       swank-clojure-extra-classpaths (list
-;; 				      (concat repo-dir "swank-clojure/src/main/clojure")
-;; 				      "~/.clojure/clojure-contrib.jar"))
-
-;;(require 'swank-clojure-autoload)
-
-;; slime
-;; (eval-after-load "slime" 
-;;   '(progn (slime-setup '(slime-repl))))
-
-;; (add-to-list 'load-path (concat repo-dir "slime"))
-;; (require 'slime)
-;; (slime-setup) 
-
-
-
 (require 'midnight)
 (require 'secrets)
 
@@ -130,7 +97,21 @@
  '(w3m-use-cookies t)
  '(w3m-use-filter nil)
  '(w3m-use-title-buffer-name t)
- '(w3m-use-toolbar nil))
+ '(w3m-use-toolbar nil)
+ '(org-default-notes-file "~/org/notes.org")
+ '(org-agenda-ndays 7)
+ '(org-deadline-warning-days 0)
+ '(org-agenda-show-all-dates t)
+ '(org-agenda-skip-deadline-if-done t)
+ '(org-agenda-skip-scheduled-if-done t)
+ '(org-agenda-start-on-weekday nil)
+ '(org-reverse-note-order t)
+ '(org-remember-store-without-prompt t)
+ '(org-remember-templates
+   (quote ((116 "* TODO %?\n  %u" "~/org/todo.org" "Tasks")
+           (110 "* %u %?" "~/org/notes.org" "Notes"))))
+ '(remember-annotation-functions (quote (org-remember-annotation)))
+ '(remember-handler-functions (quote (org-remember-handler))))
 
 ;; Browse with emacs-w3m:
 ;; (setq browse-url-browser-function 'w3m-browse-url
@@ -144,12 +125,6 @@
 (defun hgr-post ()
   (interactive)
   (browse-url "http://handgranat.org/posta/Tussilago/"))
-
-;; WORD:
-;; (autoload 'no-word "no-word" "word to txt")
-;; (add-to-list 'auto-mode-alist '("\\.doc\\'" . no-word))
-
-;; (setq inferior-lisp-program "sbcl") 
 
 ;;;;;;;;;;;;;;;;;;;;;;;
 ;; Calendar settings ;;
@@ -196,20 +171,15 @@
 ;; End of calendar settings ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(require 'delicious)
+;; (require 'delicious)
 
 (setq auto-mode-alist
    (cons '("\\.mdwn" . markdown-mode) auto-mode-alist))
 
 (require 'tramp)
 (tramp-parse-shosts "~/.ssh/known_hosts")
-
 (require 'smart-quotes)
-
-;;; Identi.ca mode
 (require 'identica-mode)
-;; End Identi.ca mode
-
 (require 'keybindings)
 (require 'git-emacs)
 
@@ -329,15 +299,13 @@ by using nxml's indentation rules."
    (interactive)
    (popup-menu 'yank-menu)))
 
-
-(server-start)
-
 ;; compensate for (add-hook 'text-mode-hook 'turn-on-flyspell)
 (remove-hook 'text-mode-hook 'turn-on-flyspell)
 (remove-hook 'text-mode-hook 'turn-on-auto-fill)
 
 ;; Use smart quotes everywhere!
-(add-hook 'text-mode-hook (lambda () (guillemets-mode 1)))
+;; On a second thought -- don't
+;;(add-hook 'text-mode-hook (lambda () (guillemets-mode 1)))
 
 (setq org-startup-indented t)
 
@@ -398,7 +366,7 @@ by using nxml's indentation rules."
 
 (setq org-agenda-include-diary t)
 
-(require 'chuck-mode)
+;;(require 'chuck-mode)
 
 ;; Numbered links for w3m:
 ;; courtesy of http://emacs.wordpress.com/2008/04/12/numbered-links-in-emacs-w3m/,
@@ -440,31 +408,13 @@ by using nxml's indentation rules."
      (define-key org-todo-state-map "w"
        #'(lambda nil (interactive) (org-todo "WAITING")))))
 
-(require 'remember)
+;; (require 'remember)
+;; (add-hook 'remember-mode-hook 'org-remember-apply-template)
+;; (define-key global-map [(control meta ?r)] 'remember)
 
-(add-hook 'remember-mode-hook 'org-remember-apply-template)
-
-(define-key global-map [(control meta ?r)] 'remember)
-
-(custom-set-variables
- '(org-default-notes-file "~/org/notes.org")
- '(org-agenda-ndays 7)
- '(org-deadline-warning-days 0)
- '(org-agenda-show-all-dates t)
- '(org-agenda-skip-deadline-if-done t)
- '(org-agenda-skip-scheduled-if-done t)
- '(org-agenda-start-on-weekday nil)
- '(org-reverse-note-order t)
- '(org-remember-store-without-prompt t)
- '(org-remember-templates
-   (quote ((116 "* TODO %?\n  %u" "~/org/todo.org" "Tasks")
-           (110 "* %u %?" "~/org/notes.org" "Notes"))))
- '(remember-annotation-functions (quote (org-remember-annotation)))
- '(remember-handler-functions (quote (org-remember-handler))))
 
 (type-break-mode)
 
 (set-default-font "DejaVu Sans Mono-12")
 
-(add-hook 'org-finalize-agenda-hook (lambda ()
-                                      (notmorg-write-file "/home/albin/org/notmorg.org" '("todo" t) "sched")))
+(server-start)

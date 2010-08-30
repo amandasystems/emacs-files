@@ -50,19 +50,19 @@
 ;; Begin ERC code ;;
 ;;;;;;;;;;;;;;;;;;;;
 
-(add-to-list 'load-path "~/projects/repos/erc/")
-(require 'erc)
-(require 'erc-stamp)
-(require 'erc-bbdb)
-(require 'erc-button)
-(require 'erc-fill)
-(require 'erc-match)
-(require 'erc-netsplit)
-(require 'erc-networks)
-(require 'erc-ring)
-(require 'erc-stamp)
-(require 'erc-track)
-(require 'erc-imenu)
+;; (add-to-list 'load-path "~/projects/repos/erc/")
+;; (require 'erc)
+;; (require 'erc-stamp)
+;; (require 'erc-bbdb)
+;; (require 'erc-button)
+;; (require 'erc-fill)
+;; (require 'erc-match)
+;; (require 'erc-netsplit)
+;; (require 'erc-networks)
+;; (require 'erc-ring)
+;; (require 'erc-stamp)
+;; (require 'erc-track)
+;; (require 'erc-imenu)
 
 
 ;; Code to connect and identify with my ZNC bouncer
@@ -215,6 +215,17 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
-(require 'ii-mode)
-(setf ii-irc-directory "/home/albin/irc/")
-(add-to-list 'auto-mode-alist `(,(concat ii-irc-directory ".*/out\\'") . ii-mode))
+;; (require 'ii-mode)
+;; (setf ii-irc-directory "/home/albin/irc/")
+;; (add-to-list 'auto-mode-alist `(,(concat ii-irc-directory ".*/out\\'") . ii-mode))
+
+;; (set-face-attribute 'ii-face-nick nil :foreground "chocolate2")
+;; (set-face-attribute 'ii-face-date nil :foreground "#999")
+;; (set-face-attribute 'ii-face-time nil :foreground "#bbb")
+;; (set-face-attribute 'ii-face-give-voice nil :foreground "#0ff")
+;; (set-face-attribute 'ii-face-take-voice nil :foreground "#f0f")
+;; (set-face-attribute 'ii-face-shadow nil :foreground "#ccc")
+;; (set-face-attribute 'ii-face-prompt nil :foreground "#0f0")
+;; (set-face-attribute 'ii-face-msg nil :foreground "#0000")
+;; (set-face-attribute 'ii-face-bold nil :bold t)
+;; (set-face-attribute 'ii-face-underline nil :underline t)

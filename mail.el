@@ -131,4 +131,6 @@
 (define-key notmuch-show-mode-map "T" 'notmuch-show-todo)
 (define-key notmuch-show-mode-map "U" 'notmuch-show-untodo)
 
-
+;; Integrate notmuch with org-mode's agenda view:
+(add-hook 'org-finalize-agenda-hook (lambda ()
+                                      (notmorg-write-file "/home/albin/org/notmorg.org" '("todo" t) "sched")))
