@@ -1,8 +1,6 @@
-;;(add-to-list 'load-path "~/projects/repos/identica-mode/")
-;;(add-to-list 'load-path "~/projects/repos/lagn/") ;; Seems dead.
-;;(add-to-list 'load-path "~/projects/repos/git-emacs/")
-;;(defvar repo-dir "/home/albin/projects/repos/emacs/")
-
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Fetch code using el-get ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (require 'el-get)
 
 (setq el-get-sources
@@ -40,9 +38,6 @@
                :type git
                :url "http://git.wjsullivan.net/delicious-el.git"
                :features delicious)
-        ;; (:name chuck-mode
-        ;;        :type http
-        ;;        :url "http://bitbucket.org/kcfelix/chuck-mode/raw/d713e29c4c25/chuck-mode.el")
         (:name xml-rpc          :type elpa)
         (:name bbdb             :type apt-get)
         (:name org-mode         :type apt-get)
@@ -52,9 +47,13 @@
 
 (el-get)
 
+;;;;;;;;;;;;;;;;;;;;;;;;
+;; End of el-get code ;;
+;;;;;;;;;;;;;;;;;;;;;;;;
+
 (require 'w3m-load)
 (require 'midnight)
-;;(require 'secrets)
+
 
 (setq printer-name "laserjet")
 
@@ -125,18 +124,12 @@
 (setq browse-url-browser-function 'browse-url-generic
       browse-url-generic-program "/usr/bin/conkeror")
 
-
-(defun hgr-post ()
-  (interactive)
-  (browse-url "http://handgranat.org/posta/Tussilago/"))
-
 ;;;;;;;;;;;;;;;;;;;;;;;
 ;; Calendar settings ;;
 ;;;;;;;;;;;;;;;;;;;;;;;
 
 (require 'calendar)
 (calendar-set-date-style 'european)
-
 
 ;; Do not show any holidays:
 (setq calendar-holidays nil)
@@ -174,15 +167,12 @@
 ;; End of calendar settings ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; (require 'delicious)
-
 (setq auto-mode-alist
    (cons '("\\.mdwn" . markdown-mode) auto-mode-alist))
 
 (require 'tramp)
 (tramp-parse-shosts "~/.ssh/known_hosts")
 (require 'smart-quotes)
-;;(require 'keybindings)
 
 (defun pretty-print-xml-region (begin end)
   "Pretty format XML markup in region. You need to have nxml-mode
@@ -291,8 +281,20 @@ by using nxml's indentation rules."
   (lambda ()
     (ibuffer-switch-to-saved-filter-groups "default")))
 
-(setq org-agenda-files
-      '("/home/albin/org/todo.org" "/home/albin/org/projekt.org" "/home/albin/org/notmorg.org" ))
+;;;;;;;;;;;;;;;;
+;; Org config ;;
+;;;;;;;;;;;;;;;;
+
+(setq org-agenda-files '("/home/albin/org/todo.org"
+                         "/home/albin/org/projekt.org"
+                         "/home/albin/org/notmorg.org"))
+
+(setq org-agenda-custom-commands
+      '(("w" todo "WAITING" nil)
+        ("n" todo "NEXT" nil)))
+
+(setq org-agenda-include-diary t)
+(define-key mode-specific-map [?a] 'org-agenda)
 
 (setq org-todo-keywords (quote ((sequence "TODO" "NEXT" "|" "DONE")
                                 (sequence "WAITING" "SOMEDAY" "|" "CANCELLED"))))
@@ -304,25 +306,6 @@ by using nxml's indentation rules."
               ("WAITING"   :foreground "violet"       :weight bold)
               ("SOMEDAY"   :foreground "goldenrod"    :weight bold)
               ("CANCELLED" :foreground "orangered"    :weight bold))))
-
-(setq org-agenda-custom-commands
-      '(("w" todo "WAITING" nil)
-        ("n" todo "NEXT" nil)))
-
-;; Bind a yank-menu to C-cy:
-(global-set-key "\C-cy" '(lambda ()
-   (interactive)
-   (popup-menu 'yank-menu)))
-
-;; compensate for (add-hook 'text-mode-hook 'turn-on-flyspell)
-(remove-hook 'text-mode-hook 'turn-on-flyspell)
-(remove-hook 'text-mode-hook 'turn-on-auto-fill)
-
-;; Use smart quotes everywhere!
-;; On a second thought -- don't
-;;(add-hook 'text-mode-hook (lambda () (guillemets-mode 1)))
-
-(setq org-startup-indented t)
 
 (add-hook 'org-mode-hook (lambda () (visual-line-mode t)))
 
@@ -342,6 +325,27 @@ by using nxml's indentation rules."
   (insert " "))
 
 (global-set-key (kbd "C-c j") 'start-journal-entry)
+
+;;;;;;;;;;;;;;;;;;;;
+;; End Org config ;;
+;;;;;;;;;;;;;;;;;;;;
+
+;; Bind a yank-menu to C-cy:
+(global-set-key "\C-cy" '(lambda ()
+   (interactive)
+   (popup-menu 'yank-menu)))
+
+;; compensate for (add-hook 'text-mode-hook 'turn-on-flyspell)
+(remove-hook 'text-mode-hook 'turn-on-flyspell)
+(remove-hook 'text-mode-hook 'turn-on-auto-fill)
+
+;; Use smart quotes everywhere!
+;; On a second thought -- don't
+;;(add-hook 'text-mode-hook (lambda () (guillemets-mode 1)))
+
+
+
+
 
 (require 'eshell)
 
@@ -379,7 +383,7 @@ by using nxml's indentation rules."
 
 (setq emms-source-file-default-directory "/var/storage/downloads/")
 
-(setq org-agenda-include-diary t)
+
 
 ;; Numbered links for w3m:
 ;; courtesy of http://emacs.wordpress.com/2008/04/12/numbered-links-in-emacs-w3m/,
@@ -390,7 +394,7 @@ by using nxml's indentation rules."
                                  (when (not active) (w3m-link-numbering-mode)))))
 ;; End numbered links
 
-(define-key mode-specific-map [?a] 'org-agenda)
+
 
 (type-break-mode)
 
