@@ -384,32 +384,19 @@ by using nxml's indentation rules."
 
 (setq org-agenda-include-diary t)
 
-;;(require 'chuck-mode)
-
 ;; Numbered links for w3m:
 ;; courtesy of http://emacs.wordpress.com/2008/04/12/numbered-links-in-emacs-w3m/,
 (require 'w3m-lnum)
 (require 'w3m)
-;; (defun jao-w3m-go-to-linknum ()
-;;   "Turn on link numbers and ask for one to go to."
-;;   (interactive)
-;;   (let ((active w3m-link-numbering-mode))
-;;     (when (not active) (w3m-link-numbering-mode))
-;;     (unwind-protect
-;;         (w3m-move-numbered-anchor (read-number "Anchor number: "))
-;;       (when (not active) (w3m-link-numbering-mode)))))
 
-;;(define-key w3m-mode-map "f" 'jao-w3m-go-to-linknum)
 (add-hook 'w3m-mode-hook (lambda () (let ((active w3m-link-numbering-mode))
                                  (when (not active) (w3m-link-numbering-mode)))))
 ;; End numbered links
 
-
 (define-key mode-specific-map [?a] 'org-agenda)
-
 
 (type-break-mode)
 
-(set-default-font "DejaVu Sans Mono-12")
+(set-frame-font "DejaVu Sans Mono-12")
 
 (server-start)
