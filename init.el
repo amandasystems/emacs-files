@@ -26,6 +26,10 @@
         (:name tea-time
             :type git
             :url "git://github.com/krick/tea-time.git")
+        (:name tach
+            :type git
+            :url "http://jkr.acm.jhu.edu/git/tach.git"
+            :features tach)
         (:name 37emacs
                :type git
                :url "git://github.com/hober/37emacs.git"
@@ -50,7 +54,7 @@
 
 (require 'w3m-load)
 (require 'midnight)
-(require 'secrets)
+;;(require 'secrets)
 
 (setq printer-name "laserjet")
 
@@ -291,8 +295,22 @@ by using nxml's indentation rules."
     (ibuffer-switch-to-saved-filter-groups "default")))
 
 (setq org-agenda-files
-      '("/home/albin/org/todo.org" "/home/albin/org/utbildning.org" "/home/albin/org/projekt.org" "/home/albin/org/notmorg.org" ))
+      '("/home/albin/org/todo.org" "/home/albin/org/projekt.org" "/home/albin/org/notmorg.org" ))
 
+(setq org-todo-keywords (quote ((sequence "TODO" "NEXT" "|" "DONE")
+                                (sequence "WAITING" "SOMEDAY" "|" "CANCELLED"))))
+
+(setq org-todo-keyword-faces
+      (quote (("TODO"      :foreground "red"          :weight bold)
+              ("NEXT"      :foreground "blue"         :weight bold)
+              ("DONE"      :foreground "forest green" :weight bold)
+              ("WAITING"   :foreground "violet"       :weight bold)
+              ("SOMEDAY"   :foreground "goldenrod"    :weight bold)
+              ("CANCELLED" :foreground "orangered"    :weight bold))))
+
+(setq org-agenda-custom-commands
+      '(("w" todo "WAITING" nil)
+        ("n" todo "NEXT" nil)))
 
 ;; Bind a yank-menu to C-cy:
 (global-set-key "\C-cy" '(lambda ()
@@ -388,29 +406,6 @@ by using nxml's indentation rules."
 
 
 (define-key mode-specific-map [?a] 'org-agenda)
-
-(eval-after-load "org"
-  '(progn
-     (define-prefix-command 'org-todo-state-map)
-
-     (define-key org-mode-map "\C-cx" 'org-todo-state-map)
-
-     (define-key org-todo-state-map "x"
-       #'(lambda nil (interactive) (org-todo "CANCELLED")))
-     (define-key org-todo-state-map "d"
-       #'(lambda nil (interactive) (org-todo "DONE")))
-     (define-key org-todo-state-map "f"
-       #'(lambda nil (interactive) (org-todo "DEFERRED")))
-     (define-key org-todo-state-map "l"
-       #'(lambda nil (interactive) (org-todo "DELEGATED")))
-     (define-key org-todo-state-map "s"
-       #'(lambda nil (interactive) (org-todo "STARTED")))
-     (define-key org-todo-state-map "w"
-       #'(lambda nil (interactive) (org-todo "WAITING")))))
-
-;; (require 'remember)
-;; (add-hook 'remember-mode-hook 'org-remember-apply-template)
-;; (define-key global-map [(control meta ?r)] 'remember)
 
 
 (type-break-mode)
