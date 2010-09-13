@@ -287,7 +287,8 @@ by using nxml's indentation rules."
 
 (setq org-agenda-files '("/home/albin/org/todo.org"
                          "/home/albin/org/projekt.org"
-                         "/home/albin/org/notmorg.org"))
+                         "/home/albin/org/notmorg.org"
+                         "/home/albin/org/skolan.org"))
 
 (setq org-agenda-custom-commands
       '(("w" todo "WAITING" nil)
@@ -394,12 +395,9 @@ by using nxml's indentation rules."
                                  (when (not active) (w3m-link-numbering-mode)))))
 ;; End numbered links
 
-
-
 (type-break-mode)
 
 (set-frame-font "DejaVu Sans Mono-12")
-
 
 ;; Use C-x C-m for M-x:
 (global-set-key "\C-x\C-m" 'execute-extended-command)
