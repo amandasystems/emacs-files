@@ -13,7 +13,7 @@
 (require 'jabber)
 
 ;;(add-to-list 'load-path "~/projects/repos/emacs-jabber/")
-(eval-after-load 'jabber '(require 'jabber-libnotify))
+;; (eval-after-load 'jabber '(require 'jabber-libnotify))
 
 (eval-after-load 'jabber
   '(jabber-keepalive-start))
