@@ -66,59 +66,59 @@
 
 
 ;; Code to connect and identify with my ZNC bouncer
-(defun irc-bnc ()
-  "Connect to ZNC bouncer via ERC, specified by variable znc-accounts"
-  (interactive)
-  (dolist (account znc-accounts)
-    (let ((account-name (car account))
-          (account-plist (cadr account)))
-      (cond ((plist-get account-plist 'ssl)
-             (erc-tls ;; replace with erc-ssl
-              :server (plist-get account-plist 'hostname)
-              :port (plist-get account-plist 'port)
-              :nick (plist-get account-plist 'username)
-              :password (format "%s:%s" 
-                                (plist-get account-plist 'username) 
-                                (plist-get account-plist 'password))))
-            (t 
-             (erc
-              :server (plist-get account-plist 'hostname)
-              :port (plist-get account-plist 'port)
-              :nick (plist-get account-plist 'username)
-              :password (format "%s:%s" 
-                                (plist-get account-plist 'username) 
-                                (plist-get account-plist 'password))))))))
+;; (defun irc-bnc ()
+;;   "Connect to ZNC bouncer via ERC, specified by variable znc-accounts"
+;;   (interactive)
+;;   (dolist (account znc-accounts)
+;;     (let ((account-name (car account))
+;;           (account-plist (cadr account)))
+;;       (cond ((plist-get account-plist 'ssl)
+;;              (erc-tls ;; replace with erc-ssl
+;;               :server (plist-get account-plist 'hostname)
+;;               :port (plist-get account-plist 'port)
+;;               :nick (plist-get account-plist 'username)
+;;               :password (format "%s:%s" 
+;;                                 (plist-get account-plist 'username) 
+;;                                 (plist-get account-plist 'password))))
+;;             (t 
+;;              (erc
+;;               :server (plist-get account-plist 'hostname)
+;;               :port (plist-get account-plist 'port)
+;;               :nick (plist-get account-plist 'username)
+;;               :password (format "%s:%s" 
+;;                                 (plist-get account-plist 'username) 
+;;                                 (plist-get account-plist 'password))))))))
      
-(setq erc-auto-query 'window-noselect)
+;; (setq erc-auto-query 'window-noselect)
 
-;;Pretty timestamps (defunct?)
-(setq erc-insert-timestamp-function 'erc-insert-timestamp-left
-      erc-timestamp-format "(%H:%M:%S) "
-      erc-timestamp-only-if-changed-flag nil
-      erc-hide-timestamps nil)
+;; ;;Pretty timestamps (defunct?)
+;; (setq erc-insert-timestamp-function 'erc-insert-timestamp-left
+;;       erc-timestamp-format "(%H:%M:%S) "
+;;       erc-timestamp-only-if-changed-flag nil
+;;       erc-hide-timestamps nil)
 
-;; Clean up
-(setq erc-kill-server-buffer-on-quit t
-      erc-kill-buffer-on-part t
-      erc-kill-queries-on-quit t)
+;; ;; Clean up
+;; (setq erc-kill-server-buffer-on-quit t
+;;       erc-kill-buffer-on-part t
+;;       erc-kill-queries-on-quit t)
 
-;; Channel-specific prompt:
-(setq erc-prompt (lambda
-                   ()
-     (if (and (boundp 'erc-default-recipients) (erc-default-target))
-         (erc-propertize (concat (erc-default-target) ">") 'read-only t 'rear-nonsticky t 'front-nonsticky t)
-       (erc-propertize (concat "ERC>") 'read-only t 'rear-nonsticky t 'front-nonsticky t))))
+;; ;; Channel-specific prompt:
+;; (setq erc-prompt (lambda
+;;                    ()
+;;      (if (and (boundp 'erc-default-recipients) (erc-default-target))
+;;          (erc-propertize (concat (erc-default-target) ">") 'read-only t 'rear-nonsticky t 'front-nonsticky t)
+;;        (erc-propertize (concat "ERC>") 'read-only t 'rear-nonsticky t 'front-nonsticky t))))
 
-(setq erc-server-reconnect-timeout 4
-      erc-server-reconnect-attempts 3
-      erc-current-nick-highlight-type 'nick
-      erc-track-exclude-types '("PART" "QUIT" "NICK" "MODE" "324" "329" "332" "333" "353" "477")
-      erc-track-use-faces t
-      erc-track-faces-priority-list '(erc-current-nick-face erc-keyword-face)
-      erc-track-priority-faces-only 'all
-      erc-hide-list '("JOIN" "PART" "QUIT" "NICK")
-      erc-modules '(autojoin bbdb button completion fill irccontrols list match
-                              move-to-prompt netsplit networks noncommands readonly ring stamp track))
+;; (setq erc-server-reconnect-timeout 4
+;;       erc-server-reconnect-attempts 3
+;;       erc-current-nick-highlight-type 'nick
+;;       erc-track-exclude-types '("PART" "QUIT" "NICK" "MODE" "324" "329" "332" "333" "353" "477")
+;;       erc-track-use-faces t
+;;       erc-track-faces-priority-list '(erc-current-nick-face erc-keyword-face)
+;;       erc-track-priority-faces-only 'all
+;;       erc-hide-list '("JOIN" "PART" "QUIT" "NICK")
+;;       erc-modules '(autojoin bbdb button completion fill irccontrols list match
+;;                               move-to-prompt netsplit networks noncommands readonly ring stamp track))
 
      
 
@@ -134,6 +134,19 @@
 ;;           (setq erc-header-line-face-method 'erc-update-header-line-show-disconnected)
  
 ;; (setq erc-header-line-face-method 'erc-update-header-line-show-disconnected)
+
+(defun kill-all-ii-buffers()
+      "Kill all ii-mode buffers."
+      (interactive)
+      (save-excursion
+        (let((count 0))
+          (dolist(buffer (buffer-list))
+            (set-buffer buffer)
+            (when (equal major-mode 'ii-mode)
+              (setq count (1+ count))
+              (kill-buffer buffer)))
+          (message "Killed %i ii buffer(s)." count ))))
+
 
 (defun kill-all-erc-buffers()
       "Kill all erc buffers."
@@ -161,26 +174,26 @@
           (message "Killed %i Jabber buffer(s)." count ))))
 
 (add-hook 'jabber-post-disconnect-hook 'kill-all-jabber-buffers)
-(add-hook 'erc-mode-hook 'guillemets-mode)
+(add-hook 'ii-mode-hook 'guillemets-mode)
 
 
 ;; Auto-change Erc filling to fit window:
-(add-hook 'window-configuration-change-hook 
- 	  '(lambda ()
- 	     (setq erc-fill-column (abs (- (window-width) 1)))))
+;; (add-hook 'window-configuration-change-hook 
+;;  	  '(lambda ()
+;;  	     (setq erc-fill-column (abs (- (window-width) 1)))))
 
 ;; Notify my when someone mentions my nick.
-(defun erc-global-notify (matched-type nick msg)
-  (interactive)
-  (when (eq matched-type 'current-nick)
-    (shell-command
-     (concat "notify-send --icon /usr/share/xfm/pixmaps/emacs.xpm -t 4000 -c \"im.received\" \""
-             (car (split-string nick "!"))
-             " mentioned your nick\" '"
-             msg
-             "'"))))
+;; (defun erc-global-notify (matched-type nick msg)
+;;   (interactive)
+;;   (when (eq matched-type 'current-nick)
+;;     (shell-command
+;;      (concat "notify-send --icon /usr/share/xfm/pixmaps/emacs.xpm -t 4000 -c \"im.received\" \""
+;;              (car (split-string nick "!"))
+;;              " mentioned your nick\" '"
+;;              msg
+;;              "'"))))
 
-(add-hook 'erc-text-matched-hook 'erc-global-notify)
+;; (add-hook 'erc-text-matched-hook 'erc-global-notify)
 
 ;;;;;;;;;;;;;;;;;;;;;
 ;; END of ERC code ;;
@@ -193,7 +206,6 @@
 (defun net-start ()
   "Connect to internet-facing services i.e. IRC and Jabber"
   (interactive)
-  (irc-bnc)
   (jabber-connect-all)
   (jabber-send-presence "" "" 10)) ;;this is an ugly hack; jabber don't seem to
 ;;connect unless we tell it to set a presence.
@@ -205,9 +217,7 @@
   (interactive)
   (when (functionp 'jabber-disconnect)
     (jabber-disconnect))
-  (when (functionp 'erc-cmd-GQUIT)
-    (erc-cmd-GQUIT "quitting from IRC"))
-  (kill-all-erc-buffers))
+  (kill-all-ii-buffers))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -226,22 +236,11 @@
 (set-face-attribute 'ii-face-take-voice nil :foreground "#f0f")
 (set-face-attribute 'ii-face-shadow nil :foreground "#ccc")
 (set-face-attribute 'ii-face-prompt nil :foreground "#0f0")
-(set-face-attribute 'ii-face-msg nil :foreground "#0000")
+(set-face-attribute 'ii-face-msg nil :foreground "#0000") 
 (set-face-attribute 'ii-face-bold nil :bold t)
 (set-face-attribute 'ii-face-underline nil :underline t)
 
 (setf ii-notify-regexps '("\\balbins\\b"))
 (setf ii-notify-channels '("telekommunisten.org/#data_kraft"))
 
-(defun kill-all-ii-buffers()
-      "Kill all ii-mode buffers."
-      (interactive)
-      (save-excursion
-        (let((count 0))
-          (dolist(buffer (buffer-list))
-            (set-buffer buffer)
-            (when (equal major-mode 'ii-mode)
-              (setq count (1+ count))
-              (kill-buffer buffer)))
-          (message "Killed %i ii buffer(s)." count ))))
-
+(global-set-key (kbd "C-c C-i") 'ii-visit-notified-file)
