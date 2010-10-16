@@ -72,7 +72,7 @@
 (require 'notmuch)
 
 (setq mail-user-agent 'message-user-agent
-      message-directory "~/inmail/Main/"
+      message-directory "~/inmail/Gmail/"
       notmuch-fcc-dirs (quote (("Sent"))))
 
 ;; add Cc and Bcc headers to the message buffer
@@ -88,6 +88,8 @@
 (add-hook 'message-mode-hook 'turn-off-auto-fill)
 (add-hook 'message-mode-hook (lambda () (guillemets-mode 1)))
 (add-hook 'message-mode-hook 'flyspell-mode)
+
+;;(add-hook 'notmuch-show-hook 'offlineimap)
 
 ;;sign messages by default
 (add-hook 'message-setup-hook 'mml-secure-sign-pgpmime)
@@ -134,5 +136,7 @@
 ;; Integrate notmuch with org-mode's agenda view:
 (add-hook 'org-finalize-agenda-hook (lambda ()
                                       (notmorg-write-file "/home/albin/org/notmorg.org" '("todo" t) "sched")))
+
+(setq ks-monthnames-lastfm "")
 
 (add-hook 'message-mode-hook 'tach-minor-mode)

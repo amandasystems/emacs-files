@@ -12,6 +12,10 @@
                :type git
                :url "http://github.com/krl/ii-mode.git"
                :features: ii-mode)
+        (:name offlineimap
+               :type git
+               :url "git://git.naquadah.org/offlineimap-el.git"
+               :features offlineimap)
         (:name notmorg
                :type git
                :url "http://github.com/krl/notmorg.git"
@@ -34,6 +38,10 @@
                :build ("make")
                :features rest-api
                :load  ("./rest-api.el"))
+        (:name el-get
+               :type git
+               :url "git://github.com/dimitri/el-get.git"
+               :features el-get)
         (:name planner-el         :type apt-get)
         (:name delicious-el
                :type git
@@ -60,6 +68,7 @@
 
 ;; Put those pesky auto-save and back-up files in ONE, SEPARATE directory:
 (defvar autosave-dir "~/.emacs_autosaves/")
+
 
 (make-directory autosave-dir t)
 
@@ -293,13 +302,15 @@ by using nxml's indentation rules."
 
 (setq org-agenda-custom-commands
       '(("w" todo "WAITING" nil)
-        ("s" todo "SOMEDAY" nil)))
+        ("s" todo "SOMEDAY" nil)
+        ("t" todo "TODO" nil)))
 
 (setq org-agenda-include-diary t)
 (define-key mode-specific-map [?a] 'org-agenda)
 
 (setq org-todo-keywords (quote ((sequence "TODO" "|" "DONE")
-                                (sequence "WAITING" "SOMEDAY" "|" "CANCELLED"))))
+                                (sequence "WAITING" "|" "CANCELLED" "|" "DONE")
+                                (sequence "SOMEDAY" "|" "CANCELLED"))))
 
 (setq org-todo-keyword-faces
       (quote (("TODO"      :foreground "red"          :weight bold)
@@ -327,6 +338,9 @@ by using nxml's indentation rules."
   (insert " "))
 
 (global-set-key (kbd "C-c j") 'start-journal-entry)
+
+(setq org-log-done t)
+
 
 ;;;;;;;;;;;;;;;;;;;;
 ;; End Org config ;;

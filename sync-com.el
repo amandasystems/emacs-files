@@ -215,17 +215,33 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
-;; (require 'ii-mode)
-;; (setf ii-irc-directory "/home/albin/irc/")
-;; (add-to-list 'auto-mode-alist `(,(concat ii-irc-directory ".*/out\\'") . ii-mode))
+(require 'ii-mode)
+(setf ii-irc-directory "/home/albin/irc/")
+(add-to-list 'auto-mode-alist `(,(concat ii-irc-directory ".*/out\\'") . ii-mode))
 
-;; (set-face-attribute 'ii-face-nick nil :foreground "chocolate2")
-;; (set-face-attribute 'ii-face-date nil :foreground "#999")
-;; (set-face-attribute 'ii-face-time nil :foreground "#bbb")
-;; (set-face-attribute 'ii-face-give-voice nil :foreground "#0ff")
-;; (set-face-attribute 'ii-face-take-voice nil :foreground "#f0f")
-;; (set-face-attribute 'ii-face-shadow nil :foreground "#ccc")
-;; (set-face-attribute 'ii-face-prompt nil :foreground "#0f0")
-;; (set-face-attribute 'ii-face-msg nil :foreground "#0000")
-;; (set-face-attribute 'ii-face-bold nil :bold t)
-;; (set-face-attribute 'ii-face-underline nil :underline t)
+(set-face-attribute 'ii-face-nick nil :foreground "chocolate2")
+(set-face-attribute 'ii-face-date nil :foreground "#999")
+(set-face-attribute 'ii-face-time nil :foreground "#bbb")
+(set-face-attribute 'ii-face-give-voice nil :foreground "#0ff")
+(set-face-attribute 'ii-face-take-voice nil :foreground "#f0f")
+(set-face-attribute 'ii-face-shadow nil :foreground "#ccc")
+(set-face-attribute 'ii-face-prompt nil :foreground "#0f0")
+(set-face-attribute 'ii-face-msg nil :foreground "#0000")
+(set-face-attribute 'ii-face-bold nil :bold t)
+(set-face-attribute 'ii-face-underline nil :underline t)
+
+(setf ii-notify-regexps '("\\balbins\\b"))
+(setf ii-notify-channels '("telekommunisten.org/#data_kraft"))
+
+(defun kill-all-ii-buffers()
+      "Kill all ii-mode buffers."
+      (interactive)
+      (save-excursion
+        (let((count 0))
+          (dolist(buffer (buffer-list))
+            (set-buffer buffer)
+            (when (equal major-mode 'ii-mode)
+              (setq count (1+ count))
+              (kill-buffer buffer)))
+          (message "Killed %i ii buffer(s)." count ))))
+
