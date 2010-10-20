@@ -241,6 +241,6 @@
 (set-face-attribute 'ii-face-underline nil :underline t)
 
 (setf ii-notify-regexps '("\\balbins\\b"))
-(setf ii-notify-channels '("telekommunisten.org/#data_kraft"))
+;;(setf ii-notify-channels '("telekommunisten.org/#data_kraft"))
 
-(global-set-key (kbd "C-c C-i") 'ii-visit-notified-file)
+(global-set-key (kbd "C-c C-v") 'ii-visit-notified-file)

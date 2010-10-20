@@ -28,7 +28,8 @@
 
 (setq mime-w3m-safe-url-regexp nil) ;; Don't bother.
 (setq mime-w3m-display-inline-images t) ;; Yes, do render inline images
-
+(setq mm-inline-text-html-with-images t
+      mm-w3m-safe-url-regexp nil)
 ;; Mu-cite, for less ugly citations.
 (autoload 'mu-cite-original "mu-cite" nil t)
 (setq mu-cite-prefix-format '("> "))
@@ -127,6 +128,14 @@
   (notmuch-show-remove-tag "todo")
   (notmuch-show-archive-thread))
 
+(defun notmuch-display-trusted-images ()
+  (interactive)
+  (if (member "feeds" (notmuch-show-get-tags))
+      (progn
+        (make-variable-buffer-local 'mm-inline-text-html-with-images)
+        (make-variable-buffer-local 'mm-w3m-safe-url-regexp)
+        (setq mm-inline-text-html-with-images t
+              mm-w3m-safe-url-regexp nil))))
 
 (define-key notmuch-search-mode-map "T" 'notmuch-search-todo)
 (define-key notmuch-search-mode-map "U" 'notmuch-search-untodo)
