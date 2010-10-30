@@ -42,6 +42,9 @@
                :type git
                :url "git://github.com/dimitri/el-get.git"
                :features el-get)
+        (:name notmuch-eudc
+               :type git
+               :url "http://jkr.acm.jhu.edu/git/notmuch_eudc.git")
         (:name planner-el         :type apt-get)
         (:name delicious-el
                :type git
