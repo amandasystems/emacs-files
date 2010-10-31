@@ -142,6 +142,7 @@
 (define-key notmuch-search-mode-map "U" 'notmuch-search-untodo)
 (define-key notmuch-show-mode-map "T" 'notmuch-show-todo)
 (define-key notmuch-show-mode-map "U" 'notmuch-show-untodo)
+(define-key notmuch-show-mode-map "\C-c\C-o" 'w3m-view-url-with-external-browser)
 
 ;; Integrate notmuch with org-mode's agenda view:
 (add-hook 'org-finalize-agenda-hook (lambda ()
@@ -161,3 +162,5 @@
 (setq eudc-inline-expansion-servers 'hotlist)
 
 (setq notmuch-addr-query-command "addrlookup")
+
+
