@@ -460,4 +460,7 @@ by using nxml's indentation rules."
       (e (if mark-active end (point-max))))
     (message "Word count: %s" (how-many "\\w+" b e))))
 
+(require 'quack)
+(require 'printing)
 (server-start)
+
