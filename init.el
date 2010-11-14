@@ -356,7 +356,16 @@ by using nxml's indentation rules."
 ;;              '("" "tgschola" t))
 
 ;; (add-to-list 'org-export-latex-packages-alist
-;;              '("left=3.18cm,top=2.54cm,bottom=2.54cm,right=3.18cm" "geometry" t))
+;;              '("left=3.18cm,top=2.54cm,bottom=2.54cm,right=3.18cm"
+;;  "geometry" t))
+
+(org-babel-do-load-languages
+      'org-babel-load-languages
+      '((emacs-lisp . t)
+        (R . t)
+        (sh . t)
+        (python . t)))
+
 
 ;;;;;;;;;;;;;;;;;;;;
 ;; End Org config ;;
@@ -463,4 +472,3 @@ by using nxml's indentation rules."
 (require 'quack)
 (require 'printing)
 (server-start)
-
