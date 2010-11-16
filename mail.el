@@ -161,6 +161,6 @@
 			    ("localhost" . notmuch)))
 (setq eudc-inline-expansion-servers 'hotlist)
 
-(setq notmuch-addr-query-command "addrlookup")
+(setq notmuch-addr-query-command "/home/albin/.bin/addrlookup")
 
 
