@@ -275,7 +275,9 @@ by using nxml's indentation rules."
                  ;; etc.; all your mail related modes
                  ))
                ("Jabber"
-                (mode . jabber-chat))
+                (or
+                 (mode . jabber-chat)
+                 (mode . jabber-roster)))
                ;; ("MyProject1"
                ;;   (filename . "src/myproject1/"))
                ;; ("MyProject2"
@@ -288,7 +290,7 @@ by using nxml's indentation rules."
                  (mode . emacs-lisp-mode)
                  ;; etc
                  ))
-               ("ERC"   (mode . erc-mode))))))
+               ("IRC"   (mode . ii-mode))))))
 
 (add-hook 'ibuffer-mode-hook
           (lambda ()
