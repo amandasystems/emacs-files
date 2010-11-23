@@ -272,6 +272,8 @@ by using nxml's indentation rules."
                 (or  ;; mail-related buffers
                  (mode . message-mode)
                  (mode . mail-mode)
+                 (mode . notmuch-show)
+                 (mode . notmuch-search)
                  ;; etc.; all your mail related modes
                  ))
                ("Jabber"
@@ -473,4 +475,6 @@ by using nxml's indentation rules."
 
 (require 'quack)
 (require 'printing)
+
+(setq warning-suppress-types nil) ;; workaround compile errors
 (server-start)
