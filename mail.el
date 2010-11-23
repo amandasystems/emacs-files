@@ -73,7 +73,8 @@
 (require 'notmuch)
 
 (setq mail-user-agent 'message-user-agent
-      message-directory "~/inmail/Gmail/")
+      message-directory "~/inmail/Gmail/"
+      notmuch-fcc-dirs "/home/albin/inmail/Gmail/Sent")
 
 ;; notmuch-fcc-dirs (quote (("Sent")))
 
