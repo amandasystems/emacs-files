@@ -475,6 +475,5 @@ by using nxml's indentation rules."
 
 (require 'quack)
 (require 'printing)
-
 (setq warning-suppress-types nil) ;; workaround compile errors
 (server-start)

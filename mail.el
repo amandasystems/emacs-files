@@ -1,3 +1,4 @@
+(setq warning-suppress-types nil) ;; workaround compile errors
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Mail client/reader settings ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
