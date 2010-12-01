@@ -12,6 +12,10 @@
                :type git
                :url "http://github.com/krl/ii-mode.git"
                :features: ii-mode)
+        (:name google-weather
+               :type git
+               :url "git://git.naquadah.org/google-weather-el.git"
+               :features: google-weather)
         (:name offlineimap
                :type git
                :url "git://git.naquadah.org/offlineimap-el.git"
@@ -305,6 +309,7 @@ by using nxml's indentation rules."
 (setq org-agenda-files '("/home/albin/org/todo.org"
                          "/home/albin/org/projekt.org"
                          "/home/albin/org/notmorg.org"
+                         "/home/albin/org/weather.org"
                          "/home/albin/org/skolan.org"))
 
 (setq org-agenda-custom-commands
@@ -370,6 +375,8 @@ by using nxml's indentation rules."
         (sh . t)
         (python . t)))
 
+(require 'google-weather)
+(require 'org-google-weather)
 
 ;;;;;;;;;;;;;;;;;;;;
 ;; End Org config ;;
