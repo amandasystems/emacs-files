@@ -56,6 +56,7 @@
                :features delicious)
         (:name xml-rpc          :type elpa)
         (:name bbdb             :type apt-get)
+        (:name auctex           :type apt-get)
         (:name org-mode         :type apt-get)
         (:name debian-el        :type apt-get)
         (:name w3m-el-snapshot  :type apt-get)
