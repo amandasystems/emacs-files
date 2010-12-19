@@ -308,6 +308,19 @@ by using nxml's indentation rules."
 ;; Org config ;;
 ;;;;;;;;;;;;;;;;
 
+(require 'org-protocol)
+(require 'org-capture)
+;; ;; the 'w' corresponds with the 'w' used before as in:
+;;   emacsclient \"org-protocol:/capture:/w/  [...]
+
+(setq org-capture-templates
+  '(
+     ("w" "" entry ;; 'w' for 'org-protocol'
+       (file+headline "~/org/www.org" "Bokmärken")
+       "* %c %^g \nDate: %T \n%^{Description}")
+     ))
+
+
 (setq org-agenda-files '("/home/albin/org/todo.org"
                          "/home/albin/org/projekt.org"
                          "/home/albin/org/notmorg.org"
