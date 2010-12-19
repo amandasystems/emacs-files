@@ -317,7 +317,7 @@ by using nxml's indentation rules."
   '(
      ("w" "" entry ;; 'w' for 'org-protocol'
        (file+headline "~/org/www.org" "Bokmärken")
-       "* %c %^g \nDate: %T \n%^{Description}")
+       "* %c %^g \n:DATE: %T \n%^{Description}")
      ))
 
 
