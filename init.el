@@ -71,6 +71,7 @@
 (require 'w3m-load)
 (require 'midnight)
 
+(setq diary-file "~/org/diary")
 
 (setq printer-name "laserjet")
 
