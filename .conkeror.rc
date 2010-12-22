@@ -169,3 +169,11 @@ interactive("org-capture", "Clip url, title, and selection to capture via org-pr
           });
 
 define_key(content_buffer_normal_keymap, "C-c r", "org-capture");
+
+
+interactive("email-current-page", "Send the current page as HTML MIME.",
+            function(I) {
+                url = I.buffer.current_uri;
+                command = "/home/albin/.bin/mail-web-page \"" + url + "\"" 
+                shell_command_blind(command);
+            })
