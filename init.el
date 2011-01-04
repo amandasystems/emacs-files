@@ -273,19 +273,19 @@ by using nxml's indentation rules."
 (setq ibuffer-saved-filter-groups
       (quote (("default"
                ("Org" ;; all org-related buffers
-                (mode . org-mode))
+                (or (mode . org-mode)
+                    (filename . "~/org/*")))
                ("Mail"
                 (or  ;; mail-related buffers
                  (mode . message-mode)
                  (mode . mail-mode)
-                 (mode . notmuch-show)
-                 (mode . notmuch-search)
-                 ;; etc.; all your mail related modes
-                 ))
+                 (mode . notmuch-show-mode)
+                 (mode . notmuch-search-mode)
+                 (mode . notmuch-hello-mode)))
                ("Jabber"
                 (or
-                 (mode . jabber-chat)
-                 (mode . jabber-roster)))
+                 (mode . jabber-chat-mode)
+                 (mode . jabber-roster-mode)))
                ;; ("MyProject1"
                ;;   (filename . "src/myproject1/"))
                ;; ("MyProject2"
@@ -299,6 +299,8 @@ by using nxml's indentation rules."
                  ;; etc
                  ))
                ("IRC"   (mode . ii-mode))))))
+
+(setq ibuffer-show-empty-filter-groups nil)
 
 (add-hook 'ibuffer-mode-hook
           (lambda ()
