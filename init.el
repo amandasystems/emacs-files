@@ -54,6 +54,10 @@
                :type git
                :url "http://git.wjsullivan.net/delicious-el.git"
                :features delicious)
+        (:name auto-complete
+               :type git
+               :url "https://github.com/m2ym/auto-complete.git"
+               :features auto-complete)
         (:name xml-rpc          :type elpa)
         (:name bbdb             :type apt-get)
         (:name auctex           :type apt-get)
@@ -501,3 +505,15 @@ by using nxml's indentation rules."
 (require 'printing)
 (setq warning-suppress-types nil) ;; workaround compile errors
 (server-start)
+
+(require 'auto-complete)
+
+(defvar ac-source-python '((candidates .
+		(lambda ()
+		  (mapcar '(lambda (completion)
+			     (first (last (split-string completion "\\." t))))
+			  (python-symbol-completions (python-partial-symbol)))))))
+
+
+(add-hook 'python-mode-hook
+	  (lambda() (setq ac-sources '(ac-source-python))))

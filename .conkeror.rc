@@ -20,6 +20,7 @@ define_key(default_global_keymap, "C-x C-m", "execute-extended-command");
 url_completion_use_history = true;
 url_completion_use_bookmarks = true;
 
+define_webjump("bokborsen", "http://www.bokborsen.se/page-start?issearch=1&sall=1&scat=0&maincat=1&extendedsearch=1&mediatype=0&sallstr=%s&screator=&stitle=")
 define_webjump("youtube", "http://www.youtube.com/results?search_query=%s&search=Search");
 define_webjump("libris", "http://libris.kb.se/hitlist?d=libris&q=%s&f=simp&spell=true&hist=true&p=1");
 define_webjump("opac", "http://bookit.uppsala.se/pls/bookit/pkg_www_search.ccl_search?in_ccl_query_encoded=the%s");
