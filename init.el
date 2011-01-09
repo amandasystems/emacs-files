@@ -58,6 +58,11 @@
                :type git
                :url "https://github.com/m2ym/auto-complete.git"
                :features auto-complete)
+        (:name anything
+               :type git
+               :url "git://repo.or.cz/anything-config.git"
+               :load-path ("." "extensions")
+               :features anything-config)
         (:name xml-rpc          :type elpa)
         (:name bbdb             :type apt-get)
         (:name auctex           :type apt-get)
