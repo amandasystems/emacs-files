@@ -159,8 +159,7 @@
 (eudc-protocol-set 'eudc-inline-expansion-format 
 		   '("%s %s <%s>" firstname lastname net)
 		   'bbdb)
-;;(eudc-set-server "localhost" 'notmuch t) ;; broken due to
-;;notmuch_eudc repo being down. :(
+(eudc-set-server "localhost" 'notmuch t)
 (setq eudc-server-hotlist '(("localhost" . bbdb)
 			    ("localhost" . notmuch)))
 (setq eudc-inline-expansion-servers 'hotlist)
