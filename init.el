@@ -1,6 +1,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Fetch code using el-get ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(add-to-list 'load-path "~/.emacs.d/el-get/el-get/") ;; hack so it won't go crazy.
 (require 'el-get)
 
 (setq el-get-sources
@@ -26,16 +27,15 @@
                :features notmorg)
         (:name git-emacs
                :type git
-               :url "git://github.com/tsgates/git-emacs.git"
-               :features git-emacs
-               :build ("make"))
+               :url "https://github.com/tsgates/git-emacs.git"
+               :features git-emacs)
         (:name tea-time
                :type git
                :url "git://github.com/krick/tea-time.git")
-        (:name tach
-               :type git
-               :url "http://jkr.acm.jhu.edu/git/tach.git"
-               :features tach)
+        ;; (:name tach
+        ;;        :type git
+        ;;        :url "http://jkr.acm.jhu.edu/git/tach.git"
+        ;;        :features tach)
         (:name 37emacs
                :type git
                :url "git://github.com/hober/37emacs.git"
@@ -46,9 +46,9 @@
                :type git
                :url "git://github.com/dimitri/el-get.git"
                :features el-get)
-        (:name notmuch-eudc
-               :type git
-               :url "http://jkr.acm.jhu.edu/git/notmuch_eudc.git")
+        ;; (:name notmuch-eudc
+        ;;        :type git
+        ;;        :url "http://jkr.acm.jhu.edu/git/notmuch_eudc.git")
         (:name planner-el         :type apt-get)
         (:name delicious-el
                :type git
@@ -68,11 +68,10 @@
         (:name auctex           :type apt-get)
         (:name org-mode         :type apt-get)
         (:name debian-el        :type apt-get)
-        (:name w3m-el-snapshot  :type apt-get)
+;        (:name w3m-el-snapshot  :type apt-get)
         (:name emacs-goodies-el :type apt-get)))
 
 (el-get)
-
 ;;;;;;;;;;;;;;;;;;;;;;;;
 ;; End of el-get code ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;
@@ -522,3 +521,4 @@ by using nxml's indentation rules."
 
 (add-hook 'python-mode-hook
 	  (lambda() (setq ac-sources '(ac-source-python))))
+

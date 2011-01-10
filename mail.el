@@ -153,13 +153,14 @@
 
 (setq ks-monthnames-lastfm "")
 
-(add-hook 'message-mode-hook 'tach-minor-mode)
+;;(add-hook 'message-mode-hook 'tach-minor-mode)
 
 (eudc-set-server "localhost" 'bbdb t)
 (eudc-protocol-set 'eudc-inline-expansion-format 
 		   '("%s %s <%s>" firstname lastname net)
 		   'bbdb)
-(eudc-set-server "localhost" 'notmuch t)
+;;(eudc-set-server "localhost" 'notmuch t) ;; broken due to
+;;notmuch_eudc repo being down. :(
 (setq eudc-server-hotlist '(("localhost" . bbdb)
 			    ("localhost" . notmuch)))
 (setq eudc-inline-expansion-servers 'hotlist)
