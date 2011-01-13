@@ -46,6 +46,14 @@
                :type git
                :url "git://github.com/dimitri/el-get.git"
                :features el-get)
+        (:name geiser
+               :type git
+               :url "git://git.sv.gnu.org/geiser.git"
+               :load-path ("./elisp")
+               :build `("./autogen.sh" "./configure" "make"
+                        ,(concat "cd doc ; " el-get-install-info " --dir-file=./dir *.info"))
+               :info "doc"
+               :features geiser-load)
         ;; (:name notmuch-eudc
         ;;        :type git
         ;;        :url "http://jkr.acm.jhu.edu/git/notmuch_eudc.git")
@@ -65,11 +73,13 @@
                :features anything-config)
         (:name xml-rpc          :type elpa)
         (:name bbdb             :type apt-get)
+        (:name pymacs             :type apt-get)
         (:name auctex           :type apt-get)
         (:name org-mode         :type apt-get)
         (:name debian-el        :type apt-get)
 ;        (:name w3m-el-snapshot  :type apt-get)
         (:name emacs-goodies-el :type apt-get)))
+
 
 (el-get)
 ;;;;;;;;;;;;;;;;;;;;;;;;
@@ -522,3 +532,4 @@ by using nxml's indentation rules."
 (add-hook 'python-mode-hook
 	  (lambda() (setq ac-sources '(ac-source-python))))
 
+(TeX-global-PDF-mode t)
