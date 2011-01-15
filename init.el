@@ -226,6 +226,11 @@ by using nxml's indentation rules."
     (indent-region begin end))
   (message "Ah, much better!"))
 
+;; (defun mail-url-content (&optional url)
+;;    (interactive)
+;;    (let ((browse-url-browser-function 'browse-url-generic)
+;;          (browse-url-generic-program "/home/albin/.bin/mail-web-page"))
+;;      (browse-url)))
 
 (defadvice kill-ring-save (before slick-copy activate compile) "When called
   interactively with no active region, copy a single line instead."
@@ -345,7 +350,8 @@ by using nxml's indentation rules."
                          "/home/albin/org/projekt.org"
                          "/home/albin/org/notmorg.org"
                          "/home/albin/org/weather.org"
-                         "/home/albin/org/skolan.org"))
+                         "/home/albin/org/skolan.org"
+                         "/home/albin/org/1:5.org"))
 
 (setq org-agenda-custom-commands
       '(("w" todo "WAITING" nil)

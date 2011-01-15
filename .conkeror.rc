@@ -171,10 +171,17 @@ interactive("org-capture", "Clip url, title, and selection to capture via org-pr
 
 define_key(content_buffer_normal_keymap, "C-c r", "org-capture");
 
+function mail_page (url, window) {
+    var cmd_str = 'mail-web-page \"'+url+'\"';
+    if (window != null) {
+      window.minibuffer.message('Issuing ' + cmd_str);
+    }
+    shell_command_blind(cmd_str);
+}
 
-interactive("email-current-page", "Send the current page as HTML MIME.",
-            function(I) {
-                url = I.buffer.current_uri;
-                command = "/home/albin/.bin/mail-web-page \"" + url + "\"" 
-                shell_command_blind(command);
-            })
+interactive("mail-current-page", "Clip url, title, and selection to capture via org-protocol",
+          function (I) {
+              mail_page(I.buffer.display_uri_string, I.window);
+          });
+
+define_key(content_buffer_normal_keymap, "C-c m", "mail-current-page");
