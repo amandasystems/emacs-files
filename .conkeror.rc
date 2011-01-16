@@ -172,7 +172,7 @@ interactive("org-capture", "Clip url, title, and selection to capture via org-pr
 define_key(content_buffer_normal_keymap, "C-c r", "org-capture");
 
 function mail_page (url, window) {
-    var cmd_str = 'mail-web-page \"'+url+'\"';
+    var cmd_str = '/home/albin/.bin/mail-web-page \"'+url+'\"';
     if (window != null) {
       window.minibuffer.message('Issuing ' + cmd_str);
     }
