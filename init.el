@@ -397,18 +397,6 @@ by using nxml's indentation rules."
 
 (setq org-export-default-language "sv")
 
-;; (add-to-list 'org-export-latex-classes
-;;              '("article"
-;;                "\\documentclass[12pt,a4paper]{article}"
-;;                ("\\section{%s}" . "\\section*{%s}")))  
-
-;; (add-to-list 'org-export-latex-packages-alist
-;;              '("" "tgschola" t))
-
-;; (add-to-list 'org-export-latex-packages-alist
-;;              '("left=3.18cm,top=2.54cm,bottom=2.54cm,right=3.18cm"
-;;  "geometry" t))
-
 (org-babel-do-load-languages
       'org-babel-load-languages
       '((emacs-lisp . t)
@@ -435,10 +423,6 @@ by using nxml's indentation rules."
 ;; Use smart quotes everywhere!
 ;; On a second thought -- don't
 ;;(add-hook 'text-mode-hook (lambda () (guillemets-mode 1)))
-
-
-
-
 
 (require 'eshell)
 
@@ -524,7 +508,6 @@ by using nxml's indentation rules."
 (require 'quack)
 (require 'printing)
 (setq warning-suppress-types nil) ;; workaround compile errors
-(server-start)
 
 (require 'auto-complete)
 
@@ -538,4 +521,11 @@ by using nxml's indentation rules."
 (add-hook 'python-mode-hook
 	  (lambda() (setq ac-sources '(ac-source-python))))
 
-(TeX-global-PDF-mode t)
+
+;; LaTeX (Auctex) code begins here
+
+(require 'tex)
+
+(TeX-global-PDF-mode t) ;; Nobody uses .dvi files anymore.
+
+(server-start)
