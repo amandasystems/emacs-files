@@ -420,7 +420,10 @@ by using nxml's indentation rules."
           :url "http://eval.nu/xmlrpc.php"
           :username "admin"   
           :default-categories ("på svenska")
-          :tags-as-categories nil)))
+          :tags-as-categories nil
+          :wp-latex t
+          :wp-code t
+          :track-posts t)))
 
 
 ;; End org2blog
@@ -549,7 +552,10 @@ by using nxml's indentation rules."
 
 ;;set xetex mode in tex/latex
 (add-to-list 'TeX-command-list '("XeLaTeX" "%`xelatex%(mode)%' %t" TeX-run-TeX nil t))
-(setq TeX-command-default "XeLaTeX")
+
+(add-hook 'LaTeX-mode-hook
+          (lambda() (setq TeX-command-default "XeLaTeX")))
+
 
 ;; End Auctex code
 
