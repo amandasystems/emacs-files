@@ -71,6 +71,10 @@
                :url "git://repo.or.cz/anything-config.git"
                :load-path ("." "extensions")
                :features anything-config)
+        (:name org2blog
+               :type git
+               :url "http://github.com/punchagan/org2blog.git"
+               :features org2blog)
         (:name xml-rpc          :type elpa)
         (:name bbdb             :type apt-get)
         (:name pymacs             :type apt-get)
@@ -407,6 +411,21 @@ by using nxml's indentation rules."
 (require 'google-weather)
 (require 'org-google-weather)
 
+;; org2blog begin here
+
+(require 'org2blog)
+
+(setq org2blog/wp-blog-alist
+       '(("wordpress"
+          :url "http://eval.nu/xmlrpc.php"
+          :username "admin"   
+          :default-categories ("på svenska")
+          :tags-as-categories nil)))
+
+
+;; End org2blog
+
+
 ;;;;;;;;;;;;;;;;;;;;
 ;; End Org config ;;
 ;;;;;;;;;;;;;;;;;;;;
@@ -526,6 +545,12 @@ by using nxml's indentation rules."
 
 (require 'tex)
 
-(TeX-global-PDF-mode t) ;; Nobody uses .dvi files anymore.
+;;(TeX-global-PDF-mode nil) ;; Nobody uses .dvi files anymore.
+
+;;set xetex mode in tex/latex
+(add-to-list 'TeX-command-list '("XeLaTeX" "%`xelatex%(mode)%' %t" TeX-run-TeX nil t))
+(setq TeX-command-default "XeLaTeX")
+
+;; End Auctex code
 
 (server-start)
