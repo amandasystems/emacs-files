@@ -13,22 +13,13 @@
                :type git
                :url "http://github.com/krl/ii-mode.git"
                :features: ii-mode)
-        (:name google-weather
-               :type git
-               :url "git://git.naquadah.org/google-weather-el.git"
-               :features: google-weather)
-        (:name offlineimap
-               :type git
-               :url "git://git.naquadah.org/offlineimap-el.git"
-               :features offlineimap)
+        (:name google-weather)
+        (:name offlineimap)
         (:name notmorg
                :type git
                :url "http://github.com/krl/notmorg.git"
                :features notmorg)
-        (:name git-emacs
-               :type git
-               :url "https://github.com/tsgates/git-emacs.git"
-               :features git-emacs)
+        (:name git-emacs)
         (:name tea-time
                :type git
                :url "git://github.com/krick/tea-time.git")
@@ -42,35 +33,14 @@
                :build ("make")
                :features rest-api
                :load  ("./rest-api.el"))
-        (:name el-get
-               :type git
-               :url "git://github.com/dimitri/el-get.git"
-               :features el-get)
-        (:name geiser
-               :type git
-               :url "git://git.sv.gnu.org/geiser.git"
-               :load-path ("./elisp")
-               :build `("./autogen.sh" "./configure" "make"
-                        ,(concat "cd doc ; " el-get-install-info " --dir-file=./dir *.info"))
-               :info "doc"
-               :features geiser-load)
+        (:name el-get)
+        (:name geiser)
         ;; (:name notmuch-eudc
         ;;        :type git
         ;;        :url "http://jkr.acm.jhu.edu/git/notmuch_eudc.git")
-        (:name planner-el         :type apt-get)
-        (:name delicious-el
-               :type git
-               :url "http://git.wjsullivan.net/delicious-el.git"
-               :features delicious)
-        (:name auto-complete
-               :type git
-               :url "https://github.com/m2ym/auto-complete.git"
-               :features auto-complete)
-        (:name anything
-               :type git
-               :url "git://repo.or.cz/anything-config.git"
-               :load-path ("." "extensions")
-               :features anything-config)
+        (:name planner)
+        (:name auto-complete)
+        (:name anything)
         (:name org2blog
                :type git
                :url "http://github.com/punchagan/org2blog.git"
@@ -423,7 +393,7 @@ by using nxml's indentation rules."
           :tags-as-categories nil
           :wp-latex t
           :wp-code t
-          :track-posts t)))
+          :track-posts nil)))
 
 
 ;; End org2blog
@@ -504,7 +474,7 @@ by using nxml's indentation rules."
 (global-set-key "\C-w" 'backward-kill-word)
 (global-set-key "\C-x\C-k" 'kill-region)
 (global-set-key "\C-h" 'delete-backward-char)
-(global-set-key "\C-cp" 'delicious-post)
+;;(global-set-key "\C-cp" 'delicious-post)
 (global-set-key "\C-cip" 'identica-update-status-interactive)
 (global-set-key "\C-cid" 'identica-direct-message-interactive)
 (global-set-key "\C-cgi" 'ido-goto-symbol)
@@ -558,5 +528,12 @@ by using nxml's indentation rules."
 
 
 ;; End Auctex code
+
+;; Make scripts executable:
+(add-hook 'after-save-hook
+  'executable-make-buffer-file-executable-if-script-p)
+
+
+(require 'geiser-install)
 
 (server-start)
