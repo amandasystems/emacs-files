@@ -1,9 +1,9 @@
 This directory is placed placed at .emacs.d/$MY_USER_NAME, where my .emacs.d
-contains the emacs-starter-kit. Currently, I'm overhauling my config to utilize
-the starter-kit, and I'm sure there's a lot of overlapping.
+contains the emacs-starter-kit. It is used in two different setups on two different computers.
 
 The structure is currently something like this:
-* mail.el: mail-related hacks that don't fit in ~/.wl 
-* sync-com.el: stuff for IRC/Jabber
+* mail.el: mail-related hacks mostly (now based on notmuch)
+* sync-com.el: stuff for IRC/Jabber (now based on jabber-el and ii-mode)
 * init.el: everything else
 
+I am also bundling eudcb-notmuch.el, since its original repo went down.
