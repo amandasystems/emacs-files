@@ -1,0 +1,9 @@
+This directory is placed placed at =.emacs.d/$MY_USER_NAME=, where my =.emacs.d=
+contains the emacs-starter-kit. It is used in two different setups on two different computers.
+
+I am also bundling =eudcb-notmuch.el=, since its original repo went down.
+
+The structure is currently something like this:
+* =mail.el=: mail-related hacks mostly (now based on notmuch)
+* =sync-com.el=: stuff for IRC/Jabber (now based on jabber-el and ii-mode)
+* =init.el=: everything else
