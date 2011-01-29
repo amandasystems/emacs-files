@@ -479,6 +479,7 @@ by using nxml's indentation rules."
 (global-set-key "\C-cid" 'identica-direct-message-interactive)
 (global-set-key "\C-cgi" 'ido-goto-symbol)
 
+
 ;; Browse url by C-c u f
 (global-set-key "\C-cuf" 'browse-url-at-point)
 
@@ -489,6 +490,7 @@ by using nxml's indentation rules."
 
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 
+(add-hook 'identica-mode-hook (lambda () (identica-icon-mode t)))
 
 (defun count-words (&optional begin end)
   "count words between BEGIN and END (region); if no region defined, count words in buffer"
@@ -534,6 +536,6 @@ by using nxml's indentation rules."
   'executable-make-buffer-file-executable-if-script-p)
 
 
-(require 'geiser-install)
+;;(require 'geiser-install)
 
 (server-start)
