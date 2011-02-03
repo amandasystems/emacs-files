@@ -38,7 +38,7 @@
         ;; (:name notmuch-eudc
         ;;        :type git
         ;;        :url "http://jkr.acm.jhu.edu/git/notmuch_eudc.git")
-        (:name planner)
+;;        (:name planner)
         (:name auto-complete)
         (:name anything)
         (:name org2blog
@@ -442,8 +442,9 @@ by using nxml's indentation rules."
   (defvar project-root "~/projects/" "Root directory of projects")
   (let ((project-path (concat project-root name)))
     (make-directory project-path t)
-    (message "Project created: %s" project-path))
-  (find-file (concat project-root "README.org")))
+    (message "Project created: %s" project-path)
+    (git-init project-path)
+    (find-file (concat project-path "/README.org"))))
 
 (require 'emms-setup)
 (emms-standard)
