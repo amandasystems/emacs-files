@@ -322,7 +322,7 @@ by using nxml's indentation rules."
 
 (setq org-agenda-files '("/home/albin/org/todo.org"
                          "/home/albin/org/projekt.org"
-                         "/home/albin/org/notmorg.org"
+                         ;; "/home/albin/org/notmorg.org"
                          "/home/albin/org/weather.org"
                          "/home/albin/org/skolan.org"
                          "/home/albin/org/1:5.org"))
