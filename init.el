@@ -15,10 +15,10 @@
                :features: ii-mode)
         (:name google-weather)
         (:name offlineimap)
-        (:name notmorg
-               :type git
-               :url "http://github.com/krl/notmorg.git"
-               :features notmorg)
+        ;; (:name notmorg
+        ;;        :type git
+        ;;        :url "http://github.com/krl/notmorg.git"
+        ;;        :features notmorg)
         (:name git-emacs)
         (:name tea-time
                :type git

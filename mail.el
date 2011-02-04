@@ -148,8 +148,8 @@
 (define-key notmuch-show-mode-map "\C-c\C-o" 'w3m-view-url-with-external-browser)
 
 ;; Integrate notmuch with org-mode's agenda view:
-(add-hook 'org-finalize-agenda-hook (lambda ()
-                                      (notmorg-write-file "/home/albin/org/notmorg.org" '("todo" t) "sched")))
+;; (add-hook 'org-finalize-agenda-hook (lambda ()
+;;                                       (notmorg-write-file "/home/albin/org/notmorg.org" '("todo" t) "sched")))
 
 (setq ks-monthnames-lastfm "")
 
