@@ -105,31 +105,31 @@
                                ("identica" . "tag:identica and tag:inbox")
                                ("local" . "tag:local and tag:inbox")
                                ("list" . "tag:list and tag:inbox")
-                               ("todo" . "tag:todo")))
+                               ("read/review" . "tag:read/review")))
 
 
 
 ;;(execute-kbd-macro (symbol-function 'notmuch-todo)) ;; bind this to
 ;;T i notmuch-search-mode-map
 
-(defun notmuch-search-todo ()
+(defun notmuch-search-read/review ()
   (interactive)
-  (notmuch-search-add-tag "todo")
+  (notmuch-search-add-tag "read/review")
   (notmuch-search-archive-thread))
 
-(defun notmuch-search-untodo ()
+(defun notmuch-search-unread/review ()
   (interactive)
-  (notmuch-search-remove-tag "todo")
+  (notmuch-search-remove-tag "read/review")
   (notmuch-search-archive-thread))
 
-(defun notmuch-show-todo ()
+(defun notmuch-show-read/review ()
   (interactive)
-  (notmuch-show-add-tag "todo")
+  (notmuch-show-add-tag "read/review")
   (notmuch-show-archive-thread))
 
-(defun notmuch-show-untodo ()
+(defun notmuch-show-unread/review ()
   (interactive)
-  (notmuch-show-remove-tag "todo")
+  (notmuch-show-remove-tag "read/review")
   (notmuch-show-archive-thread))
 
 (defun notmuch-display-trusted-images ()
@@ -141,10 +141,10 @@
         (setq mm-inline-text-html-with-images t
               mm-w3m-safe-url-regexp nil))))
 
-(define-key notmuch-search-mode-map "T" 'notmuch-search-todo)
-(define-key notmuch-search-mode-map "U" 'notmuch-search-untodo)
-(define-key notmuch-show-mode-map "T" 'notmuch-show-todo)
-(define-key notmuch-show-mode-map "U" 'notmuch-show-untodo)
+(define-key notmuch-search-mode-map "T" 'notmuch-search-read/review)
+(define-key notmuch-search-mode-map "U" 'notmuch-search-unread/review)
+(define-key notmuch-show-mode-map "T" 'notmuch-show-read/review)
+(define-key notmuch-show-mode-map "U" 'notmuch-show-unread/review)
 (define-key notmuch-show-mode-map "\C-c\C-o" 'w3m-view-url-with-external-browser)
 
 ;; Integrate notmuch with org-mode's agenda view:
