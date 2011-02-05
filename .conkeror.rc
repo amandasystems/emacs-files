@@ -179,9 +179,11 @@ function mail_page (url, window) {
     shell_command_blind(cmd_str);
 }
 
-interactive("mail-current-page", "Clip url, title, and selection to capture via org-protocol",
+interactive("mail-current-page", "Run the currently viewed web page through mail-web-page",
           function (I) {
-              mail_page(I.buffer.display_uri_string, I.window);
+              shell_command_with_argument_blind(
+                  '/home/albin/.bin/mail-web-page "{}"',
+                  I.buffer.display_uri_string)
           });
 
 define_key(content_buffer_normal_keymap, "C-c m", "mail-current-page");

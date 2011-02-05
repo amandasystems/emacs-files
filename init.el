@@ -200,12 +200,6 @@ by using nxml's indentation rules."
     (indent-region begin end))
   (message "Ah, much better!"))
 
-;; (defun mail-url-content (&optional url)
-;;    (interactive)
-;;    (let ((browse-url-browser-function 'browse-url-generic)
-;;          (browse-url-generic-program "/home/albin/.bin/mail-web-page"))
-;;      (browse-url)))
-
 (defadvice kill-ring-save (before slick-copy activate compile) "When called
   interactively with no active region, copy a single line instead."
   (interactive (if mark-active (list (region-beginning) (region-end)) (message
@@ -536,7 +530,12 @@ by using nxml's indentation rules."
 (add-hook 'after-save-hook
   'executable-make-buffer-file-executable-if-script-p)
 
+(defun mail-web-page-url (url &rest ignore)
+      "mail web page using mail-web-page"
+      (interactive (browse-url-interactive-arg "URL: "))
+      (shell-command (concat "/home/albin/.bin/mail-web-page " url))
+      (setq truncate-lines t))
 
-;;(require 'geiser-install)
+(global-set-key "\C-cum" 'mail-web-page-url)
 
 (server-start)
