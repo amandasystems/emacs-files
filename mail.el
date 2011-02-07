@@ -167,3 +167,4 @@
 (setq notmuch-addr-query-command "/home/albin/.bin/addrlookup")
 
 
+(require 'org-notmuch)
