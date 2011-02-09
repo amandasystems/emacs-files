@@ -16,6 +16,7 @@
         (:name google-weather)
         (:name offlineimap)
         (:name org-mode)
+        (:name org-contacts)
         ;; (:name notmorg
         ;;        :type git
         ;;        :url "http://github.com/krl/notmorg.git"
@@ -311,7 +312,11 @@ by using nxml's indentation rules."
      ("w" "" entry ;; 'w' for 'org-protocol'
        (file+headline "~/org/www.org" "Bokmärken")
        "* %c %^g \n:DATE: %T \n%^{Description}")
-     ))
+     ("c" "Contacts" entry (file "~/org/contacts.org")
+         "* %(org-contacts-template-name)
+:PROPERTIES:
+:EMAIL: %(org-contacts-template-email)
+:END:")))
 
 
 (setq org-agenda-files '("/home/albin/org/todo.org"
