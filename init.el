@@ -15,6 +15,7 @@
                :features: ii-mode)
         (:name google-weather)
         (:name offlineimap)
+        (:name org-mode)
         ;; (:name notmorg
         ;;        :type git
         ;;        :url "http://github.com/krl/notmorg.git"
@@ -49,7 +50,6 @@
         (:name bbdb             :type apt-get)
         (:name pymacs             :type apt-get)
         (:name auctex           :type apt-get)
-        (:name org-mode         :type apt-get)
         (:name debian-el        :type apt-get)
 ;        (:name w3m-el-snapshot  :type apt-get)
         (:name emacs-goodies-el :type apt-get)))
