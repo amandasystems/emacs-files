@@ -393,6 +393,18 @@ by using nxml's indentation rules."
 ;; End org2blog
 
 
+(defun insert-new-todo (description)
+  (interactive "sTODO: ")
+  (save-excursion
+    ;;    (set-buffer "*scratch*")
+    (find-file "~/org/todo.org")
+    (org-insert-todo-heading t)
+    (insert description)
+    (save-buffer)
+    (bury-buffer)))
+(global-set-key (kbd "C-c t") 'insert-new-todo)
+
+
 ;;;;;;;;;;;;;;;;;;;;
 ;; End Org config ;;
 ;;;;;;;;;;;;;;;;;;;;
