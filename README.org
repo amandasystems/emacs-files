@@ -14,7 +14,7 @@ The structure is currently something like this:
 ** Libraries bundled for convenience
 - =eudc-notmuch.el=: notmuch bindings for, uh, address completion, included because the original repository went down.
 - =org-notmuch.el=: included because I found it in a mail at the notmuch mailing list: it wasn't hosted on-line anywhere I (or, say el-get) could find it.
-- =smart-quotes.el=: A small function to handle guillemets (»french quotes«) automatically.
+- =smart-quotes.el=: a small function to handle guillemets (»french quotes«) automatically. Actually written by [[http://idiomdrottning.org/][a friend]].
 
 * Wishlist
 - GPG signature verification for notmuch. I know somebody's working on it, it's just not in mainline notmuch yet.
