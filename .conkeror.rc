@@ -125,8 +125,6 @@ interactive("readability_arc90",
 
 define_key(content_buffer_normal_keymap, "z", "readability_arc90");
 
-//add_delicious_webjumps("Tuss.luftslott.org");
-
 xkcd_add_title = true;
 
 download_buffer_automatic_open_target = [OPEN_NEW_BUFFER_BACKGROUND, OPEN_NEW_WINDOW];

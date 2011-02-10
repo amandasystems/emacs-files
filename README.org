@@ -5,10 +5,16 @@ I am also bundling =eudcb-notmuch.el=, since its original repo went down.
 
 * File/directory structure
 The structure is currently something like this:
-- =mail.el=: mail-related hacks mostly (now based on notmuch)
-- =sync-com.el=: stuff for IRC/Jabber (now based on jabber-el and ii-mode)
+- =mail.el=: mail-related hacks mostly (now based on notmuch).
+- =sync-com.el=: stuff for IRC/Jabber (now based on jabber-el and ii-mode).
 - =secrets.el=: wrapper code to load the actual, encrypted password variables using EasyPG.
-- =init.el=: everything else
+- =.conkeror.rc=: not directly emacs-related. It's my (very hacky -- javascript isn't my thing) configuration file for Conkeror. However, it's so integrated in my Emacs workflow, I felt it deserved inclusion.
+- =init.el=: everything else.
+
+** Libraries bundled for convenience
+- =eudc-notmuch.el=: notmuch bindings for, uh, address completion, included because the original repository went down.
+- =org-notmuch.el=: included because I found it in a mail at the notmuch mailing list: it wasn't hosted on-line anywhere I (or, say el-get) could find it.
+- =smart-quotes.el=: A small function to handle guillemets (»french quotes«) automatically.
 
 * Wishlist
 - GPG signature verification for notmuch. I know somebody's working on it, it's just not in mainline notmuch yet.
