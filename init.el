@@ -1,7 +1,11 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Fetch code using el-get ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(add-to-list 'load-path "~/.emacs.d/el-get/el-get/") ;; hack so it won't go crazy.
+
+;; El-get is actually maintained by el-get. However, we need to
+;; bootstrap it.
+(add-to-list 'load-path "~/.emacs.d/el-get/el-get/") 
+
 (require 'el-get)
 
 (setq el-get-sources
@@ -25,10 +29,6 @@
         (:name tea-time
                :type git
                :url "git://github.com/krick/tea-time.git")
-        ;; (:name tach
-        ;;        :type git
-        ;;        :url "http://jkr.acm.jhu.edu/git/tach.git"
-        ;;        :features tach)
         (:name 37emacs
                :type git
                :url "git://github.com/hober/37emacs.git"
@@ -37,10 +37,6 @@
                :load  ("./rest-api.el"))
         (:name el-get)
         (:name geiser)
-        ;; (:name notmuch-eudc
-        ;;        :type git
-        ;;        :url "http://jkr.acm.jhu.edu/git/notmuch_eudc.git")
-;;        (:name planner)
         (:name auto-complete)
         (:name anything)
         (:name org2blog
@@ -49,14 +45,15 @@
                :features org2blog)
         (:name xml-rpc          :type elpa)
         (:name bbdb             :type apt-get)
-        (:name pymacs             :type apt-get)
+        (:name pymacs           :type apt-get)
         (:name auctex           :type apt-get)
         (:name debian-el        :type apt-get)
-;        (:name w3m-el-snapshot  :type apt-get)
+        (:name org-mode         :type apt-get)
         (:name emacs-goodies-el :type apt-get)))
 
 
 (el-get)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;
 ;; End of el-get code ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;
@@ -71,7 +68,6 @@
 ;; Put those pesky auto-save and back-up files in ONE, SEPARATE directory:
 (defvar autosave-dir "~/.emacs_autosaves/")
 
-
 (make-directory autosave-dir t)
 
 (defun auto-save-file-name-p (filename)
@@ -85,48 +81,10 @@
              (concat "#%" (buffer-name) "#")))))
 
 (setq-default ispell-program-name "aspell")
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(cal-tex-24 t)
- ;; '(fill-column 65)
- '(flyspell-default-dictionary "sv")
- '(inhibit-startup-screen t)
- '(newsticker-html-renderer (quote w3m-region))
- '(org-export-author-info nil)
- '(org-export-creator-info nil)
- '(scheme-program-name "csi")
- '(term-input-autoexpand (quote input))
- '(tramp-default-user "albin")
- '(w3m-broken-proxy-cache nil)
- '(w3m-coding-system (quote utf-8))
- '(w3m-confirm-leaving-secure-page nil)
- '(w3m-default-display-inline-images t)
- '(w3m-file-coding-system (quote utf-8))
- '(w3m-file-name-coding-system (quote utf-8))
- '(w3m-key-binding (quote info))
- '(w3m-resize-images t)
- '(w3m-terminal-coding-system (quote utf-8))
- '(w3m-use-cookies t)
- '(w3m-use-filter nil)
- '(w3m-use-title-buffer-name t)
- '(w3m-use-toolbar nil)
- '(org-default-notes-file "~/org/notes.org")
- '(org-agenda-ndays 7)
- '(org-deadline-warning-days 0)
- '(org-agenda-show-all-dates t)
- '(org-agenda-skip-deadline-if-done t)
- '(org-agenda-skip-scheduled-if-done t)
- '(org-agenda-start-on-weekday nil)
- '(org-reverse-note-order t)
- '(org-remember-store-without-prompt t)
- '(org-remember-templates
-   (quote ((116 "* TODO %?\n  %u" "~/org/todo.org" "Tasks")
-           (110 "* %u %?" "~/org/notes.org" "Notes"))))
- '(remember-annotation-functions (quote (org-remember-annotation)))
- '(remember-handler-functions (quote (org-remember-handler))))
+
+;; Put all customizations in this file.
+(setq custom-file "~/.emacs.d/albin/custom.el")
+(load custom-file)
 
 ;; Browse with emacs-w3m:
 ;; (setq browse-url-browser-function 'w3m-browse-url
