@@ -19,6 +19,8 @@
                :features: ii-mode)
         (:name google-weather)
         (:name offlineimap)
+        (:name quack)
+        (:name emms)
 ;;        (:name org-mode)
 ;;        (:name org-contacts)
         ;; (:name notmorg
