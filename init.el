@@ -48,7 +48,7 @@
         (:name xml-rpc          :type elpa)
         (:name bbdb             :type apt-get)
         (:name pymacs           :type apt-get)
-        (:name auctex           :type apt-get)
+        (:name auctex)
         (:name debian-el        :type apt-get)
         (:name org-mode         :type apt-get)
         (:name emacs-goodies-el :type apt-get)))
