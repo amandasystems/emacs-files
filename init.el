@@ -418,14 +418,11 @@ by using nxml's indentation rules."
     (message "Project created: %s" project-path)
     (find-file (concat project-path "/README.org"))))
 
-(require 'emms-setup)
 (emms-standard)
 (emms-default-players)
 (push 'emms-player-mplayer emms-player-list)
 
 (setq emms-source-file-default-directory "/var/storage/downloads/")
-
-
 
 ;; Numbered links for w3m:
 ;; courtesy of http://emacs.wordpress.com/2008/04/12/numbered-links-in-emacs-w3m/,
@@ -472,7 +469,7 @@ by using nxml's indentation rules."
       (e (if mark-active end (point-max))))
     (message "Word count: %s" (how-many "\\w+" b e))))
 
-(require 'quack)
+
 (require 'printing)
 (setq warning-suppress-types nil) ;; workaround compile errors
 
