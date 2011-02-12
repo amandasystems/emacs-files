@@ -46,9 +46,9 @@
                :url "http://github.com/punchagan/org2blog.git"
                :features org2blog)
         (:name xml-rpc          :type elpa)
-        (:name bbdb)
+        (:name bbdb             :type apt-get)
         (:name pymacs)
-        (:name auctex)
+        (:name auctex           :type apt-get)
         (:name debian-el        :type apt-get)
         (:name org-mode         :type apt-get)
         (:name emacs-goodies-el :type apt-get)))
