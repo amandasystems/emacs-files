@@ -73,6 +73,10 @@
 ;; Notmuch code:
 (require 'notmuch)
 
+;; use remote notmuch on motoko
+(if (string-equal (system-name) "motoko.student.uu.se")
+    (setq notmuch-command "/home/albin/.bin/notmuch-net.sh"))
+
 (setq mail-user-agent 'message-user-agent
       message-directory "~/inmail/Gmail/"
       notmuch-fcc-dirs "/home/albin/inmail/Gmail/Sent")
