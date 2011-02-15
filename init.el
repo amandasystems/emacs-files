@@ -308,23 +308,7 @@ by using nxml's indentation rules."
 (add-hook 'org-mode-hook (lambda () (org-indent-mode t)))
 (add-hook 'org-mode-hook (lambda () (guillemets-mode t)))
 
-(setq journal-file "~/org/journal.org")
-
 (require 'org)
-
-(defun start-journal-entry ()
-  "Start a new journal entry."
-  (interactive)
-  (find-file journal-file)
-  ;;  (goto-char (point-min))
-  (goto-char (point-max))
-  (org-insert-heading)
-  (org-insert-time-stamp (current-time) t)
-  ;;  (open-line 2)
-  (insert " "))
-
-(global-set-key (kbd "C-c j") 'start-journal-entry)
-
 (setq org-log-done t)
 
 (setq org-export-default-language "sv")
