@@ -269,16 +269,13 @@ by using nxml's indentation rules."
 ;;   emacsclient \"org-protocol:/capture:/w/  [...]
 
 (setq org-capture-templates
-  '(
-     ("w" "" entry ;; 'w' for 'org-protocol'
+  '(("w" "www" entry ;; 'w' for 'org-protocol'
        (file+headline "~/org/www.org" "Bokmärken")
        "* %c %^g \n:DATE: %T \n%^{Description}")
-;;      ("c" "Contacts" entry (file "~/org/contacts.org")
-;;       "* %(org-contacts-template-name)
-;; :PROPERTIES:
-;; :EMAIL: %(org-contacts-template-email)
-;; :END:")
-     ))
+     ("j" "Journal" entry (file+datetree "~/org/journal.org")
+      "* %?\nEntered on %U\n")))
+
+(define-key global-map "\C-cc" 'org-capture)
 
 
 (setq org-agenda-files '("/home/albin/org/todo.org"
