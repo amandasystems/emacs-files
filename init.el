@@ -272,7 +272,7 @@ by using nxml's indentation rules."
   '(("w" "www" entry ;; 'w' for 'org-protocol'
        (file+headline "~/org/www.org" "Bokmärken")
        "* %c %^g \n:DATE: %T \n%^{Description}")
-     ("j" "Journal" entry (file+datetree "~/org/journal.org")
+     ("j" "Journal" entry (file+datetree "~/org/journal.org.gpg")
       "* %?\nEntered on %U\n")))
 
 (define-key global-map "\C-cc" 'org-capture)
