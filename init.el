@@ -273,7 +273,10 @@ by using nxml's indentation rules."
        (file+headline "~/org/www.org" "Bokmärken")
        "* %c %^g \n:DATE: %T \n%^{Description}")
      ("j" "Journal" entry (file+datetree "~/org/journal.org.gpg")
-      "* %?\nEntered on %U\n")))
+      "* %?\nEntered on %U\n")
+     ("r" "read/review" entry (file "~/org/read-review.org")
+      "* TODO läs %c"
+      :immediate-finish t)))
 
 (define-key global-map "\C-cc" 'org-capture)
 
