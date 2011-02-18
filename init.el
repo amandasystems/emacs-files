@@ -356,6 +356,55 @@ by using nxml's indentation rules."
 (global-set-key (kbd "C-c t") 'insert-new-todo)
 
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; xelatex code begins here ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(require 'org-latex)
+
+(setq org-export-latex-listings t)
+(setq texcmd "/home/albin/.bin/latexmk -pdflatex=xelatex -pdf -quiet %s")
+(setq org-latex-to-pdf-process (list texcmd))
+(setq org-export-latex-default-packages-alist
+                '(("" "fontspec" t)
+                  ("" "xunicode" t)
+                  ("" "xltxtra" t)
+                  ("" "url" t)
+                  ("" "rotating" t)
+                  ("swedish" "babel" t)
+                  ("babel=guillemets*" "csquotes" t)
+                  ("" "soul" t)
+                  ("xetex, colorlinks=true,
+                    linkcolor=blue, citecolor=blue,
+                    urlcolor=blue,breaklinks"
+                   "hyperref" nil)))
+
+;; \setmainfont{TeXGyrePagella}
+
+(setq org-export-latex-classes
+                (cons '("article"
+                        "\\documentclass[12pt,a4paper]{article}
+                         [DEFAULT-PACKAGES]
+                         [PACKAGES]
+                         [EXTRA]
+                         \\setmainfont{TeXGyrePagella}"
+                        ("\\section{%s}" . "\\section*{%s}")
+                        ("\\subsection{%s}" . "\\subsection*{%s}")
+                        ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                        ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                        ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
+                      org-export-latex-classes))
+
+;; Specify default packages to be included in every tex file, whether pdflatex or xelatex
+(setq org-export-latex-packages-alist
+      '(("" "graphicx" t)
+            ("" "longtable" nil)
+            ("" "float" nil)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; xelatex code ends here ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 ;;;;;;;;;;;;;;;;;;;;
 ;; End Org config ;;
 ;;;;;;;;;;;;;;;;;;;;
@@ -421,6 +470,7 @@ by using nxml's indentation rules."
 (type-break-mode)
 
 (set-frame-font "DejaVu Sans Mono-12")
+
 
 ;; Use C-x C-m for M-x:
 (global-set-key "\C-x\C-m" 'execute-extended-command)
