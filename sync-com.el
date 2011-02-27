@@ -176,6 +176,8 @@
 (add-hook 'jabber-post-disconnect-hook 'kill-all-jabber-buffers)
 (add-hook 'ii-mode-hook 'guillemets-mode)
 
+(setq ii-completing-read 'ido-completing-read)
+
 
 ;; Auto-change Erc filling to fit window:
 ;; (add-hook 'window-configuration-change-hook 

@@ -27,10 +27,19 @@
 
 ;; END SMTP
 
-(setq mime-w3m-safe-url-regexp nil) ;; Don't bother.
+(setq mime-w3m-safe-url-regexp nil
+       mm-w3m-safe-url-regexp nil) ;; Don't bother.
 (setq mime-w3m-display-inline-images t) ;; Yes, do render inline images
-(setq mm-inline-text-html-with-images t
-      mm-w3m-safe-url-regexp nil)
+(setq mm-inline-text-html-with-images t)
+
+;; (add-hook 'notmuch-show-hook (lambda ()
+;;                                (if (member "feeds" (notmuch-show-get-tags))
+;;                                    (setq mm-w3m-safe-url-regexp   nil
+;;                                          mime-w3m-safe-url-regexp nil)
+;;                                  (setq mm-w3m-safe-url-regexp     "\\`cid:"
+;;                                        mime-w3m-safe-url-regexp   "\\`cid:"))))
+
+
 ;; Mu-cite, for less ugly citations.
 (autoload 'mu-cite-original "mu-cite" nil t)
 (setq mu-cite-prefix-format '("> "))
@@ -136,15 +145,6 @@
   (notmuch-show-remove-tag "read/review")
   (notmuch-show-archive-thread))
 
-(defun notmuch-display-trusted-images ()
-  (interactive)
-  (if (member "feeds" (notmuch-show-get-tags))
-      (progn
-        (make-variable-buffer-local 'mm-inline-text-html-with-images)
-        (make-variable-buffer-local 'mm-w3m-safe-url-regexp)
-        (setq mm-inline-text-html-with-images t
-              mm-w3m-safe-url-regexp nil))))
-
 (define-key notmuch-search-mode-map "T" 'notmuch-search-read/review)
 (define-key notmuch-search-mode-map "U" 'notmuch-search-unread/review)
 (define-key notmuch-show-mode-map "T" 'notmuch-show-read/review)
@@ -170,5 +170,7 @@
 
 (setq notmuch-addr-query-command "/home/albin/.bin/addrlookup")
 
+;; Process...err...PGP/Mime. :)
+(setq notmuch-process-pgpmime t)
 
 (require 'org-notmuch)

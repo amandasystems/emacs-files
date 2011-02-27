@@ -40,6 +40,7 @@
         (:name el-get)
         (:name geiser)
         (:name auto-complete)
+        (:name twittering-mode)
         (:name anything)
         (:name org2blog
                :type git
@@ -286,7 +287,8 @@ by using nxml's indentation rules."
                          ;; "/home/albin/org/notmorg.org"
                          "/home/albin/org/weather.org"
                          "/home/albin/org/skolan.org"
-                         "/home/albin/org/1:5.org"))
+                         "/home/albin/org/1:5.org"
+                         "/home/albin/org/arken.org"))
 
 (setq org-agenda-custom-commands
       '(("w" todo "WAITING" nil)
@@ -378,8 +380,6 @@ by using nxml's indentation rules."
                     linkcolor=blue, citecolor=blue,
                     urlcolor=blue,breaklinks"
                    "hyperref" nil)))
-
-;; \setmainfont{TeXGyrePagella}
 
 (setq org-export-latex-classes
                 (cons '("article"
