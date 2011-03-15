@@ -132,11 +132,6 @@ download_buffer_automatic_open_target = [OPEN_NEW_BUFFER_BACKGROUND, OPEN_NEW_WI
 cwd = make_file("/home/albin/Downloads");
 
 require("block-content-focus-change.js");
-content_handlers.set("application/pdf", content_handler_open);
-content_handlers.set("application/msword", content_handler_open);
-external_content_handlers.set("application/pdf", "evince");
-external_content_handlers.set("application/vnd.openxmlformats-officedocument.wordprocessingml.document", "oowriter");
-external_content_handlers.set("application/msword", "oowriter");
 external_content_handlers.set("image/*", "feh");
 
 interactive("reload-config", "reload conkerorrc",

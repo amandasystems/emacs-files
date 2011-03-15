@@ -174,3 +174,11 @@
 (setq notmuch-process-pgpmime t)
 
 (require 'org-notmuch)
+
+;; just redefine this to use ido-completing-read -- krl's code from https://gist.github.com/869875
+(defun eudc-select (choices beg end)
+  (let ((replacement
+         (ido-completing-read "Multiple matches found; choose one: "
+                              (mapcar 'list choices))))
+    (delete-region beg end)
+    (insert replacement)))

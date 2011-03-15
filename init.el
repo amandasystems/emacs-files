@@ -47,7 +47,7 @@
                :url "http://github.com/punchagan/org2blog.git"
                :features org2blog)
         (:name xml-rpc          :type elpa)
-        (:name emacs-jabber)
+;;        (:name emacs-jabber)
         (:name bbdb             :type apt-get)
         (:name pymacs)
         (:name auctex           :type apt-get)
@@ -357,7 +357,8 @@ by using nxml's indentation rules."
     (bury-buffer)))
 (global-set-key (kbd "C-c t") 'insert-new-todo)
 
-
+;; don't use sublevels for agenda: keep agenda clean
+(setq org-agenda-todo-list-sublevels nil)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; xelatex code begins here ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -547,5 +548,12 @@ by using nxml's indentation rules."
       (setq truncate-lines t))
 
 (global-set-key "\C-cum" 'mail-web-page-url)
+
+(defun racket-enter! ()
+  (interactive)
+  (comint-send-string (scheme-proc)
+        (format "(enter! (file \"%s\") #:verbose)\n" buffer-file-name))
+  (switch-to-scheme t))
+
 
 (server-start)

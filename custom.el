@@ -9,7 +9,7 @@
  '(newsticker-html-renderer (quote w3m-region))
  '(notmuch-show-insert-text/plain-hook (quote (notmuch-wash-convert-inline-patch-to-part notmuch-wash-wrap-long-lines notmuch-wash-tidy-citations notmuch-wash-elide-blank-lines notmuch-wash-excerpt-citations)))
  '(org-agenda-files (quote ("/home/albin/org/todo.org" "/home/albin/org/projekt.org" "/home/albin/org/weather.org" "/home/albin/org/skolan.org" "/home/albin/org/1:5.org")))
- '(org-agenda-ndays 7)
+ '(org-agenda-ndays 14)
  '(org-agenda-show-all-dates t)
  '(org-agenda-skip-deadline-if-done t)
  '(org-agenda-skip-scheduled-if-done t)
