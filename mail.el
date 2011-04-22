@@ -182,3 +182,17 @@
                               (mapcar 'list choices))))
     (delete-region beg end)
     (insert replacement)))
+
+(defun ks-notmuch-show-copy-entry-url ()
+      (interactive)
+      (let ((raw (shell-command-to-string
+                  (concat notmuch-command
+                          " show --format=raw "
+                          (notmuch-show-get-message-id)))))
+        (if (string-match "X-Entry-URL: \\(.*\\)" raw)
+            (let ((url (match-string 1 raw)))
+              (kill-new url)
+              (message "Killed url: %s" url))
+          (error "No X-Entry-URL header present"))))
+
+(define-key notmuch-show-mode-map "Y" 'ks-notmuch-show-copy-entry-url)

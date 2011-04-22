@@ -46,7 +46,7 @@
                :type git
                :url "http://github.com/punchagan/org2blog.git"
                :features org2blog)
-        (:name xml-rpc          :type elpa)
+;;        (:name xml-rpc          :type elpa)
 ;;        (:name emacs-jabber)
         (:name bbdb             :type apt-get)
         (:name pymacs)
@@ -344,6 +344,17 @@ by using nxml's indentation rules."
 
 
 ;; End org2blog
+
+;; Pomodoro method for Org-mode
+
+(add-to-list 'org-modules 'org-timer)
+(setq org-timer-default-timer 25)
+
+(add-hook 'org-clock-in-hook '(lambda () 
+      (if (not org-timer-current-timer) 
+          (org-timer-set-timer '(16)))))
+
+;; end pomodoro
 
 
 (defun insert-new-todo (description)
