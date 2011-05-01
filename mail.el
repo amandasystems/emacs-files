@@ -118,7 +118,9 @@
                                ("identica" . "tag:identica and tag:inbox")
                                ("local" . "tag:local and tag:inbox")
                                ("list" . "tag:list and tag:inbox")
-                               ("read/review" . "tag:read/review")))
+                               ("read/review" . "tag:read/review and not tag:BiF")
+                               ("BiF" . "tag:BiF and tag:inbox")
+                               ("BiF read/review" . "tag:BiF and tag:read/review")))
 
 
 
@@ -145,10 +147,18 @@
   (notmuch-show-remove-tag "read/review")
   (notmuch-show-archive-thread))
 
+(defun notmuch-show-toggle-recommend ()
+  (interactive)
+  (if (member "rek" (notmuch-show-get-tags))
+      (notmuch-show-remove-tag "rek")
+    (notmuch-show-add-tag "rek")
+    (notmuch-show-unread/review)))
+
 (define-key notmuch-search-mode-map "T" 'notmuch-search-read/review)
 (define-key notmuch-search-mode-map "U" 'notmuch-search-unread/review)
 (define-key notmuch-show-mode-map "T" 'notmuch-show-read/review)
 (define-key notmuch-show-mode-map "U" 'notmuch-show-unread/review)
+(define-key notmuch-show-mode-map "R" 'notmuch-show-toggle-recommend)
 (define-key notmuch-show-mode-map "\C-c\C-o" 'w3m-view-url-with-external-browser)
 
 ;; Integrate notmuch with org-mode's agenda view:

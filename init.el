@@ -48,7 +48,7 @@
                :features org2blog)
 ;;        (:name xml-rpc          :type elpa)
 ;;        (:name emacs-jabber)
-        (:name xml-rpc          :type elpa)
+;;        (:name xml-rpc          :type elpa)
         (:name emacs-jabber)
         (:name bbdb             :type apt-get)
         (:name pymacs)
@@ -104,11 +104,171 @@
 ;; Calendar settings ;;
 ;;;;;;;;;;;;;;;;;;;;;;;
 
+(require 'holidays)
 (require 'calendar)
 (calendar-set-date-style 'european)
 
+;; 24-timmarsklocka utan tidszon
+(setq calendar-time-display-form
+      '(24-hours ":" minutes))
+
+
 ;; Do not show any holidays:
-(setq calendar-holidays nil)
+;;(setq calendar-holidays nil)
+
+;; Påskdagen (from holiday-easter-etc)
+(defun sv-easter (year)
+  "Calculate the date for Easter in YEAR.
+Beräkna påskdagen för år YEAR."
+  (let* ((century (1+ (/ year 100)))
+         (shifted-epact (% (+ 14 (* 11 (% year 19))
+                              (- (/ (* 3 century) 4))
+                              (/ (+ 5 (* 8 century)) 25)
+                              (* 30 century))
+                           30))
+         (adjusted-epact (if (or (= shifted-epact 0)
+                                 (and (= shifted-epact 1)
+                                      (< 10 (% year 19))))
+                             (1+ shifted-epact)
+                           shifted-epact))
+         
+         (paschal-moon (- (calendar-absolute-from-gregorian
+                           (list 4 19 year))
+                          adjusted-epact)))
+    (calendar-dayname-on-or-before 0 (+ paschal-moon 7))))
+
+;; Helgdagar
+(setq holiday-general-holidays
+      '((holiday-fixed 1 1 "Nyårsdagen")
+        (holiday-fixed 1 6 "Trettondedag jul")
+
+        ;; Påsk och pingst
+        (filter-visible-calendar-holidays
+         (mapcar
+          (lambda (dag)
+            (list (calendar-gregorian-from-absolute
+                   (+ (sv-easter displayed-year) (car dag)))
+                  (cadr dag)))
+          '((  -2 "Långfredagen")
+            (  -1 "Påskafton")
+            (   0 "Påskdagen")
+            (  +1 "Annandag påsk")
+            ( +39 "Kristi himmelfärdsdag")
+            ( +49 "Pingstdagen")
+            ( +50 "Annandag pingst"))))
+
+
+        (holiday-fixed 5 1 "Första maj")
+
+        (let ((midsommar-d (calendar-dayname-on-or-before
+                            6 (calendar-absolute-from-gregorian
+                               (list 6 26 displayed-year)))))
+          ;; Midsommar
+          (filter-visible-calendar-holidays
+           (list
+            (list
+             (calendar-gregorian-from-absolute (1- midsommar-d))
+             "Midsommarafton")
+            (list
+             (calendar-gregorian-from-absolute midsommar-d)
+             "Midsommardagen")
+           ;; Alla helgons dag
+           (list
+            (calendar-gregorian-from-absolute
+             (calendar-dayname-on-or-before
+              6 (calendar-absolute-from-gregorian
+                 (list 11 6 displayed-year))))
+            "Alla helgons dag"))))
+         
+        (holiday-fixed 12 25 "Juldagen")
+        (holiday-fixed 12 26 "Annandag jul")))
+
+;; Andra högtider
+(setq holiday-other-holidays
+       '((holiday-fixed 1 13 "Tjogondag Knut")
+        (holiday-fixed 1 28 "Konungens namnsdag")
+        (holiday-fixed 2 2 "Kyndelsmässodagen")
+        (holiday-fixed 2 14 "Alla hjärtans dag")
+
+        ;; Fettisdagen
+        (holiday-filter-visible-calendar
+          (list
+           (list
+            (calendar-gregorian-from-absolute
+             (calendar-dayname-on-or-before
+              2 (- (sv-easter displayed-year) 47)))
+           "Fettisdagen")))
+
+        (holiday-fixed 3 8 "Internationella kvinnodagen")
+        (holiday-fixed 3 12 "Kronprinsessans namnsdag")
+        (holiday-fixed 3 25 "Vårfrudagen")
+
+        ;; ursprunglingen:
+        (filter-visible-calendar-holidays
+         (mapcar
+          (lambda (dag)
+            (list (calendar-gregorian-from-absolute
+                   (+ (sv-easter displayed-year) (car dag)))
+                  (cadr dag)))
+          (if nil
+              '(( -3 "Skärtorsdagen"))
+            '(( -7 "Palmsöndagen")
+              ( -4 "Dymmelonsdagen")
+              ( -3 "Skärtorsdagen")))))
+
+        (holiday-fixed 4 30 "Konungens födelsedag")
+        (holiday-fixed 4 1 "Första april")
+        (holiday-fixed 4 30 "Valborgsmässoafton")
+        (holiday-float 5 0 -1 "Mors dag")
+        (holiday-fixed 6 6 "Sveriges nationaldag")
+        (holiday-fixed 7 14 "Kronprinsessans födelsedag")
+        (holiday-fixed 8 8 "Drottningens namnsdag")
+        (holiday-fixed 10 24 "FN-dagen")
+        (holiday-float 11 0 2 "Fars dag")
+        (holiday-fixed 11 6 "Gustaf Adolfsdagen")
+        (holiday-fixed 11 10 "Mårtensafton")
+        (holiday-float 12 0 -4 "Första advent" 24)
+        (holiday-float 12 0 -3 "Andra advent" 24)
+        (holiday-float 12 0 -2 "Tredje advent" 24)
+        (holiday-float 12 0 -1 "Fjärde advent" 24)
+        (holiday-fixed 12 10 "Nobeldagen")
+        (holiday-fixed 12 13 "Lucia")
+        (holiday-fixed 12 23 "Drottningens födelsedag")
+        (holiday-fixed 12 24 "Julafton")
+        (holiday-fixed 12 31 "Nyårsafton")))
+
+;; Solstånd, dagjämningar, vinter- och sommartid
+(setq holiday-solar-holidays
+      '((if (fboundp 'atan)
+              (solar-equinoxes-solstices))
+          (if (progn
+                (require 'cal-dst)
+                t)
+              (funcall 'holiday-sexp calendar-daylight-savings-starts
+                       '(format "Sommartid börjar %s"
+                                (if
+                                    (fboundp 'atan)
+                                    (solar-time-string
+                                     (/ calendar-daylight-savings-starts-time
+                                        (float 60))
+                                     calendar-standard-time-zone-name)
+                                  ""))))
+          (funcall 'holiday-sexp calendar-daylight-savings-ends
+                   '(format "Vintertid börjar %s"
+                            (if
+                                (fboundp 'atan)
+                                (solar-time-string
+                                 (/ calendar-daylight-savings-ends-time
+                                    (float 60))
+                                 calendar-daylight-time-zone-name)
+                              "")))))
+
+;; Listan med kalenderns helgdagar
+(setq calendar-holidays
+      (append holiday-general-holidays holiday-local-holidays
+              holiday-other-holidays holiday-solar-holidays))
+
+
 
 ;; Swedish calendar:
 (setq calendar-week-start-day 1
@@ -290,6 +450,7 @@ by using nxml's indentation rules."
                          "/home/albin/org/weather.org"
                          "/home/albin/org/skolan.org"
                          "/home/albin/org/1:5.org"
+                         "/home/albin/org/bif.org"
                          "/home/albin/org/arken.org"))
 
 (setq org-agenda-custom-commands
@@ -347,14 +508,19 @@ by using nxml's indentation rules."
 
 ;; End org2blog
 
+
+(setq org-clock-persist 'history)
+(org-clock-persistence-insinuate)
+
+
 ;; Pomodoro method for Org-mode
 
-(add-to-list 'org-modules 'org-timer)
-(setq org-timer-default-timer 25)
+;; (add-to-list 'org-modules 'org-timer)
+;; (setq org-timer-default-timer 25)
 
-(add-hook 'org-clock-in-hook '(lambda () 
-      (if (not org-timer-current-timer) 
-          (org-timer-set-timer '(16)))))
+;; (add-hook 'org-clock-in-hook '(lambda () 
+;;       (if (not org-timer-current-timer) 
+;;           (org-timer-set-timer '(16)))))
 
 ;; end pomodoro
 
