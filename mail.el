@@ -110,14 +110,15 @@
 ;;(add-hook 'notmuch-show-hook 'offlineimap)
 
 ;;sign messages by default
-(add-hook 'message-setup-hook 'mml-secure-sign-pgpmime)
+;;(add-hook 'message-setup-hook 'mml-secure-sign-pgpmime)
 
 (setq notmuch-saved-searches '(("personal" . "tag:personal and tag:inbox")
                                ("feeds" . "tag:feeds and tag:inbox")
                                ("facebook" . "tag:facebook and tag:inbox")
                                ("identica" . "tag:identica and tag:inbox")
                                ("local" . "tag:local and tag:inbox")
-                               ("list" . "tag:list and tag:inbox")
+                               ("list" . "tag:list and tag:inbox and not tag:notmuch")
+                               ("notmuch" . "tag:inbox and tag:notmuch")
                                ("read/review" . "tag:read/review and not tag:BiF")
                                ("BiF" . "tag:BiF and tag:inbox")
                                ("BiF read/review" . "tag:BiF and tag:read/review")))
@@ -181,7 +182,7 @@
 (setq notmuch-addr-query-command "/home/albin/.bin/addrlookup")
 
 ;; Process...err...PGP/Mime. :)
-(setq notmuch-process-pgpmime t)
+(setq notmuch-crypto-process-mime t)
 
 (require 'org-notmuch)
 
@@ -206,3 +207,12 @@
           (error "No X-Entry-URL header present"))))
 
 (define-key notmuch-show-mode-map "Y" 'ks-notmuch-show-copy-entry-url)
+
+(require 'dbus)
+(defun schnouki/notmuch-dbus-notify ()
+  (when (get-buffer "*notmuch-hello*")
+    (message "Notmuch notify")
+    (notmuch-hello-update t)))
+(dbus-register-method :session dbus-service-emacs dbus-path-emacs
+                      dbus-service-emacs "NotmuchNotify"
+                      'schnouki/notmuch-dbus-notify)

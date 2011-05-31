@@ -46,9 +46,14 @@
                :type git
                :url "http://github.com/punchagan/org2blog.git"
                :features org2blog)
+        (:name gimme
+               :type git
+               :load-path "."
+               :url "http://github.com/konr/GIMME.git"
+               :features gimme)
 ;;        (:name xml-rpc          :type elpa)
 ;;        (:name emacs-jabber)
-;;        (:name xml-rpc          :type elpa)
+        ;;        (:name xml-rpc          :type elpa)
         (:name emacs-jabber)
         (:name bbdb             :type apt-get)
         (:name pymacs)
@@ -58,7 +63,8 @@
         (:name emacs-goodies-el :type apt-get)))
 
 
-(el-get)
+ (ignore-errors
+   (el-get 'wait))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;
 ;; End of el-get code ;;
@@ -86,7 +92,8 @@
             (expand-file-name
              (concat "#%" (buffer-name) "#")))))
 
-(setq-default ispell-program-name "aspell")
+;;(setq-default ispell-program-name "aspell")
+(setq ispell-program-name "aspell")
 
 ;; Put all customizations in this file.
 (setq custom-file "~/.emacs.d/albin/custom.el")
@@ -456,7 +463,11 @@ by using nxml's indentation rules."
 (setq org-agenda-custom-commands
       '(("w" todo "WAITING" nil)
         ("s" todo "SOMEDAY" nil)
-        ("t" todo "TODO" nil)))
+        ("t" todo "TODO" nil)
+        ("X" "Monthly agenda" agenda "" nil
+         ("~/org-export/agenda.html"
+          "~/org-export/agenda.ics"
+          "~/org-export/agenda.pdf"))))
 
 (setq org-agenda-include-diary t)
 (define-key mode-specific-map [?a] 'org-agenda)
@@ -530,6 +541,7 @@ by using nxml's indentation rules."
   (save-excursion
     ;;    (set-buffer "*scratch*")
     (find-file "~/org/todo.org")
+    (goto-line 0)
     (org-insert-todo-heading t)
     (insert description)
     (save-buffer)
@@ -580,6 +592,28 @@ by using nxml's indentation rules."
       '(("" "graphicx" t)
             ("" "longtable" nil)
             ("" "float" nil)))
+
+
+(setq TeX-output-view-style '(("^dvi$"
+  ("^landscape$" "^pstricks$\\|^pst-\\|^psfrag$")
+  "%(o?)dvips -t landscape %d -o && gv %f")
+ ("^dvi$" "^pstricks$\\|^pst-\\|^psfrag$" "%(o?)dvips %d -o && gv %f")
+ ("^dvi$"
+  ("^\\(?:a4\\(?:dutch\\|paper\\|wide\\)\\|sem-a4\\)$" "^landscape$")
+  "%(o?)xdvi %dS -paper a4r -s 0 %d")
+ ("^dvi$" "^\\(?:a4\\(?:dutch\\|paper\\|wide\\)\\|sem-a4\\)$" "%(o?)xdvi %dS -paper a4 %d")
+ ("^dvi$"
+  ("^\\(?:a5\\(?:comb\\|paper\\)\\)$" "^landscape$")
+  "%(o?)xdvi %dS -paper a5r -s 0 %d")
+ ("^dvi$" "^\\(?:a5\\(?:comb\\|paper\\)\\)$" "%(o?)xdvi %dS -paper a5 %d")
+ ("^dvi$" "^b5paper$" "%(o?)xdvi %dS -paper b5 %d")
+ ("^dvi$" "^letterpaper$" "%(o?)xdvi %dS -paper us %d")
+ ("^dvi$" "^legalpaper$" "%(o?)xdvi %dS -paper legal %d")
+ ("^dvi$" "^executivepaper$" "%(o?)xdvi %dS -paper 7.25x10.5in %d")
+ ("^dvi$" "." "%(o?)xdvi %dS %d")
+ ("^pdf$" "." "okular %o")
+ ("^html?$" "." "netscape %o"))) 
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; xelatex code ends here ;;

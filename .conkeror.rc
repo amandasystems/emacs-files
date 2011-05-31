@@ -25,6 +25,7 @@ define_webjump("youtube", "http://www.youtube.com/results?search_query=%s&search
 define_webjump("libris", "http://libris.kb.se/hitlist?d=libris&q=%s&f=simp&spell=true&hist=true&p=1");
 define_webjump("opac", "http://bookit.uppsala.se/pls/bookit/pkg_www_search.ccl_search?in_ccl_query_encoded=the%s");
 define_webjump("lt-tag", "http://www.librarything.com/tag/%s");
+define_webjump("kindle", "http://www.amazon.com/s/ref=nb_sb_noss?url=search-alias%3Ddigital-text&field-keywords=%s&x=0&y=0");
 define_webjump("emacswiki",
     "http://www.google.com/cse?cx=004774160799092323420%3A6-ff2s0o6yi"+
         "&q=%s&sa=Search&siteurl=emacswiki.org%2F",

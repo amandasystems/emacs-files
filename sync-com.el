@@ -177,6 +177,7 @@
 (add-hook 'ii-mode-hook 'guillemets-mode)
 
 (setq ii-completing-read 'ido-completing-read)
+(setq ii-censor nil)
 
 
 ;; Auto-change Erc filling to fit window:
