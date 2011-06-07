@@ -121,7 +121,8 @@
                                ("notmuch" . "tag:inbox and tag:notmuch")
                                ("read/review" . "tag:read/review and not tag:BiF")
                                ("BiF" . "tag:BiF and tag:inbox")
-                               ("BiF read/review" . "tag:BiF and tag:read/review")))
+                               ("BiF read/review" . "tag:BiF and tag:read/review")
+                               ("waiting" . "tag:waiting")))
 
 
 
@@ -155,8 +156,25 @@
     (notmuch-show-add-tag "rek")
     (notmuch-show-unread/review)))
 
+(defun notmuch-show-toggle-waiting ()
+  (interactive)
+  (if (member "waiting" (notmuch-show-get-tags))
+      (notmuch-show-remove-tag "waiting")
+    (notmuch-show-add-tag "waiting")
+    (notmuch-show-unread/review)))
+
+(defun notmuch-search-toggle-waiting ()
+  (interactive)
+  (if (member "waiting" (notmuch-search-get-tags))
+      (notmuch-search-remove-tag "waiting")
+    (notmuch-search-add-tag "waiting")
+    (notmuch-search-unread/review)))
+
+
 (define-key notmuch-search-mode-map "T" 'notmuch-search-read/review)
 (define-key notmuch-search-mode-map "U" 'notmuch-search-unread/review)
+(define-key notmuch-search-mode-map "w" 'notmuch-search-toggle-waiting)
+(define-key notmuch-show-mode-map "w" 'notmuch-show-toggle-waiting)
 (define-key notmuch-show-mode-map "T" 'notmuch-show-read/review)
 (define-key notmuch-show-mode-map "U" 'notmuch-show-unread/review)
 (define-key notmuch-show-mode-map "R" 'notmuch-show-toggle-recommend)

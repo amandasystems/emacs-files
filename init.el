@@ -463,7 +463,8 @@ by using nxml's indentation rules."
 (setq org-agenda-custom-commands
       '(("w" todo "WAITING" nil)
         ("s" todo "SOMEDAY" nil)
-        ("t" todo "TODO" nil)
+        ("t" todo "TODO"
+         ((org-agenda-todo-ignore-scheduled t)))
         ("X" "Monthly agenda" agenda "" nil
          ("~/org-export/agenda.html"
           "~/org-export/agenda.ics"
@@ -683,7 +684,8 @@ by using nxml's indentation rules."
 
 (type-break-mode)
 
-(set-frame-font "DejaVu Sans Mono-12")
+(set-frame-font "DejaVu Sans Mono-11")
+;;(set-frame-font "Terminus-12")
 
 
 ;; Use C-x C-m for M-x:
