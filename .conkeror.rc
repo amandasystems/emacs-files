@@ -40,6 +40,7 @@ define_webjump("mb-release", "http://musicbrainz.org/search/textsearch.html?type
 define_webjump("studentportalen", "https://cas.user.uu.se/cas/login?service=https%3A%2F%2Fstudentportalen.uu.se%2Fportal%2Fportal%2Fuusp%3Fuusp.doLogin%3Dtrue");
 define_webjump("quotes", "http://en.wikiquote.org/wiki/%s");
 define_webjump("flickrcc", "http://www.flickr.com/search/?q=%s&l=cc&ct=0&mt=all&adv=1");
+define_webjump("elib", "http://elib.se/search.asp?sok=%s&secondrun=YES");
 define_webjump("tradera",
     function (term) {
       return "http://www.tradera.com/search/result.aspx?header=true&search=" + escape(term) + "&search_category=-1";

@@ -114,7 +114,8 @@
 
 (setq notmuch-saved-searches '(("personal" . "tag:personal and tag:inbox")
                                ("feeds" . "tag:feeds and tag:inbox")
-                               ("facebook" . "tag:facebook and tag:inbox")
+                               ("Google+" . "tag:googleplus and tag:inbox")
+                               ("Facebook" . "tag:facebook and tag:inbox")
                                ("identica" . "tag:identica and tag:inbox")
                                ("local" . "tag:local and tag:inbox")
                                ("list" . "tag:list and tag:inbox and not tag:notmuch")
@@ -226,11 +227,11 @@
 
 (define-key notmuch-show-mode-map "Y" 'ks-notmuch-show-copy-entry-url)
 
-(require 'dbus)
-(defun schnouki/notmuch-dbus-notify ()
-  (when (get-buffer "*notmuch-hello*")
-    (message "Notmuch notify")
-    (notmuch-hello-update t)))
-(dbus-register-method :session dbus-service-emacs dbus-path-emacs
-                      dbus-service-emacs "NotmuchNotify"
-                      'schnouki/notmuch-dbus-notify)
+;; (require 'dbus)
+;; (defun schnouki/notmuch-dbus-notify ()
+;;   (when (get-buffer "*notmuch-hello*")
+;;     (message "Notmuch notify")
+;;     (notmuch-hello-update t)))
+;; (dbus-register-method :session dbus-service-emacs dbus-path-emacs
+;;                       dbus-service-emacs "NotmuchNotify"
+;;                       'schnouki/notmuch-dbus-notify)

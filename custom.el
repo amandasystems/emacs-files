@@ -4,6 +4,7 @@
   ;; Your init file should contain only one such instance.
   ;; If there is more than one, they won't work right.
  '(cal-tex-24 t)
+ '(el-get-standard-packages (quote ("gimme" "el-get" "identica-mode" "ii-mode" "google-weather" "offlineimap" "quack" "emms" "git-emacs" "tea-time" "37emacs" "geiser" "auto-complete" "twittering-mode" "anything" "org2blog" "emacs-jabber" "bbdb" "pymacs" "auctex" "debian-el" "org-mode" "emacs-goodies-el")))
  '(flyspell-default-dictionary "sv")
  '(inhibit-startup-screen t)
  '(newsticker-html-renderer (quote w3m-region))

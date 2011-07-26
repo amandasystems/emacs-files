@@ -20,6 +20,7 @@
         (:name google-weather)
         (:name offlineimap)
         (:name quack)
+        (:name python-mode)
         (:name emms)
 ;;        (:name org-mode)
 ;;        (:name org-contacts)
@@ -42,21 +43,22 @@
         (:name auto-complete)
         (:name twittering-mode)
         (:name anything)
+        (:name yasnippet)
         (:name org2blog
                :type git
                :url "http://github.com/punchagan/org2blog.git"
                :features org2blog)
         (:name gimme
                :type git
-               :load-path "."
                :url "http://github.com/konr/GIMME.git"
+               :load-path (".")
                :features gimme)
 ;;        (:name xml-rpc          :type elpa)
 ;;        (:name emacs-jabber)
         ;;        (:name xml-rpc          :type elpa)
         (:name emacs-jabber)
         (:name bbdb             :type apt-get)
-        (:name pymacs)
+        (:name pymacs           :type apt-get)
         (:name auctex           :type apt-get)
         (:name debian-el        :type apt-get)
         (:name org-mode         :type apt-get)
@@ -682,7 +684,7 @@ by using nxml's indentation rules."
                                       (when (not active) (w3m-link-numbering-mode)))))
 ;; End numbered links
 
-(type-break-mode)
+;;(type-break-mode)
 
 (set-frame-font "DejaVu Sans Mono-11")
 ;;(set-frame-font "Terminus-12")
@@ -724,17 +726,135 @@ by using nxml's indentation rules."
 (require 'printing)
 (setq warning-suppress-types nil) ;; workaround compile errors
 
-(require 'auto-complete)
+;; (require 'auto-complete)
 
-(defvar ac-source-python '((candidates .
-		(lambda ()
-		  (mapcar '(lambda (completion)
-			     (first (last (split-string completion "\\." t))))
-			  (python-symbol-completions (python-partial-symbol)))))))
+;; (defvar ac-source-python '((candidates .
+;; 		(lambda ()
+;; 		  (mapcar '(lambda (completion)
+;; 			     (first (last (split-string completion "\\." t))))
+;; 			  (python-symbol-completions (python-partial-symbol)))))))
 
 
+;; (add-hook 'python-mode-hook
+;; 	  (lambda() (setq ac-sources '(ac-source-python))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Python code follows here: ;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+(autoload 'python-mode "python-mode" "Python Mode." t)
+(add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
+(add-to-list 'interpreter-mode-alist '("python" . python-mode))
+(require 'python-mode)
 (add-hook 'python-mode-hook
-	  (lambda() (setq ac-sources '(ac-source-python))))
+      (lambda ()
+	(set-variable 'py-indent-offset 4)
+	;(set-variable 'py-smart-indentation nil)
+	(set-variable 'indent-tabs-mode nil)
+	(define-key py-mode-map (kbd "RET") 'newline-and-indent)
+	;(define-key py-mode-map [tab] 'yas/expand)
+	;(setq yas/after-exit-snippet-hook 'indent-according-to-mode)
+	;;(smart-operator-mode-on)
+	))
+;; pymacs
+(autoload 'pymacs-apply "pymacs")
+(autoload 'pymacs-call "pymacs")
+(autoload 'pymacs-eval "pymacs" nil t)
+(autoload 'pymacs-exec "pymacs" nil t)
+(autoload 'pymacs-load "pymacs" nil t)
+;;(eval-after-load "pymacs"
+;;  '(add-to-list 'pymacs-load-path YOUR-PYMACS-DIRECTORY"))
+(pymacs-load "ropemacs" "rope-")
+(setq ropemacs-enable-autoimport t)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; Auto-completion
+;;;  Integrates:
+;;;   1) Rope
+;;;   2) Yasnippet
+;;;   all with AutoComplete.el
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defun prefix-list-elements (list prefix)
+  (let (value)
+    (nreverse
+     (dolist (element list value)
+      (setq value (cons (format "%s%s" prefix element) value))))))
+(defvar ac-source-rope
+  '((candidates
+     . (lambda ()
+         (prefix-list-elements (rope-completions) ac-target))))
+  "Source for Rope")
+(defun ac-python-find ()
+  "Python `ac-find-function'."
+  (require 'thingatpt)
+  (let ((symbol (car-safe (bounds-of-thing-at-point 'symbol))))
+    (if (null symbol)
+        (if (string= "." (buffer-substring (- (point) 1) (point)))
+            (point)
+          nil)
+      symbol)))
+(defun ac-python-candidate ()
+  "Python `ac-candidates-function'"
+  (let (candidates)
+    (dolist (source ac-sources)
+      (if (symbolp source)
+          (setq source (symbol-value source)))
+      (let* ((ac-limit (or (cdr-safe (assq 'limit source)) ac-limit))
+             (requires (cdr-safe (assq 'requires source)))
+             cand)
+        (if (or (null requires)
+                (>= (length ac-target) requires))
+            (setq cand
+                  (delq nil
+                        (mapcar (lambda (candidate)
+                                  (propertize candidate 'source source))
+                                (funcall (cdr (assq 'candidates source)))))))
+        (if (and (> ac-limit 1)
+                 (> (length cand) ac-limit))
+            (setcdr (nthcdr (1- ac-limit) cand) nil))
+        (setq candidates (append candidates cand))))
+    (delete-dups candidates)))
+(add-hook 'python-mode-hook
+          (lambda ()
+                 (auto-complete-mode 1)
+                 (set (make-local-variable 'ac-sources)
+                      (append ac-sources '(ac-source-rope) '(ac-source-yasnippet)))
+                 (set (make-local-variable 'ac-find-function) 'ac-python-find)
+                 (set (make-local-variable 'ac-candidate-function) 'ac-python-candidate)
+                 (set (make-local-variable 'ac-auto-start) nil)))
+;;Ryan's python specific tab completion
+(defun ryan-python-tab ()
+  ; Try the following:
+  ; 1) Do a yasnippet expansion
+  ; 2) Do a Rope code completion
+  ; 3) Do an indent
+  (interactive)
+  (if (eql (ac-start) 0)
+      (indent-for-tab-command)))
+(defadvice ac-start (before advice-turn-on-auto-start activate)
+  (set (make-local-variable 'ac-auto-start) t))
+(defadvice ac-cleanup (after advice-turn-off-auto-start activate)
+  (set (make-local-variable 'ac-auto-start) nil))
+(define-key py-mode-map "\t" 'ryan-python-tab)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; End Auto Completion
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Auto Syntax Error Hightlight
+(when (load "flymake" t)
+  (defun flymake-pyflakes-init ()
+    (let* ((temp-file (flymake-init-create-temp-buffer-copy
+		       'flymake-create-temp-inplace))
+	   (local-file (file-relative-name
+			temp-file
+			(file-name-directory buffer-file-name))))
+      (list "pyflakes" (list local-file))))
+  (add-to-list 'flymake-allowed-file-name-masks
+	       '("\\.py\\'" flymake-pyflakes-init)))
+(add-hook 'find-file-hook 'flymake-find-file-hook)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Python code ends here ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
 ;; LaTeX (Auctex) code begins here
@@ -769,6 +889,8 @@ by using nxml's indentation rules."
   (comint-send-string (scheme-proc)
         (format "(enter! (file \"%s\") #:verbose)\n" buffer-file-name))
   (switch-to-scheme t))
+
+(global-auto-complete-mode t)
 
 
 (server-start)
