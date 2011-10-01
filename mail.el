@@ -122,6 +122,8 @@
                                ("notmuch" . "tag:inbox and tag:notmuch")
                                ("read/review" . "tag:read/review and not tag:BiF")
                                ("BiF" . "tag:BiF and tag:inbox")
+                               ("Wine" . "tag:wine and tag:inbox")
+                               ("Jobb" . "tag:jobb and tag:inbox")
                                ("BiF read/review" . "tag:BiF and tag:read/review")
                                ("waiting" . "tag:waiting")))
 
@@ -235,3 +237,4 @@
 ;; (dbus-register-method :session dbus-service-emacs dbus-path-emacs
 ;;                       dbus-service-emacs "NotmuchNotify"
 ;;                       'schnouki/notmuch-dbus-notify)
+(provide 'mail)

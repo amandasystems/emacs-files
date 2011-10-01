@@ -4,34 +4,29 @@
 
 ;; El-get is actually maintained by el-get. However, we need to
 ;; bootstrap it.
-(add-to-list 'load-path "~/.emacs.d/el-get/el-get/") 
+(add-to-list 'load-path "~/.emacs.d/el-get/el-get/")
 
-(require 'el-get)
+(add-to-list 'load-path "~/.emacs.d/")
+(require 'package)
+
+(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
+
+(when (not package-archive-contents)
+  (package-refresh-contents))
 
 (setq el-get-sources
-      '((:name identica-mode
-               :type git
-               :url "http://git.savannah.gnu.org/cgit/identica-mode.git"
-               :features identica-mode)
-        (:name ii-mode
+      '((:name ii-mode
                :type git
                :url "http://github.com/krl/ii-mode.git"
                :features: ii-mode)
-        (:name google-weather)
-        (:name offlineimap)
         (:name quack)
-        (:name python-mode)
-        (:name emms)
-;;        (:name org-mode)
-;;        (:name org-contacts)
-        ;; (:name notmorg
-        ;;        :type git
-        ;;        :url "http://github.com/krl/notmorg.git"
-        ;;        :features notmorg)
         (:name git-emacs)
         (:name tea-time
                :type git
                :url "git://github.com/krick/tea-time.git")
+        (:name idle-highlight-mode
+               :type git
+               :url "https://github.com/nonsequitur/idle-highlight-mode.git")
         (:name 37emacs
                :type git
                :url "git://github.com/hober/37emacs.git"
@@ -39,23 +34,24 @@
                :features rest-api
                :load  ("./rest-api.el"))
         (:name el-get)
+        (:name vala-mode :type elpa)
+        (:name deft :type elpa)
+        (:name gimme :type elpa)
+        (:name csharp-mode)
         (:name geiser)
         (:name auto-complete)
         (:name twittering-mode)
+        (:name smex :type elpa)
+        (:name starter-kit :type elpa)
+        (:name starter-kit-eshell :type elpa)
+;;        (:name starter-kit-bindings :type elpa)
         (:name anything)
         (:name yasnippet)
         (:name org2blog
                :type git
                :url "http://github.com/punchagan/org2blog.git"
                :features org2blog)
-        (:name gimme
-               :type git
-               :url "http://github.com/konr/GIMME.git"
-               :load-path (".")
-               :features gimme)
-;;        (:name xml-rpc          :type elpa)
-;;        (:name emacs-jabber)
-        ;;        (:name xml-rpc          :type elpa)
+        (:name xml-rpc          :type elpa)
         (:name emacs-jabber)
         (:name bbdb             :type apt-get)
         (:name pymacs           :type apt-get)
@@ -64,13 +60,25 @@
         (:name org-mode         :type apt-get)
         (:name emacs-goodies-el :type apt-get)))
 
+(unless (require 'el-get nil t)
+  (url-retrieve
+   "https://github.com/dimitri/el-get/raw/master/el-get-install.el"
+   (lambda (s)
+     (end-of-buffer)
+     (eval-print-last-sexp))))
 
- (ignore-errors
-   (el-get 'wait))
+(el-get 'sync)
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;
 ;; End of el-get code ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; Vala:
+(add-to-list 'auto-mode-alist '("\\.vala$" . vala-mode))
+(add-to-list 'auto-mode-alist '("\\.vapi$" . vala-mode))
+(add-to-list 'file-coding-system-alist '("\\.vala$" . utf-8))
+(add-to-list 'file-coding-system-alist '("\\.vapi$" . utf-8))
 
 (require 'w3m-load)
 (require 'midnight)
@@ -98,7 +106,7 @@
 (setq ispell-program-name "aspell")
 
 ;; Put all customizations in this file.
-(setq custom-file "~/.emacs.d/albin/custom.el")
+(setq custom-file "~/.emacs.d/custom.el")
 (load custom-file)
 
 ;; Browse with emacs-w3m:
@@ -455,7 +463,7 @@ by using nxml's indentation rules."
 
 (setq org-agenda-files '("/home/albin/org/todo.org"
                          "/home/albin/org/projekt.org"
-                         ;; "/home/albin/org/notmorg.org"
+                         "/home/albin/org/böcker.org"
                          "/home/albin/org/weather.org"
                          "/home/albin/org/skolan.org"
                          "/home/albin/org/1:5.org"
@@ -502,21 +510,36 @@ by using nxml's indentation rules."
         (sh . t)
         (python . t)))
 
-(require 'google-weather)
-(require 'org-google-weather)
+;;(require 'google-weather)
+;;(require 'org-google-weather)
+
+
+;; http://jblevins.org/projects/deft/
+(when (require 'deft nil 'noerror) 
+   (setq
+      deft-extension "org"
+      deft-directory "~/org/deft/"
+      deft-text-mode 'org-mode)
+   (global-set-key (kbd "<f9>") 'deft))
+
 
 ;; org2blog begin here
 
 (require 'org2blog)
 
 (setq org2blog/wp-blog-alist
-       '(("wordpress"
+       '(("eval.nu"
           :url "http://eval.nu/xmlrpc.php"
           :username "admin"   
           :default-categories ("på svenska")
           :tags-as-categories nil
           :wp-latex t
           :wp-code t
+          :track-posts nil)
+         ("alltdubehover"
+          :url "http://alltdubehover.nu/xmlrpc.php"
+          :username "albin"
+          :default-categories ("Recept")
           :track-posts nil)))
 
 
@@ -567,9 +590,9 @@ by using nxml's indentation rules."
                   ("" "xunicode" t)
                   ("" "xltxtra" t)
                   ("" "url" t)
+                  ("" "sectsty" t)
                   ("" "rotating" t)
                   ("swedish" "babel" t)
-                  ("babel=guillemets*" "csquotes" t)
                   ("" "soul" t)
                   ("xetex, colorlinks=true,
                     linkcolor=blue, citecolor=blue,
@@ -582,7 +605,9 @@ by using nxml's indentation rules."
                          [DEFAULT-PACKAGES]
                          [PACKAGES]
                          [EXTRA]
-                         \\setmainfont{TeXGyrePagella}"
+                         \\setmainfont{Garamond Premier Pro}
+                         \\setsansfont{Gill Sans MT Pro}
+                         \\allsectionsfont{\\sffamily}"
                         ("\\section{%s}" . "\\section*{%s}")
                         ("\\subsection{%s}" . "\\subsection*{%s}")
                         ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
@@ -691,7 +716,11 @@ by using nxml's indentation rules."
 
 
 ;; Use C-x C-m for M-x:
-(global-set-key "\C-x\C-m" 'execute-extended-command)
+;;(global-set-key "\C-x\C-m" 'execute-extended-command)
+
+(smex-initialize)
+
+(global-set-key "\C-x\C-m" 'smex)
 
 ;; Use C-w to backword-kill word and rebind kill-region to C-x C-k.
 (global-set-key "\C-w" 'backward-kill-word)
@@ -700,7 +729,7 @@ by using nxml's indentation rules."
 ;;(global-set-key "\C-cp" 'delicious-post)
 (global-set-key "\C-cip" 'identica-update-status-interactive)
 (global-set-key "\C-cid" 'identica-direct-message-interactive)
-(global-set-key "\C-cgi" 'ido-goto-symbol)
+;;(global-set-key "\C-cgi" 'ido-goto-symbol)
 
 
 ;; Browse url by C-c u f
@@ -743,114 +772,114 @@ by using nxml's indentation rules."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
-(autoload 'python-mode "python-mode" "Python Mode." t)
-(add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
-(add-to-list 'interpreter-mode-alist '("python" . python-mode))
-(require 'python-mode)
-(add-hook 'python-mode-hook
-      (lambda ()
-	(set-variable 'py-indent-offset 4)
-	;(set-variable 'py-smart-indentation nil)
-	(set-variable 'indent-tabs-mode nil)
-	(define-key py-mode-map (kbd "RET") 'newline-and-indent)
-	;(define-key py-mode-map [tab] 'yas/expand)
-	;(setq yas/after-exit-snippet-hook 'indent-according-to-mode)
-	;;(smart-operator-mode-on)
-	))
-;; pymacs
-(autoload 'pymacs-apply "pymacs")
-(autoload 'pymacs-call "pymacs")
-(autoload 'pymacs-eval "pymacs" nil t)
-(autoload 'pymacs-exec "pymacs" nil t)
-(autoload 'pymacs-load "pymacs" nil t)
-;;(eval-after-load "pymacs"
-;;  '(add-to-list 'pymacs-load-path YOUR-PYMACS-DIRECTORY"))
-(pymacs-load "ropemacs" "rope-")
-(setq ropemacs-enable-autoimport t)
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; Auto-completion
-;;;  Integrates:
-;;;   1) Rope
-;;;   2) Yasnippet
-;;;   all with AutoComplete.el
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(defun prefix-list-elements (list prefix)
-  (let (value)
-    (nreverse
-     (dolist (element list value)
-      (setq value (cons (format "%s%s" prefix element) value))))))
-(defvar ac-source-rope
-  '((candidates
-     . (lambda ()
-         (prefix-list-elements (rope-completions) ac-target))))
-  "Source for Rope")
-(defun ac-python-find ()
-  "Python `ac-find-function'."
-  (require 'thingatpt)
-  (let ((symbol (car-safe (bounds-of-thing-at-point 'symbol))))
-    (if (null symbol)
-        (if (string= "." (buffer-substring (- (point) 1) (point)))
-            (point)
-          nil)
-      symbol)))
-(defun ac-python-candidate ()
-  "Python `ac-candidates-function'"
-  (let (candidates)
-    (dolist (source ac-sources)
-      (if (symbolp source)
-          (setq source (symbol-value source)))
-      (let* ((ac-limit (or (cdr-safe (assq 'limit source)) ac-limit))
-             (requires (cdr-safe (assq 'requires source)))
-             cand)
-        (if (or (null requires)
-                (>= (length ac-target) requires))
-            (setq cand
-                  (delq nil
-                        (mapcar (lambda (candidate)
-                                  (propertize candidate 'source source))
-                                (funcall (cdr (assq 'candidates source)))))))
-        (if (and (> ac-limit 1)
-                 (> (length cand) ac-limit))
-            (setcdr (nthcdr (1- ac-limit) cand) nil))
-        (setq candidates (append candidates cand))))
-    (delete-dups candidates)))
-(add-hook 'python-mode-hook
-          (lambda ()
-                 (auto-complete-mode 1)
-                 (set (make-local-variable 'ac-sources)
-                      (append ac-sources '(ac-source-rope) '(ac-source-yasnippet)))
-                 (set (make-local-variable 'ac-find-function) 'ac-python-find)
-                 (set (make-local-variable 'ac-candidate-function) 'ac-python-candidate)
-                 (set (make-local-variable 'ac-auto-start) nil)))
-;;Ryan's python specific tab completion
-(defun ryan-python-tab ()
-  ; Try the following:
-  ; 1) Do a yasnippet expansion
-  ; 2) Do a Rope code completion
-  ; 3) Do an indent
-  (interactive)
-  (if (eql (ac-start) 0)
-      (indent-for-tab-command)))
-(defadvice ac-start (before advice-turn-on-auto-start activate)
-  (set (make-local-variable 'ac-auto-start) t))
-(defadvice ac-cleanup (after advice-turn-off-auto-start activate)
-  (set (make-local-variable 'ac-auto-start) nil))
-(define-key py-mode-map "\t" 'ryan-python-tab)
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; End Auto Completion
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Auto Syntax Error Hightlight
-(when (load "flymake" t)
-  (defun flymake-pyflakes-init ()
-    (let* ((temp-file (flymake-init-create-temp-buffer-copy
-		       'flymake-create-temp-inplace))
-	   (local-file (file-relative-name
-			temp-file
-			(file-name-directory buffer-file-name))))
-      (list "pyflakes" (list local-file))))
-  (add-to-list 'flymake-allowed-file-name-masks
-	       '("\\.py\\'" flymake-pyflakes-init)))
-(add-hook 'find-file-hook 'flymake-find-file-hook)
+;; (autoload 'python-mode "python-mode" "Python Mode." t)
+;; (add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
+;; (add-to-list 'interpreter-mode-alist '("python" . python-mode))
+;; (require 'python-mode)
+;; (add-hook 'python-mode-hook
+;;       (lambda ()
+;; 	(set-variable 'py-indent-offset 4)
+;; 	;(set-variable 'py-smart-indentation nil)
+;; 	(set-variable 'indent-tabs-mode nil)
+;; 	(define-key py-mode-map (kbd "RET") 'newline-and-indent)
+;; 	;(define-key py-mode-map [tab] 'yas/expand)
+;; 	;(setq yas/after-exit-snippet-hook 'indent-according-to-mode)
+;; 	;;(smart-operator-mode-on)
+;; 	))
+;; ;; pymacs
+;; (autoload 'pymacs-apply "pymacs")
+;; (autoload 'pymacs-call "pymacs")
+;; (autoload 'pymacs-eval "pymacs" nil t)
+;; (autoload 'pymacs-exec "pymacs" nil t)
+;; (autoload 'pymacs-load "pymacs" nil t)
+;; ;;(eval-after-load "pymacs"
+;; ;;  '(add-to-list 'pymacs-load-path YOUR-PYMACS-DIRECTORY"))
+;; ;;(pymacs-load "ropemacs" "rope-")
+;; (setq ropemacs-enable-autoimport t)
+;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; ;;; Auto-completion
+;; ;;;  Integrates:
+;; ;;;   1) Rope
+;; ;;;   2) Yasnippet
+;; ;;;   all with AutoComplete.el
+;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; (defun prefix-list-elements (list prefix)
+;;   (let (value)
+;;     (nreverse
+;;      (dolist (element list value)
+;;       (setq value (cons (format "%s%s" prefix element) value))))))
+;; (defvar ac-source-rope
+;;   '((candidates
+;;      . (lambda ()
+;;          (prefix-list-elements (rope-completions) ac-target))))
+;;   "Source for Rope")
+;; (defun ac-python-find ()
+;;   "Python `ac-find-function'."
+;;   (require 'thingatpt)
+;;   (let ((symbol (car-safe (bounds-of-thing-at-point 'symbol))))
+;;     (if (null symbol)
+;;         (if (string= "." (buffer-substring (- (point) 1) (point)))
+;;             (point)
+;;           nil)
+;;       symbol)))
+;; (defun ac-python-candidate ()
+;;   "Python `ac-candidates-function'"
+;;   (let (candidates)
+;;     (dolist (source ac-sources)
+;;       (if (symbolp source)
+;;           (setq source (symbol-value source)))
+;;       (let* ((ac-limit (or (cdr-safe (assq 'limit source)) ac-limit))
+;;              (requires (cdr-safe (assq 'requires source)))
+;;              cand)
+;;         (if (or (null requires)
+;;                 (>= (length ac-target) requires))
+;;             (setq cand
+;;                   (delq nil
+;;                         (mapcar (lambda (candidate)
+;;                                   (propertize candidate 'source source))
+;;                                 (funcall (cdr (assq 'candidates source)))))))
+;;         (if (and (> ac-limit 1)
+;;                  (> (length cand) ac-limit))
+;;             (setcdr (nthcdr (1- ac-limit) cand) nil))
+;;         (setq candidates (append candidates cand))))
+;;     (delete-dups candidates)))
+;; (add-hook 'python-mode-hook
+;;           (lambda ()
+;;                  (auto-complete-mode 1)
+;;                  (set (make-local-variable 'ac-sources)
+;;                       (append ac-sources '(ac-source-rope) '(ac-source-yasnippet)))
+;;                  (set (make-local-variable 'ac-find-function) 'ac-python-find)
+;;                  (set (make-local-variable 'ac-candidate-function) 'ac-python-candidate)
+;;                  (set (make-local-variable 'ac-auto-start) nil)))
+;; ;;Ryan's python specific tab completion
+;; (defun ryan-python-tab ()
+;;   ; Try the following:
+;;   ; 1) Do a yasnippet expansion
+;;   ; 2) Do a Rope code completion
+;;   ; 3) Do an indent
+;;   (interactive)
+;;   (if (eql (ac-start) 0)
+;;       (indent-for-tab-command)))
+;; (defadvice ac-start (before advice-turn-on-auto-start activate)
+;;   (set (make-local-variable 'ac-auto-start) t))
+;; (defadvice ac-cleanup (after advice-turn-off-auto-start activate)
+;;   (set (make-local-variable 'ac-auto-start) nil))
+;; (define-key py-mode-map "\t" 'ryan-python-tab)
+;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; ;;; End Auto Completion
+;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; ;; Auto Syntax Error Hightlight
+;; (when (load "flymake" t)
+;;   (defun flymake-pyflakes-init ()
+;;     (let* ((temp-file (flymake-init-create-temp-buffer-copy
+;; 		       'flymake-create-temp-inplace))
+;; 	   (local-file (file-relative-name
+;; 			temp-file
+;; 			(file-name-directory buffer-file-name))))
+;;       (list "pyflakes" (list local-file))))
+;;   (add-to-list 'flymake-allowed-file-name-masks
+;; 	       '("\\.py\\'" flymake-pyflakes-init)))
+;; (add-hook 'find-file-hook 'flymake-find-file-hook)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Python code ends here ;;
@@ -892,5 +921,6 @@ by using nxml's indentation rules."
 
 (global-auto-complete-mode t)
 
+(require 'mail)
 
 (server-start)
