@@ -17,13 +17,9 @@
 (setq el-get-sources
       '((:name ii-mode
                :type git
+
                :url "http://github.com/krl/ii-mode.git"
                :features: ii-mode)
-        (:name quack)
-        (:name git-emacs)
-        (:name tea-time
-               :type git
-               :url "git://github.com/krick/tea-time.git")
         (:name idle-highlight-mode
                :type git
                :url "https://github.com/nonsequitur/idle-highlight-mode.git")
@@ -33,32 +29,30 @@
                :build ("make")
                :features rest-api
                :load  ("./rest-api.el"))
-        (:name el-get)
         (:name vala-mode :type elpa)
+	(:name el-get 
+	       :type git
+	       :url "git://github.com/dimitri/el-get.git")
         (:name deft :type elpa)
         (:name gimme :type elpa)
-        (:name csharp-mode)
-        (:name geiser)
-        (:name auto-complete)
-        (:name twittering-mode)
         (:name smex :type elpa)
         (:name starter-kit :type elpa)
         (:name starter-kit-eshell :type elpa)
-;;        (:name starter-kit-bindings :type elpa)
-        (:name anything)
-        (:name yasnippet)
+        (:name starter-kit-lisp :type elpa)
+        (:name starter-kit-bindings :type elpa)
+        (:name starter-kit-js :type elpa)
         (:name org2blog
                :type git
                :url "http://github.com/punchagan/org2blog.git"
                :features org2blog)
         (:name xml-rpc          :type elpa)
-        (:name emacs-jabber)
         (:name bbdb             :type apt-get)
-        (:name pymacs           :type apt-get)
-        (:name auctex           :type apt-get)
-        (:name debian-el        :type apt-get)
-        (:name org-mode         :type apt-get)
-        (:name emacs-goodies-el :type apt-get)))
+;;        (:name pymacs           :type apt-get)
+;;        (:name auctex           :type apt-get)
+;;        (:name debian-el        :type apt-get)
+;;        (:name org-mode         :type apt-get)
+;;        (:name emacs-goodies-el :type apt-get)
+))
 
 (unless (require 'el-get nil t)
   (url-retrieve
@@ -67,7 +61,13 @@
      (end-of-buffer)
      (eval-print-last-sexp))))
 
-(el-get 'sync)
+(setq my-packages
+      (append
+       '(el-get anything yasnippet auto-complete git-emacs)
+       (mapcar 'el-get-source-name el-get-sources)))
+
+(el-get 'sync my-packages)
+
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;
@@ -572,7 +572,19 @@ by using nxml's indentation rules."
     (insert description)
     (save-buffer)
     (bury-buffer)))
+
 (global-set-key (kbd "C-c t") 'insert-new-todo)
+
+;; Export current org-mode buffer as html to kindle:
+
+(defun org-export-to-kindle ()
+  (interactive)
+  (let ((bufname (generate-new-buffer-name "kindle")))
+    (org-export-as-utf8 2 nil nil bufname 1 "/media/Kindle/documents/org-mode/")
+    (switch-to-buffer (get-buffer bufname))
+    (set-visited-file-name (format "/media/Kindle/documents/org-mode/org-kindle-export-%s.txt"
+                                   (format-time-string "%Y-%m-%d")))
+    (save-buffer)))
 
 ;; don't use sublevels for agenda: keep agenda clean
 (setq org-agenda-todo-list-sublevels nil)
@@ -694,12 +706,6 @@ by using nxml's indentation rules."
     (message "Project created: %s" project-path)
     (find-file (concat project-path "/README.org"))))
 
-(emms-standard)
-(emms-default-players)
-(push 'emms-player-mplayer emms-player-list)
-
-(setq emms-source-file-default-directory "/var/storage/downloads/")
-
 ;; Numbered links for w3m:
 ;; courtesy of http://emacs.wordpress.com/2008/04/12/numbered-links-in-emacs-w3m/,
 (require 'w3m-lnum)
@@ -714,13 +720,6 @@ by using nxml's indentation rules."
 (set-frame-font "DejaVu Sans Mono-11")
 ;;(set-frame-font "Terminus-12")
 
-
-;; Use C-x C-m for M-x:
-;;(global-set-key "\C-x\C-m" 'execute-extended-command)
-
-(smex-initialize)
-
-(global-set-key "\C-x\C-m" 'smex)
 
 ;; Use C-w to backword-kill word and rebind kill-region to C-x C-k.
 (global-set-key "\C-w" 'backward-kill-word)
@@ -919,8 +918,27 @@ by using nxml's indentation rules."
         (format "(enter! (file \"%s\") #:verbose)\n" buffer-file-name))
   (switch-to-scheme t))
 
+;; Missing in starter-kit 2.0 for some reason: find recent files
+
+(recentf-mode 1)
+(defun recentf-ido-find-file ()
+  "Find a recent file using ido."
+  (interactive)
+  (let ((file (ido-completing-read "Choose recent file: " recentf-list nil t)))
+    (when file
+      (find-file file))))
+
+(global-set-key (kbd "C-x f") 'recentf-ido-find-file)
+
 (global-auto-complete-mode t)
 
 (require 'mail)
+
+;; Use C-x C-m for M-x:
+;;(global-set-key "\C-x\C-m" 'execute-extended-command)
+
+;;(smex-initialize)
+
+(global-set-key "\C-x\C-m" 'smex)
 
 (server-start)

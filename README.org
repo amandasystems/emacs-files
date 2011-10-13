@@ -1,5 +1,4 @@
-This directory is placed placed at =.emacs.d/$MY_USER_NAME=, where my =.emacs.d=
-contains the emacs-starter-kit. It is used in two different setups on two different computers.
+This directory is placed placed directly in  =.emacs.d=, as it now uses emacs-starter-kit 2.0.
 
 I am also bundling =eudcb-notmuch.el=, since its original repo went down.
 
@@ -7,7 +6,7 @@ I am also bundling =eudcb-notmuch.el=, since its original repo went down.
 The structure is currently something like this:
 - =mail.el=: mail-related hacks mostly (now based on notmuch).
 - =sync-com.el=: stuff for IRC/Jabber (now based on jabber-el and ii-mode).
-- =secrets.el=: wrapper code to load the actual, encrypted password variables using EasyPG.
++- =secrets.el=: wrapper code to load the actual, encrypted password variables using EasyPG+ (not used anymore).
 - =.conkeror.rc=: not directly emacs-related. It's my (very hacky -- javascript isn't my thing) configuration file for Conkeror. However, it's so integrated in my Emacs workflow, I felt it deserved inclusion.
 - =init.el=: everything else.
 
@@ -17,5 +16,5 @@ The structure is currently something like this:
 - =smart-quotes.el=: a small function to handle guillemets (»french quotes«) automatically. Actually written by [[http://idiomdrottning.org/][a friend]].
 
 * Wishlist
-- GPG signature verification for notmuch. I know somebody's working on it, it's just not in mainline notmuch yet.
-- org-address interaction for notmuch
+- [X] GPG signature verification for notmuch. +I know somebody's working on it, it's just not in mainline notmuch yet.+ Yay, it's implemented! :)
+- [ ] org-address interaction for notmuch
